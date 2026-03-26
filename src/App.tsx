@@ -1,10 +1,18 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Sparkles, Users, TrendingUp, Globe, MessageSquare, Calendar, ChevronRight } from "lucide-react";
-import { useState, useRef } from "react";
+import {motion, useScroll, useTransform} from 'motion/react';
+import {
+  ArrowRight,
+  ChevronRight,
+  Globe,
+  MessageSquare,
+  Sparkles,
+  TrendingUp,
+  Users,
+} from 'lucide-react';
+import {useRef, useState} from 'react';
 
 const Navbar = () => {
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 bg-brand-bg/80 backdrop-blur-md"
@@ -28,9 +36,9 @@ const Navbar = () => {
       </div>
 
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-brand-accent px-5 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition-shadow border border-brand-ink/5"
+        whileHover={{ y: -1 }}
+        whileTap={{ scale: 0.98 }}
+        className="bg-brand-accent text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition-shadow border border-brand-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
       >
         Book call
       </motion.button>
@@ -40,100 +48,78 @@ const Navbar = () => {
 
 const Hero = () => {
   const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: targetRef,
-    offset: ["start start", "end start"]
+    offset: ['start start', 'end start'],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
     <section ref={targetRef} className="relative pt-32 pb-20 px-6 md:px-12 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div 
-        style={{ opacity, scale, y }}
-        className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+        style={{opacity, y}}
+        className="max-w-5xl mx-auto w-full"
       >
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{opacity: 0, y: 14}}
+          animate={{opacity: 1, y: 0}}
+          transition={{duration: 0.7, ease: 'easeOut'}}
+          className="relative"
         >
-          <h1 className="text-6xl md:text-8xl font-display font-bold leading-[0.9] tracking-tighter mb-8">
-            Design for startups <span className="text-brand-ink/20">•</span><br />
-            and scale-ups <span className="inline-flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-brand-ink" />
-              <span className="w-3 h-3 rounded-full bg-brand-ink" />
-              <span className="w-3 h-3 rounded-full bg-brand-ink" />
-            </span>
+          <div className="pointer-events-none absolute -top-16 -right-24 hidden md:block">
+            <motion.div
+              initial={{opacity: 0, scale: 0.98}}
+              animate={{opacity: 1, scale: 1}}
+              transition={{duration: 1.2, ease: 'easeOut'}}
+              className="h-72 w-72 rounded-full bg-brand-accent/10 blur-3xl"
+            />
+          </div>
+
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-ink/10 bg-white/60 backdrop-blur px-4 py-2 text-sm font-medium text-brand-ink/70">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
+            Premium product & design support
+          </div>
+
+          <h1 className="mt-8 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
+            Design for startups
+            <span className="text-brand-ink/25"> and</span>
+            <br />
+            scale-ups<span className="text-brand-accent">.</span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-brand-ink/70 max-w-xl mb-12 leading-relaxed">
-            Senior product managers & product designers for AI x B2B software teams.
+
+          <p className="mt-8 text-xl md:text-2xl text-brand-ink/65 max-w-2xl leading-relaxed">
+            Senior product managers and designers for ambitious AI x B2B teams.
           </p>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="group flex items-center gap-3 bg-white border border-brand-ink/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-xl transition-all"
+              whileHover={{y: -2}}
+              whileTap={{scale: 0.98}}
+              className="group flex items-center gap-3 bg-white border border-brand-ink/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
             >
-              <div className="w-10 h-10 rounded-xl bg-brand-accent flex items-center justify-center group-hover:rotate-12 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center group-hover:rotate-6 transition-transform">
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className="text-lg font-semibold">Let's chat</span>
+              <span className="ml-1 text-brand-ink/30 group-hover:text-brand-ink/50 transition-colors">
+                <ArrowRight className="w-5 h-5" />
+              </span>
             </motion.button>
 
-            <div className="flex items-center gap-2 text-sm text-brand-ink/50 font-medium">
-              <TrendingUp className="w-4 h-4" />
-              <span>1 spot left in April</span>
-            </div>
+            <motion.a
+              whileHover={{x: 4}}
+              href="#work"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/55 hover:text-brand-ink/80 transition-colors"
+            >
+              View selected work
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </motion.a>
           </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="relative hidden lg:block"
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-accent/20 rounded-full blur-3xl -z-10" />
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4 pt-12">
-              <div className="h-64 bg-white rounded-3xl border border-brand-ink/5 shadow-sm p-6 flex flex-col justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-brand-bg flex items-center justify-center">
-                  <Users className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="text-3xl font-bold font-display">74</div>
-                  <div className="text-sm text-brand-ink/60">happy teams</div>
-                </div>
-              </div>
-              <div className="h-48 bg-brand-ink text-white rounded-3xl p-6 flex flex-col justify-between">
-                <Globe className="w-6 h-6 text-brand-accent" />
-                <div className="text-lg font-medium leading-tight">Global reach, local impact.</div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="h-48 bg-brand-accent rounded-3xl p-6 flex flex-col justify-between">
-                <TrendingUp className="w-6 h-6" />
-                <div className="text-3xl font-bold font-display">$376M+</div>
-                <div className="text-sm font-medium">raised by customers</div>
-              </div>
-              <div className="h-64 bg-white rounded-3xl border border-brand-ink/5 shadow-sm p-6 overflow-hidden relative group">
-                <div className="absolute inset-0 bg-brand-ink/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="flex gap-2 mb-4">
-                  {[1,2,3].map(i => <div key={i} className="w-8 h-2 rounded-full bg-brand-accent" />)}
-                </div>
-                <div className="text-sm font-medium text-brand-ink/40">Iteration #04</div>
-                <div className="mt-4 space-y-2">
-                  <div className="h-4 bg-brand-bg rounded-lg w-full" />
-                  <div className="h-4 bg-brand-bg rounded-lg w-3/4" />
-                  <div className="h-4 bg-brand-bg rounded-lg w-1/2" />
-                </div>
-              </div>
-            </div>
+          <div className="mt-14 max-w-2xl border-t border-brand-ink/10 pt-6 text-sm text-brand-ink/45">
+            <span className="font-semibold text-brand-ink/60">Simple, senior execution.</span>{' '}
+            Strategy, UX, and UI—delivered with calm velocity.
           </div>
         </motion.div>
       </motion.div>
