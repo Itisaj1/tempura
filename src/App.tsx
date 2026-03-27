@@ -5,10 +5,9 @@ import {
   Globe,
   MessageSquare,
   Sparkles,
-  TrendingUp,
   Users,
 } from 'lucide-react';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 
 const Navbar = () => {
   return (
@@ -77,11 +76,6 @@ const Hero = () => {
             />
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand-ink/10 bg-white/60 backdrop-blur px-4 py-2 text-sm font-medium text-brand-ink/70">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
-            Premium product & design support
-          </div>
-
           <h1 className="mt-8 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
             Design for startups
             <span className="text-brand-ink/25"> and</span>
@@ -94,19 +88,20 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-            <motion.button
+            <motion.a
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
+              href="#pricing"
               className="group flex items-center gap-3 bg-white border border-brand-ink/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
             >
               <div className="w-10 h-10 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center group-hover:rotate-6 transition-transform">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <span className="text-lg font-semibold">Let's chat</span>
+              <span className="text-lg font-semibold">Plans</span>
               <span className="ml-1 text-brand-ink/30 group-hover:text-brand-ink/50 transition-colors">
                 <ArrowRight className="w-5 h-5" />
               </span>
-            </motion.button>
+            </motion.a>
 
             <motion.a
               whileHover={{x: 4}}
@@ -116,10 +111,6 @@ const Hero = () => {
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </motion.a>
-          </div>
-          <div className="mt-14 max-w-2xl border-t border-brand-ink/10 pt-6 text-sm text-brand-ink/45">
-            <span className="font-semibold text-brand-ink/60">Simple, senior execution.</span>{' '}
-            Strategy, UX, and UI—delivered with calm velocity.
           </div>
         </motion.div>
       </motion.div>
@@ -138,10 +129,11 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div>
             <h2 className="text-5xl md:text-7xl font-display font-bold leading-tight tracking-tighter mb-8">
-              Product managers & designers <span className="text-brand-ink/30 italic">for</span> AI x B2B teams.
+              <span className="text-brand-ink/30">Product managers & designers</span>{' '}
+              <span className="text-brand-ink">for</span> AI x B2B teams.
             </h2>
             <p className="text-xl text-brand-ink/60 leading-relaxed mb-12">
-              Senior product talent that drives design projects from wireframe to full release alongside your engineers. We don't just make things pretty; we build things that work.
+              Senior product talent that drives design projects from wireframe to full release alongside your engineers.
             </p>
             
             <motion.button
@@ -158,7 +150,6 @@ const About = () => {
           <div className="space-y-12">
             {[
               { label: "74", sub: "happy teams across the globe", icon: <Globe className="w-5 h-5" /> },
-              { label: "$376M+", sub: "raised by our customers", icon: <TrendingUp className="w-5 h-5" /> },
               { label: "12", sub: "years of combined expertise", icon: <Users className="w-5 h-5" /> }
             ].map((stat, idx) => (
               <motion.div 
@@ -214,30 +205,50 @@ const Services = () => {
 
 const CTA = () => {
   return (
-    <section className="py-24 px-6 md:px-12 bg-brand-ink text-white overflow-hidden relative">
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1],
-          rotate: [0, 90, 0]
-        }}
-        transition={{ duration: 20, repeat: Infinity }}
-        className="absolute -top-24 -right-24 w-96 h-96 bg-brand-accent/20 rounded-full blur-3xl" 
-      />
-      
-      <div className="max-w-4xl mx-auto text-center relative z-10">
-        <h2 className="text-5xl md:text-7xl font-display font-bold mb-8 leading-tight tracking-tighter">
-          Ready to build something <span className="text-brand-accent">extraordinary?</span>
-        </h2>
-        <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Join the ranks of successful startups that have scaled their products with Panko Studio.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <button className="bg-brand-accent text-brand-ink px-10 py-5 rounded-2xl text-lg font-bold hover:scale-105 transition-transform">
-            Book a discovery call
-          </button>
-          <button className="flex items-center gap-2 text-lg font-medium hover:text-brand-accent transition-colors">
-            View our work <ChevronRight className="w-5 h-5" />
-          </button>
+    <section id="contact" className="relative py-24 px-6 md:px-12 overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.65)_0%,rgba(255,255,255,0.65)_52%,rgba(0,129,167,0.06)_52%,rgba(0,129,167,0.06)_100%)]" />
+      <div className="relative max-w-4xl mx-auto">
+        <div className="rounded-[2rem] border border-brand-ink/10 bg-white/70 backdrop-blur px-6 md:px-14 py-12 md:py-16">
+          <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Contact</div>
+          <h2 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-10">
+            Let&apos;s collaborate
+          </h2>
+
+          <div className="space-y-5 text-lg md:text-2xl text-brand-ink/90">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span>My name is</span>
+              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
+                first &amp; last name
+              </span>
+              <span>from</span>
+              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
+                company name
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span>I want to chat about</span>
+              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Web app</span>
+              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Mobile app</span>
+              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Website</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <span>You can reach me at</span>
+              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
+                email address
+              </span>
+            </div>
+          </div>
+
+          <motion.button
+            whileHover={{y: -1}}
+            whileTap={{scale: 0.98}}
+            className="mt-10 inline-flex items-center rounded-2xl border border-brand-ink/10 bg-white shadow-sm hover:shadow-md transition-shadow"
+          >
+            <span className="m-1 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-accent text-white">
+              <Sparkles className="w-5 h-5" />
+            </span>
+            <span className="px-5 text-xl font-semibold">Submit</span>
+          </motion.button>
         </div>
       </div>
     </section>
@@ -387,13 +398,6 @@ const Pricing = () => {
 };
 
 const Team = () => {
-  const members = [
-    { name: "Alex Panko", role: "Product Strategy", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" },
-    { name: "Sarah Chen", role: "Design Director", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400" },
-    { name: "Marcus Thorne", role: "Senior PM", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400" },
-    { name: "Elena Rossi", role: "UX Lead", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" }
-  ];
-
   return (
     <section id="team" className="py-24 px-6 md:px-12 bg-brand-bg">
       <div className="max-w-7xl mx-auto">
@@ -402,28 +406,35 @@ const Team = () => {
           <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight">The minds behind <br />the products.</h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
-          {members.map((member, idx) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group"
-            >
-              <div className="aspect-square rounded-[2rem] overflow-hidden mb-6 bg-white shadow-sm grayscale group-hover:grayscale-0 transition-all duration-500">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <h3 className="text-xl font-bold font-display">{member.name}</h3>
-              <p className="text-brand-ink/40 font-medium text-sm">{member.role}</p>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-10 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="aspect-square rounded-[2rem] overflow-hidden bg-white shadow-sm">
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=900"
+                alt="Aj"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.08 }}
+            className="pt-2"
+          >
+            <h3 className="text-4xl md:text-5xl font-display font-bold mb-6">Aj</h3>
+            <p className="text-xl text-brand-ink/65 leading-relaxed max-w-3xl">
+              I lead senior product and design engagements for founders building AI x B2B
+              products. My approach balances strategic clarity with practical execution, so
+              teams can move from concept to confident release without unnecessary complexity.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -547,46 +558,6 @@ const Testimonials = () => {
   );
 };
 
-const FAQ = () => {
-  const faqs = [
-    { q: "How fast can you start?", a: "We typically have a 2-week lead time, but we can sometimes fast-track urgent projects." },
-    { q: "Do you work with early-stage startups?", a: "Yes, we love working with founders from day zero to help them find PMF." },
-    { q: "What is your tech stack?", a: "We design for everything, but we're experts in React, Tailwind, and AI integrations." }
-  ];
-
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
-
-  return (
-    <section className="py-24 px-6 md:px-12 bg-white">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-display font-bold mb-16 tracking-tight text-center">Common questions.</h2>
-        <div className="space-y-4">
-          {faqs.map((faq, i) => (
-            <div key={i} className="border-b border-brand-ink/5 pb-4">
-              <button 
-                onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="w-full flex items-center justify-between py-4 text-left group"
-              >
-                <span className="text-xl font-bold font-display group-hover:text-brand-ink/60 transition-colors">{faq.q}</span>
-                <div className={`w-8 h-8 rounded-full border border-brand-ink/10 flex items-center justify-center transition-transform ${openIdx === i ? 'rotate-45' : ''}`}>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </button>
-              <motion.div
-                initial={false}
-                animate={{ height: openIdx === i ? "auto" : 0, opacity: openIdx === i ? 1 : 0 }}
-                className="overflow-hidden"
-              >
-                <p className="text-brand-ink/60 leading-relaxed pb-4">{faq.a}</p>
-              </motion.div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function App() {
   return (
     <div className="min-h-screen selection:bg-brand-accent selection:text-brand-ink">
@@ -594,14 +565,12 @@ export default function App() {
       <main>
         <Hero />
         <About />
+        <Testimonials />
         <Projects />
         <Process />
-        <Testimonials />
         <Pricing />
         <Team />
-        <Services />
         <Roles />
-        <FAQ />
         <CTA />
       </main>
       <Footer />
