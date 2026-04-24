@@ -1,4 +1,4 @@
-import {motion, useScroll, useTransform} from 'motion/react';
+import {motion, useScroll, useTransform, type MotionValue} from 'motion/react';
 import {
   ArrowRight,
   ChevronRight,
@@ -7,9 +7,15 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState, type RefObject} from 'react';
 
-const Navbar = ({isHeroView, activeSection}: {isHeroView: boolean; activeSection: string}) => {
+const Navbar = ({
+  dockProgress,
+  activeSection,
+}: {
+  dockProgress: MotionValue<number>;
+  activeSection: string;
+}) => {
   const navItems = [
     {id: 'about', label: 'About'},
     {id: 'work', label: 'Work'},
@@ -18,28 +24,53 @@ const Navbar = ({isHeroView, activeSection}: {isHeroView: boolean; activeSection
     {id: 'contact', label: 'Contact'},
   ];
 
+  const top = useTransform(dockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
+  const left = useTransform(dockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
+  const right = useTransform(dockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
+  const borderRadius = useTransform(dockProgress, [0, 0.45, 1], ['0px', '18px', '20px']);
+  const shellShadow = useTransform(
+    dockProgress,
+    [0, 0.55, 1],
+    ['0px 0px 0px rgba(15,23,42,0)', '0px 18px 50px rgba(15,23,42,0.10)', '0px 22px 60px rgba(15,23,42,0.14)'],
+  );
+  const shellBg = useTransform(
+    dockProgress,
+    [0, 0.5, 1],
+    ['rgba(247, 244, 239, 0.78)', 'rgba(255, 255, 255, 0.72)', 'rgba(255, 255, 255, 0.82)'],
+  );
+  const shellBorder = useTransform(
+    dockProgress,
+    [0, 0.5, 1],
+    ['rgba(15, 23, 42, 0.06)', 'rgba(15, 23, 42, 0.10)', 'rgba(15, 23, 42, 0.12)'],
+  );
+
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      initial={{y: -100}}
+      animate={{y: 0}}
       transition={{type: 'spring', stiffness: 220, damping: 28}}
-      className={`fixed z-50 flex items-center px-5 md:px-8 py-3 backdrop-blur-md border border-brand-ink/5 transition-all duration-400 ${
-        isHeroView
-          ? 'top-0 left-0 right-0 rounded-none bg-brand-bg/80'
-          : 'top-3 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] md:w-[min(1120px,calc(100%-3rem))] rounded-2xl bg-white/75 shadow-sm'
-      }`}
+      style={{
+        top,
+        left,
+        right,
+        borderRadius,
+        backgroundColor: shellBg,
+        borderColor: shellBorder,
+        boxShadow: shellShadow,
+      }}
+      className="fixed z-50 flex items-center px-5 md:px-8 py-3 backdrop-blur-xl border"
     >
       <div className="flex items-center gap-2">
         <span className="text-xl md:text-2xl font-bold font-display tracking-tight">panko studio</span>
         <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
       </div>
-      
-      <div className="hidden md:flex items-center gap-7 text-sm font-medium ml-auto">
+
+      <div className="hidden md:flex items-center gap-7 text-sm font-medium ml-auto text-brand-ink/80">
         {navItems.map((item) => (
           <a
             key={item.id}
             href={`#${item.id}`}
-            className="inline-flex items-center gap-2 hover:text-brand-ink/60 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full px-1 py-0.5 hover:bg-brand-ink/[0.04] transition-colors"
           >
             <span
               className={`h-1.5 w-1.5 rounded-full transition-opacity ${
@@ -52,10 +83,10 @@ const Navbar = ({isHeroView, activeSection}: {isHeroView: boolean; activeSection
       </div>
 
       <motion.a
-        whileHover={{ y: -1 }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={{y: -1}}
+        whileTap={{scale: 0.98}}
         href="#contact"
-        className="ml-4 bg-brand-accent text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition-shadow border border-brand-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+        className="ml-4 bg-brand-accent text-white px-5 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition-shadow border border-brand-ink/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
       >
         Book call
       </motion.a>
@@ -63,8 +94,8 @@ const Navbar = ({isHeroView, activeSection}: {isHeroView: boolean; activeSection
   );
 };
 
-const Hero = () => {
-  const targetRef = useRef(null);
+const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
+  const targetRef = heroRef;
   const {scrollYProgress} = useScroll({
     target: targetRef,
     offset: ['start start', 'end start'],
@@ -85,12 +116,12 @@ const Hero = () => {
           transition={{duration: 0.7, ease: 'easeOut'}}
           className="relative"
         >
-          <div className="pointer-events-none absolute top-16 -left-20 hidden md:block">
+          <div className="pointer-events-none absolute left-[12%] top-8 hidden md:block md:left-[18%]">
             <motion.div
               initial={{opacity: 0, scale: 0.98}}
               animate={{opacity: 1, scale: 1}}
               transition={{duration: 1.2, ease: 'easeOut'}}
-              className="h-80 w-80 rounded-full bg-brand-accent/14 blur-3xl"
+              className="h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(0,129,167,0.22),rgba(0,129,167,0.06)_45%,transparent_70%)] blur-3xl"
             />
           </div>
 
@@ -110,10 +141,10 @@ const Hero = () => {
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
               href="#contact"
-              className="group flex items-center gap-3 bg-white border border-brand-ink/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-lg transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+              className="group flex items-center gap-3 bg-white/80 border border-brand-ink/10 px-8 py-4 rounded-2xl shadow-sm hover:shadow-lg hover:bg-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
             >
-              <div className="w-10 h-10 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center group-hover:rotate-6 transition-transform">
-                <Sparkles className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-xl bg-brand-ink/[0.06] text-brand-ink flex items-center justify-center group-hover:bg-brand-ink/[0.09] transition-colors">
+                <MessageSquare className="w-5 h-5" />
               </div>
               <span className="text-lg font-semibold">Let&apos;s chat</span>
               <span className="ml-1 text-brand-ink/30 group-hover:text-brand-ink/50 transition-colors">
@@ -138,7 +169,7 @@ const Hero = () => {
 
 const About = () => {
   return (
-    <section id="about" className="py-18 md:py-20 px-6 md:px-12 bg-white">
+    <section id="about" className="py-16 md:py-20 px-6 md:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
@@ -157,7 +188,7 @@ const About = () => {
             <motion.a
               whileHover={{y: -1}}
               href="#contact"
-              className="inline-flex items-center gap-3 rounded-full bg-brand-accent text-white px-6 py-3 text-base font-semibold shadow-sm"
+              className="inline-flex items-center gap-3 rounded-full bg-brand-accent text-white px-6 py-3 text-base font-semibold shadow-sm border border-brand-ink/10"
             >
               Book a call
               <div className="w-8 h-8 rounded-full border border-white/35 flex items-center justify-center">
@@ -194,50 +225,92 @@ const About = () => {
 };
 
 const CTA = () => {
+  const [fullName, setFullName] = useState('');
+  const [company, setCompany] = useState('');
+  const [email, setEmail] = useState('');
+  const [topic, setTopic] = useState<'Web app' | 'Mobile app' | 'Website' | null>(null);
+
+  const topics = ['Web app', 'Mobile app', 'Website'] as const;
+
+  const handleSubmit = () => {
+    if (!fullName.trim() || !company.trim() || !email.trim() || !topic) {
+      window.alert('Please fill in your name, company, email, and pick one focus area.');
+      return;
+    }
+    window.alert(
+      `Thanks, ${fullName.trim()}!\n\nWe’ll reach you at ${email.trim()} about ${topic} for ${company.trim()}.`,
+    );
+  };
+
   return (
-    <section id="contact" className="relative py-18 md:py-20 px-6 md:px-12 overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.65)_0%,rgba(255,255,255,0.65)_52%,rgba(0,129,167,0.06)_52%,rgba(0,129,167,0.06)_100%)]" />
-      <div className="relative max-w-4xl mx-auto">
-        <div className="rounded-[2rem] border border-brand-ink/10 bg-white/70 backdrop-blur px-6 md:px-14 py-12 md:py-16">
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Contact</div>
-          <h2 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-10">
+    <section id="contact" className="relative py-16 md:py-20 px-6 md:px-12 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_520px_at_85%_0%,rgba(0,129,167,0.12),transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,244,239,0.55))]" />
+      <div className="relative max-w-3xl mx-auto">
+        <div className="rounded-[2rem] border border-brand-ink/10 bg-white/55 backdrop-blur-xl px-6 md:px-12 py-10 md:py-14 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+          <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-5">Contact</div>
+          <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-8 text-brand-ink">
             Let&apos;s collaborate
           </h2>
 
-          <div className="space-y-5 text-lg md:text-2xl text-brand-ink/90">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span>My name is</span>
-              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
-                first &amp; last name
-              </span>
-              <span>from</span>
-              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
-                company name
-              </span>
+          <div className="space-y-6 text-base md:text-lg text-brand-ink/90 leading-relaxed">
+            <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
+              <span className="text-brand-ink/70">My name is</span>
+              <input
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="first & last name"
+                className="min-w-[12rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+              />
+              <span className="text-brand-ink/70">from</span>
+              <input
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="company name"
+                className="min-w-[10rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+              />
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span>I want to chat about</span>
-              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Web app</span>
-              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Mobile app</span>
-              <span className="px-3 py-1 rounded-full border border-brand-ink/10 bg-brand-bg text-base md:text-lg">Website</span>
+
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+              <span className="text-brand-ink/70">I want to chat about designs for my</span>
+              {topics.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setTopic(t)}
+                  className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                    topic === t
+                      ? 'border-brand-accent bg-brand-accent/10 text-brand-ink'
+                      : 'border-brand-ink/15 bg-white/40 text-brand-ink/70 hover:border-brand-ink/25'
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span>You can reach me at</span>
-              <span className="px-4 py-1 rounded-full bg-brand-bg border border-brand-ink/10 text-brand-ink/45 text-base md:text-lg">
-                email address
-              </span>
+
+            <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
+              <span className="text-brand-ink/70">You can reach me at</span>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email address"
+                className="min-w-[14rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+              />
             </div>
           </div>
 
           <motion.button
+            type="button"
+            onClick={handleSubmit}
             whileHover={{y: -1}}
             whileTap={{scale: 0.98}}
-            className="mt-10 inline-flex items-center rounded-2xl border border-brand-ink/10 bg-white shadow-sm hover:shadow-md transition-shadow"
+            className="mt-10 inline-flex items-center rounded-2xl border border-brand-ink/10 bg-white/70 shadow-sm hover:shadow-md hover:bg-white transition-all"
           >
             <span className="m-1 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-accent text-white">
               <Sparkles className="w-5 h-5" />
             </span>
-            <span className="px-5 text-xl font-semibold">Submit</span>
+            <span className="px-5 text-lg font-semibold">Submit</span>
           </motion.button>
         </div>
       </div>
@@ -247,21 +320,56 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="py-12 px-6 md:px-12 bg-white border-t border-brand-ink/5">
-      <div className="max-w-7xl mx-auto flex flex-col md:row items-center justify-between gap-8">
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-bold font-display">panko studio</span>
-          <div className="w-1 h-1 rounded-full bg-brand-accent" />
+    <footer className="bg-brand-ink text-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-14 pb-10">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+          <div className="text-sm text-white/55 max-w-sm leading-relaxed">
+            Product & design for ambitious AI x B2B teams. Based everywhere, shipping fast.
+          </div>
+          <div className="grid grid-cols-2 gap-x-16 gap-y-3 text-sm font-medium text-white/70">
+            <a href="#about" className="hover:text-white transition-colors">
+              About
+            </a>
+            <a href="#work" className="hover:text-white transition-colors">
+              Work
+            </a>
+            <a href="#pricing" className="hover:text-white transition-colors">
+              Pricing
+            </a>
+            <a href="#team" className="hover:text-white transition-colors">
+              Team
+            </a>
+            <a href="#contact" className="hover:text-white transition-colors">
+              Contact
+            </a>
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
-        
-        <div className="flex gap-8 text-sm font-medium text-brand-ink/60">
-          <a href="#" className="hover:text-brand-ink transition-colors">Twitter</a>
-          <a href="#" className="hover:text-brand-ink transition-colors">LinkedIn</a>
-          <a href="#" className="hover:text-brand-ink transition-colors">Dribbble</a>
-        </div>
-        
-        <div className="text-sm text-brand-ink/40">
-          © 2026 Panko Studio. All rights reserved.
+      </div>
+      <div className="border-t border-white/10 px-6 md:px-12 pt-10 pb-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="font-display font-bold tracking-tighter text-[clamp(3.5rem,12vw,9rem)] leading-[0.85]">
+            <span className="inline-block">panko </span>
+            <span className="inline-block">
+              stud
+              <span className="relative inline-block">
+                i
+                <Sparkles
+                  aria-hidden
+                  className="pointer-events-none absolute left-1/2 top-[0.06em] h-[0.42em] w-[0.42em] -translate-x-1/2 text-brand-accent"
+                />
+              </span>
+              o
+            </span>
+          </div>
+          <div className="mt-6 text-sm text-white/45">© 2026 Panko Studio</div>
         </div>
       </div>
     </footer>
@@ -269,54 +377,51 @@ const Footer = () => {
 };
 
 const Projects = () => {
-  const projects = [
-    { title: "Lumina AI", category: "Product Design", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800" },
-    { title: "Vertex Flow", category: "Product Management", image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=800" },
-    { title: "Nexus B2B", category: "Strategy", image: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=800" },
-    { title: "Echo Systems", category: "UI/UX Design", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" }
-  ];
+  const placeholders = [1, 2, 3, 4];
 
   return (
-    <section id="work" className="py-18 md:py-20 px-6 md:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+    <section id="work" className="py-16 md:py-20 px-6 md:px-12 bg-white">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-5">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Selected Work</span>
-            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Crafting digital <br />excellence.</h2>
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
+              Selected Work
+            </span>
+            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+              Crafting digital excellence.
+            </h2>
           </div>
-          <p className="text-brand-ink/60 max-w-sm leading-relaxed">
-            We partner with ambitious founders to build products that define categories.
+          <p className="text-brand-ink/55 max-w-md text-sm md:text-base leading-relaxed">
+            Case studies are being refreshed. For now, here’s the shape of the work—clean, bold,
+            and built for conversion.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-9">
-          {projects.map((project, idx) => (
-            <motion.div 
+        <div className="grid grid-cols-1 gap-10 md:gap-12">
+          {placeholders.map((_, idx) => (
+            <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group cursor-pointer"
+              initial={{opacity: 0, y: 18}}
+              whileInView={{opacity: 1, y: 0}}
+              viewport={{once: true}}
+              transition={{delay: idx * 0.06}}
+              className="group"
             >
-              <div className="aspect-[16/10] overflow-hidden rounded-[2.5rem] mb-6 bg-brand-bg relative">
-                <motion.img 
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.6 }}
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-brand-ink/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <div className="flex items-center justify-between px-4">
-                <div>
-                  <h3 className="text-2xl font-bold font-display">{project.title}</h3>
-                  <p className="text-brand-ink/40 font-medium">{project.category}</p>
+              <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-brand-ink/10 bg-gradient-to-br from-brand-ink/[0.04] via-white/40 to-brand-accent/[0.08]">
+                <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.10),transparent_55%)]" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="rounded-2xl border border-brand-ink/10 bg-white/55 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                    Case study placeholder
+                  </div>
                 </div>
-                <div className="w-12 h-12 rounded-full border border-brand-ink/10 flex items-center justify-center group-hover:bg-brand-accent group-hover:border-brand-accent transition-all">
-                  <ArrowRight className="w-5 h-5" />
+              </div>
+              <div className="mt-5 flex items-center justify-between px-2">
+                <div>
+                  <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
+                  <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
+                </div>
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-brand-ink/10 bg-white/60 text-brand-ink/40 backdrop-blur-sm transition-colors group-hover:border-brand-accent/40 group-hover:text-brand-accent">
+                  <ArrowRight className="h-5 w-5" />
                 </div>
               </div>
             </motion.div>
@@ -359,7 +464,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-18 md:py-20 px-6 md:px-12 bg-white">
+    <section id="pricing" className="py-16 md:py-20 px-6 md:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
@@ -371,7 +476,7 @@ const Pricing = () => {
             <motion.div 
               key={idx}
               whileHover={{ y: -5 }}
-              className="p-8 rounded-[2rem] border border-brand-ink/5 bg-brand-bg flex flex-col justify-between"
+              className="p-8 rounded-[2rem] border border-brand-ink/10 bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-sm flex flex-col justify-between"
             >
               <div>
                 <h3 className="text-2xl font-bold font-display mb-2">{plan.name}</h3>
@@ -405,7 +510,7 @@ const Pricing = () => {
 
 const Team = () => {
   return (
-    <section id="team" className="py-18 md:py-20 px-6 md:px-12 bg-brand-bg">
+    <section id="team" className="py-16 md:py-20 px-6 md:px-12 bg-brand-bg">
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Our Team</span>
@@ -418,13 +523,8 @@ const Team = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="aspect-square rounded-[2rem] overflow-hidden bg-white shadow-sm">
-              <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=900"
-                alt="Aj"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
+            <div className="aspect-square rounded-[2rem] overflow-hidden border border-brand-ink/10 bg-white/70 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+              <img src="/portrait.jpeg" alt="Aj" className="h-full w-full object-cover" />
             </div>
           </motion.div>
           <motion.div
@@ -435,11 +535,21 @@ const Team = () => {
             className="pt-2"
           >
             <h3 className="text-4xl md:text-5xl font-display font-bold mb-5">Aj</h3>
-            <p className="text-lg md:text-xl text-brand-ink/65 leading-relaxed max-w-3xl">
-              I lead senior product and design engagements for founders building AI x B2B
-              products. My approach balances strategic clarity with practical execution, so
-              teams can move from concept to confident release without unnecessary complexity.
-            </p>
+            <div className="max-w-3xl space-y-5 text-lg md:text-xl text-brand-ink/70 leading-relaxed">
+              <p>
+                I launched Panko Studio in 2024 to help you design and ship beautiful products at
+                the speed you need.
+              </p>
+              <p>
+                Full-time designers are expensive – a senior PD salary is 150K/yr not including
+                taxes, and it could take months to hire the right one.
+              </p>
+              <p>Who has that kind of time when your users want features built yesterday?</p>
+              <p>
+                That&apos;s why I assembled a senior, global design team that you can onboard in
+                days, so you can get the same design quality without sacrificing time &amp; money.
+              </p>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -455,14 +565,14 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-18 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
+    <section className="py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {reviews.map((rev, i) => (
             <motion.div 
               key={i}
               whileHover={{ scale: 1.02 }}
-              className="p-8 rounded-[2rem] bg-white border border-brand-ink/5 shadow-sm flex flex-col justify-between"
+              className="flex flex-col justify-between rounded-[2rem] border border-brand-ink/10 bg-white/85 p-8 shadow-[0_18px_60px_rgba(15,23,42,0.07)] backdrop-blur-sm"
             >
               <MessageSquare className="w-8 h-8 text-brand-accent mb-6" />
               <p className="text-xl font-medium leading-relaxed mb-8 italic">“{rev.text}”</p>
@@ -479,22 +589,18 @@ const Testimonials = () => {
 };
 
 export default function App() {
-  const [isHeroView, setIsHeroView] = useState(true);
+  const heroRef = useRef<HTMLElement | null>(null);
+  const {scrollYProgress: dockProgress} = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    const hero = document.getElementById('home');
     const sectionIds = ['home', 'about', 'work', 'pricing', 'team', 'contact'];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
-
-    const heroObserver = new IntersectionObserver(
-      ([entry]) => setIsHeroView(entry.isIntersecting),
-      {threshold: 0.65},
-    );
-
-    if (hero) heroObserver.observe(hero);
 
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -510,47 +616,15 @@ export default function App() {
     sections.forEach((section) => sectionObserver.observe(section));
 
     return () => {
-      heroObserver.disconnect();
       sectionObserver.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    let targetY = window.scrollY;
-    let currentY = window.scrollY;
-    let rafId = 0;
-
-    const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-
-    const animate = () => {
-      currentY += (targetY - currentY) * 0.12;
-      window.scrollTo(0, currentY);
-      if (Math.abs(targetY - currentY) > 0.4) {
-        rafId = requestAnimationFrame(animate);
-      } else {
-        rafId = 0;
-      }
-    };
-
-    const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      targetY = clamp(targetY + event.deltaY * 0.9, 0, maxScroll);
-      if (!rafId) rafId = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener('wheel', handleWheel, {passive: false});
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <div className="min-h-screen selection:bg-brand-accent selection:text-brand-ink">
-      <Navbar isHeroView={isHeroView} activeSection={activeSection} />
+      <Navbar dockProgress={dockProgress} activeSection={activeSection} />
       <main>
-        <Hero />
+        <Hero heroRef={heroRef} />
         <About />
         <Testimonials />
         <Projects />
