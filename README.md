@@ -25,6 +25,24 @@ For future extensions (e.g., Gemini connectivity), see `.env.example`.
 - Build: `npm run build`
 - Preview: `npm run preview`
 
+## Brand Style Guide
+
+### Typography
+- Display/headings: `Outfit` (`--font-display`)
+- Body/UI text: `Inter` (`--font-sans`)
+
+### Core Colors
+- Brand accent: `#0081A7` (`--color-brand-accent`)
+- Brand ink: `#0F172A` (`--color-brand-ink`)
+- Brand background: `#F7F4EF` (`--color-brand-bg`)
+
+### Interaction Principles
+- Primary CTA buttons use high-contrast inversion:
+  - Default: white background, dark text
+  - Hover: dark background, white text
+- Cards and floating surfaces use subtle glass effects (`backdrop-blur`) with soft borders.
+- Section highlights use restrained accent gradients/radials for depth without overwhelming readability.
+
 ## License
 
 Licensed under the MIT License. See `LICENSE`.
