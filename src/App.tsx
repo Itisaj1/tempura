@@ -62,8 +62,8 @@ const Navbar = ({
   ];
 
   const top = useTransform(dockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
-  const left = useTransform(dockProgress, [0, 0.35, 1], ['0px', '20px', '32px']);
-  const right = useTransform(dockProgress, [0, 0.35, 1], ['0px', '20px', '32px']);
+  const left = useTransform(dockProgress, [0, 0.35, 1], ['0px', '34px', 'min(200px, 16vw)']);
+  const right = useTransform(dockProgress, [0, 0.35, 1], ['0px', '34px', 'min(200px, 16vw)']);
   const borderRadius = useTransform(dockProgress, [0, 0.45, 1], ['0px', '18px', '20px']);
   const shellShadow = useTransform(
     dockProgress,
@@ -73,7 +73,7 @@ const Navbar = ({
   const shellBg = useTransform(
     dockProgress,
     [0, 0.5, 1],
-    ['rgba(247, 244, 239, 0.78)', 'rgba(255, 255, 255, 0.72)', 'rgba(255, 255, 255, 0.82)'],
+    ['rgba(242, 248, 251, 0.78)', 'rgba(235, 245, 249, 0.76)', 'rgba(233, 244, 249, 0.88)'],
   );
   const shellBorder = useTransform(
     dockProgress,
@@ -208,7 +208,8 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="py-16 md:py-20 px-6 md:px-12 bg-white">
+    <section id="about" className="relative py-16 md:py-20 px-6 md:px-12 bg-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_320px_at_95%_10%,rgba(0,129,167,0.10),transparent_60%)]" />
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
@@ -279,9 +280,9 @@ const CTA = () => {
 
   return (
     <section id="contact" className="relative py-16 md:py-20 px-6 md:px-12 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_520px_at_85%_0%,rgba(0,129,167,0.12),transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,244,239,0.55))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.92)_56%,rgba(0,129,167,0.09)_56%,rgba(0,129,167,0.09)_100%)]" />
       <div className="relative max-w-3xl mx-auto">
-        <div className="rounded-[2rem] border border-brand-ink/10 bg-white/55 backdrop-blur-xl px-6 md:px-12 py-10 md:py-14 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+        <div className="px-1 md:px-0 py-8 md:py-10">
           <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-5">Contact</div>
           <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-8 text-brand-ink">
             Let&apos;s collaborate
@@ -417,7 +418,6 @@ const Projects = () => {
     {id: 2, size: 'md:col-span-5', ratio: 'aspect-[4/5]'},
     {id: 3, size: 'md:col-span-4', ratio: 'aspect-[4/5]'},
     {id: 4, size: 'md:col-span-8', ratio: 'aspect-[16/8.5]'},
-    {id: 5, size: 'md:col-span-6', ratio: 'aspect-[16/10]'},
   ];
 
   return (
@@ -505,7 +505,8 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-16 md:py-20 px-6 md:px-12 bg-white">
+    <section id="pricing" className="relative py-16 md:py-20 px-6 md:px-12 bg-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_420px_at_0%_100%,rgba(0,129,167,0.08),transparent_60%)]" />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
@@ -548,7 +549,8 @@ const Pricing = () => {
 
 const Team = () => {
   return (
-    <section id="team" className="py-16 md:py-20 px-6 md:px-12 bg-brand-bg">
+    <section id="team" className="relative py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_0%,rgba(0,129,167,0.09),transparent_60%)]" />
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Our Team</span>
@@ -644,6 +646,7 @@ export default function App() {
     offset: ['start start', 'end start'],
   });
   const [activeSection, setActiveSection] = useState('home');
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     const sectionIds = ['home', 'about', 'work', 'pricing', 'team', 'contact'];
@@ -669,6 +672,11 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setShowLoader(false), 700);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
   return (
     <div className="min-h-screen selection:bg-brand-accent selection:text-brand-ink">
       <Navbar dockProgress={dockProgress} activeSection={activeSection} />
@@ -682,6 +690,19 @@ export default function App() {
         <CTA />
       </main>
       <Footer />
+      <motion.div
+        initial={{opacity: 1}}
+        animate={{opacity: showLoader ? 1 : 0}}
+        transition={{duration: 0.45, ease: 'easeOut'}}
+        className={`fixed inset-0 z-[100] flex items-center justify-center bg-white ${
+          showLoader ? 'pointer-events-auto' : 'pointer-events-none'
+        }`}
+      >
+        <div className="flex items-center gap-2 text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
+          panko studio
+          <span className="h-2 w-2 rounded-full bg-brand-accent animate-pulse" />
+        </div>
+      </motion.div>
     </div>
   );
 }
