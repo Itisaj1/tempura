@@ -3,7 +3,6 @@ import {
   ArrowRight,
   ChevronRight,
   Globe,
-  MessageSquare,
   Sparkles,
   Users,
 } from 'lucide-react';
@@ -181,14 +180,11 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
               href="#contact"
-              className={`group px-8 py-4 ${CTA_BUTTON_BASE}`}
+              className={`group ${CTA_BUTTON_BASE}`}
             >
-              <div className="w-10 h-10 rounded-xl bg-brand-ink/[0.06] text-brand-ink group-hover:bg-white/15 group-hover:text-white flex items-center justify-center transition-colors">
-                <MessageSquare className="w-5 h-5" />
-              </div>
-              <span className="text-lg font-semibold">Let&apos;s chat</span>
+              <span className="text-base font-semibold">Let&apos;s chat</span>
               <span className="ml-1 text-brand-ink/30 group-hover:text-white/80 transition-colors">
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </span>
             </motion.a>
 
