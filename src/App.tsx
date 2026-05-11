@@ -343,22 +343,25 @@ const CTA = () => {
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<Topic[]>([]);
-  const [status, setStatus] = useState<FormStatus>('idle');
+  const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [submittedName, setSubmittedName] = useState('');
-  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const toggleTopic = (t: Topic) => {
-    setSelectedTopics((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
-    if (status === 'error') {
-      setStatus('idle');
+  const clearErrorOnEdit = () => {
+    if (formStatus === 'error') {
+      setFormStatus('idle');
       setErrorMessage('');
     }
   };
 
+  const toggleTopic = (t: Topic) => {
+    setSelectedTopics((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+    clearErrorOnEdit();
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (status === 'loading') return;
+    if (formStatus === 'loading') return;
 
     const trimmedName = fullName.trim();
     const trimmedCompany = company.trim();
@@ -366,42 +369,53 @@ const CTA = () => {
 
     if (!trimmedName || !trimmedCompany || !trimmedEmail || selectedTopics.length === 0) {
       setErrorMessage('Please fill in your name, company, email, and pick at least one focus area.');
-      setStatus('error');
+      setFormStatus('error');
       return;
     }
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined;
+    const notifyTemplateId = import.meta.env.VITE_EMAILJS_NOTIFY_TEMPLATE_ID as string | undefined;
+    const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID as
+      | string
+      | undefined;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined;
 
-    if (!serviceId || !templateId || !publicKey) {
+    if (!serviceId || !notifyTemplateId || !autoReplyTemplateId || !publicKey) {
       setErrorMessage('Email service is not configured. Please try again later.');
-      setStatus('error');
+      setFormStatus('error');
       return;
     }
 
-    if (!formRef.current) return;
+    const topicsString = selectedTopics.join(', ');
 
-    setStatus('loading');
+    const templateParams = {
+      full_name: trimmedName,
+      from_name: trimmedName,
+      company: trimmedCompany,
+      email: trimmedEmail,
+      reply_to: trimmedEmail,
+      to_email: trimmedEmail,
+      topics: topicsString,
+    };
+
+    setFormStatus('loading');
     setErrorMessage('');
 
     try {
-      await emailjs.sendForm(serviceId, templateId, formRef.current, {publicKey});
+      await emailjs.send(serviceId, notifyTemplateId, templateParams, {publicKey});
+
+      emailjs.send(serviceId, autoReplyTemplateId, templateParams, {publicKey}).catch((err) => {
+        console.warn('Auto-reply email failed (notification was delivered).', err);
+      });
+
       setSubmittedName(trimmedName);
-      setStatus('success');
+      setFormStatus('success');
     } catch (err) {
-      console.error('EmailJS submission failed', err);
+      console.error('EmailJS notification failed', err);
       setErrorMessage(
         'Something went wrong sending your message. Please try again or email us directly.',
       );
-      setStatus('error');
-    }
-  };
-
-  const clearErrorOnEdit = () => {
-    if (status === 'error') {
-      setStatus('idle');
-      setErrorMessage('');
+      setFormStatus('error');
     }
   };
 
@@ -421,14 +435,16 @@ const CTA = () => {
           </div>
 
           <AnimatePresence mode="wait" initial={false}>
-            {status === 'success' ? (
+            {formStatus === 'success' ? (
               <motion.div
                 key="success"
                 initial={{opacity: 0, y: 16}}
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, y: -16}}
                 transition={{duration: 0.45, ease: 'easeOut'}}
-                className="py-4"
+                role="status"
+                aria-live="polite"
+                className="py-10 md:py-12 flex flex-col items-center text-center"
               >
                 <motion.div
                   initial={{scale: 0.6, opacity: 0}}
@@ -443,57 +459,74 @@ const CTA = () => {
                   <span className="text-brand-accent">.</span>
                 </h2>
                 <p className="text-lg md:text-xl text-white/70 max-w-xl leading-relaxed">
-                  We&apos;ll be in touch shortly.
+                  We&apos;ve got your note and a confirmation on the way to{' '}
+                  <span className="text-white/90">{email.trim()}</span>. We&apos;ll be in touch
+                  shortly.
                 </p>
               </motion.div>
             ) : (
               <motion.form
                 key="form"
-                ref={formRef}
                 onSubmit={handleSubmit}
                 noValidate
                 initial={{opacity: 0, y: 8}}
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, y: -8}}
                 transition={{duration: 0.35, ease: 'easeOut'}}
+                aria-labelledby="contact-heading"
               >
-                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white">
+                <h2
+                  id="contact-heading"
+                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white"
+                >
                   Let&apos;s collaborate
                   <span className="text-brand-accent">.</span>
                 </h2>
 
                 <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <span className="text-white/65">My name is</span>
+                    <label htmlFor="contact-fullName" className="text-white/65">
+                      My name is
+                    </label>
                     <input
-                      name="full_name"
+                      id="contact-fullName"
+                      name="fullName"
+                      type="text"
                       autoComplete="name"
+                      aria-label="Your full name"
                       value={fullName}
                       onChange={(e) => {
                         setFullName(e.target.value);
                         clearErrorOnEdit();
                       }}
                       placeholder="first & last name"
-                      disabled={status === 'loading'}
+                      disabled={formStatus === 'loading'}
                       className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
                     />
-                    <span className="text-white/65">from</span>
+                    <label htmlFor="contact-company" className="text-white/65">
+                      from
+                    </label>
                     <input
+                      id="contact-company"
                       name="company"
+                      type="text"
                       autoComplete="organization"
+                      aria-label="Your company"
                       value={company}
                       onChange={(e) => {
                         setCompany(e.target.value);
                         clearErrorOnEdit();
                       }}
                       placeholder="company name"
-                      disabled={status === 'loading'}
+                      disabled={formStatus === 'loading'}
                       className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
                     />
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-                    <span className="text-white/65">I want to chat about designs for my</span>
+                  <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
+                    <legend className="text-white/65 mr-1 inline">
+                      I want to chat about designs for my
+                    </legend>
                     {topics.map((t) => {
                       const selected = selectedTopics.includes(t);
                       return (
@@ -501,8 +534,9 @@ const CTA = () => {
                           key={t}
                           type="button"
                           aria-pressed={selected}
+                          aria-label={`Topic: ${t}`}
                           onClick={() => toggleTopic(t)}
-                          disabled={status === 'loading'}
+                          disabled={formStatus === 'loading'}
                           className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
                               ? 'border-brand-accent bg-brand-accent/20 text-white'
@@ -513,21 +547,25 @@ const CTA = () => {
                         </button>
                       );
                     })}
-                  </div>
+                  </fieldset>
 
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <span className="text-white/65">You can reach me at</span>
+                    <label htmlFor="contact-email" className="text-white/65">
+                      You can reach me at
+                    </label>
                     <input
-                      type="email"
+                      id="contact-email"
                       name="email"
+                      type="email"
                       autoComplete="email"
+                      aria-label="Your email address"
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
                         clearErrorOnEdit();
                       }}
                       placeholder="email address"
-                      disabled={status === 'loading'}
+                      disabled={formStatus === 'loading'}
                       className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
                     />
                   </div>
@@ -536,7 +574,7 @@ const CTA = () => {
                 <input type="hidden" name="topics" value={selectedTopics.join(', ')} />
 
                 <AnimatePresence>
-                  {status === 'error' && errorMessage && (
+                  {formStatus === 'error' && errorMessage && (
                     <motion.p
                       key="error"
                       initial={{opacity: 0, y: -4}}
@@ -553,15 +591,15 @@ const CTA = () => {
 
                 <motion.button
                   type="submit"
-                  disabled={status === 'loading'}
-                  whileHover={status === 'loading' ? undefined : {y: -1}}
-                  whileTap={status === 'loading' ? undefined : {scale: 0.98}}
+                  disabled={formStatus === 'loading'}
+                  whileHover={formStatus === 'loading' ? undefined : {y: -1}}
+                  whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
                   className="group mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
                 >
                   <span className="text-base font-semibold">
-                    {status === 'loading' ? 'Sending…' : 'Submit'}
+                    {formStatus === 'loading' ? 'Sending…' : 'Submit'}
                   </span>
-                  {status === 'loading' ? (
+                  {formStatus === 'loading' ? (
                     <motion.span
                       aria-hidden
                       animate={{rotate: 360}}
