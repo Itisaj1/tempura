@@ -525,32 +525,52 @@ const Projects = () => {
 };
 
 const Pricing = () => {
-  const plans = [
+  const plans: Array<{
+    name: string;
+    price: string;
+    period: string;
+    desc: string;
+    features: string[];
+    extra?: string;
+    buttonLabel: string;
+    buttonHref: string;
+  }> = [
     {
-      name: 'Full service',
-      price: '$12,000 + tax',
-      period: '/mo',
-      desc: 'Senior product and design leadership embedded into your team.',
-      features: ['Dedicated PM & Designer', 'Unlimited requests', 'Weekly strategic reviews'],
-      buttonLabel: 'Subscribe',
+      name: 'Essential',
+      price: '$18,000',
+      period: ' / project',
+      desc: 'Design your core product from scratch in 6-8 weeks.',
+      features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
+      extra:
+        "A designer's final product is only as good as the inputs provided. We'll provide templates for quality moodboards, requirements documents, UX flow diagrams & wireframes with workshops included.",
+      buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
     {
-      name: 'Enterprise',
-      price: 'Contact us',
-      period: '',
-      desc: 'For companies seeking design and product expertise across multiple teams and products.',
+      name: 'Subscribe',
+      price: '$7,500',
+      period: ' / month',
+      desc: 'Work with us on an ongoing basis.',
       features: [],
-      buttonLabel: 'Book a call',
+      extra:
+        'Share your requirements on a Trello card, & senior designers will deliver high-quality designs, one by one. This could be a product design, graphics for marketing, email banners, or wireframes — anything goes so long as you can explain it in a card.',
+      buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
     {
-      name: 'Fixed Project',
-      price: 'Contact us',
+      name: 'Custom',
+      price: 'Per project',
       period: '',
-      desc: 'For teams that have fixed-scope design need. This includes:',
-      features: ['Website design and build', 'Web and mobile app designs'],
-      buttonLabel: 'Book a call',
+      desc: 'Work with us on a specific project.',
+      features: [
+        'Landing Page Designs',
+        'Landing Page Webflow Builds',
+        'UX Diagrams',
+        'Wireframes',
+        'Marketing Collateral',
+        'Low/High-Fidelity Prototypes',
+      ],
+      buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
   ];
@@ -593,15 +613,27 @@ const Pricing = () => {
                     <span className="text-4xl font-bold font-display">{plan.price}</span>
                     <span className={`font-medium ${featured ? 'text-white/55' : 'text-brand-ink/40'}`}>{plan.period}</span>
                   </div>
-                  <p className={`mb-6 leading-relaxed ${featured ? 'text-white/75' : 'text-brand-ink/60'}`}>{plan.desc}</p>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm font-medium">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className={`mb-6 font-semibold leading-relaxed ${featured ? 'text-white' : 'text-brand-ink/85'}`}>{plan.desc}</p>
+                  {plan.features.length > 0 && (
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((f, i) => (
+                        <li
+                          key={i}
+                          className={`flex items-center gap-3 text-sm font-medium ${
+                            featured ? 'text-white/85' : 'text-brand-ink/80'
+                          }`}
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {plan.extra && (
+                    <p className={`mb-8 text-sm leading-relaxed ${featured ? 'text-white/70' : 'text-brand-ink/60'}`}>
+                      {plan.extra}
+                    </p>
+                  )}
                 </div>
                 <a
                   href={plan.buttonHref}
