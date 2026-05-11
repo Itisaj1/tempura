@@ -1,11 +1,22 @@
-import {animate, motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue} from 'motion/react';
+import emailjs from '@emailjs/browser';
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'motion/react';
 import {
   ArrowRight,
+  CheckCircle2,
   ChevronRight,
   Globe,
   Users,
 } from 'lucide-react';
-import {useEffect, useLayoutEffect, useRef, useState, type RefObject} from 'react';
+import {useEffect, useLayoutEffect, useRef, useState, type FormEvent, type RefObject} from 'react';
 
 const useWindowWidth = () => {
   const [width, setWidth] = useState(() =>
@@ -322,6 +333,8 @@ const About = () => {
   );
 };
 
+type FormStatus = 'idle' | 'loading' | 'success' | 'error';
+
 const CTA = () => {
   const topics = ['Web app', 'Mobile app', 'Website'] as const;
   type Topic = (typeof topics)[number];
@@ -330,108 +343,238 @@ const CTA = () => {
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<Topic[]>([]);
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [submittedName, setSubmittedName] = useState('');
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   const toggleTopic = (t: Topic) => {
     setSelectedTopics((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+    if (status === 'error') {
+      setStatus('idle');
+      setErrorMessage('');
+    }
   };
 
-  const formatList = (items: string[]) => {
-    if (items.length === 0) return '';
-    if (items.length === 1) return items[0];
-    if (items.length === 2) return `${items[0]} and ${items[1]}`;
-    return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
-  };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (status === 'loading') return;
 
-  const handleSubmit = () => {
-    if (!fullName.trim() || !company.trim() || !email.trim() || selectedTopics.length === 0) {
-      window.alert('Please fill in your name, company, email, and pick at least one focus area.');
+    const trimmedName = fullName.trim();
+    const trimmedCompany = company.trim();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedName || !trimmedCompany || !trimmedEmail || selectedTopics.length === 0) {
+      setErrorMessage('Please fill in your name, company, email, and pick at least one focus area.');
+      setStatus('error');
       return;
     }
-    window.alert(
-      `Thanks, ${fullName.trim()}!\n\nWe’ll reach you at ${email.trim()} about ${formatList(
-        selectedTopics,
-      )} for ${company.trim()}.`,
-    );
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setErrorMessage('Email service is not configured. Please try again later.');
+      setStatus('error');
+      return;
+    }
+
+    if (!formRef.current) return;
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      await emailjs.sendForm(serviceId, templateId, formRef.current, {publicKey});
+      setSubmittedName(trimmedName);
+      setStatus('success');
+    } catch (err) {
+      console.error('EmailJS submission failed', err);
+      setErrorMessage(
+        'Something went wrong sending your message. Please try again or email us directly.',
+      );
+      setStatus('error');
+    }
+  };
+
+  const clearErrorOnEdit = () => {
+    if (status === 'error') {
+      setStatus('idle');
+      setErrorMessage('');
+    }
   };
 
   return (
-    <section id="contact" className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center">
+    <section
+      id="contact"
+      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
-      <div className="relative max-w-3xl mx-auto">
+      <div className="relative max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
             Contact
           </div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white">
-            Let&apos;s collaborate
-            <span className="text-brand-accent">.</span>
-          </h2>
 
-          <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
-            <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-              <span className="text-white/65">My name is</span>
-              <input
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="first & last name"
-                className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
-              />
-              <span className="text-white/65">from</span>
-              <input
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="company name"
-                className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
-              />
-            </div>
+          <AnimatePresence mode="wait" initial={false}>
+            {status === 'success' ? (
+              <motion.div
+                key="success"
+                initial={{opacity: 0, y: 16}}
+                animate={{opacity: 1, y: 0}}
+                exit={{opacity: 0, y: -16}}
+                transition={{duration: 0.45, ease: 'easeOut'}}
+                className="py-4"
+              >
+                <motion.div
+                  initial={{scale: 0.6, opacity: 0}}
+                  animate={{scale: 1, opacity: 1}}
+                  transition={{delay: 0.1, type: 'spring', stiffness: 220, damping: 18}}
+                  className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent mb-6"
+                >
+                  <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
+                </motion.div>
+                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-white">
+                  Thank you, {submittedName}
+                  <span className="text-brand-accent">.</span>
+                </h2>
+                <p className="text-lg md:text-xl text-white/70 max-w-xl leading-relaxed">
+                  We&apos;ll be in touch shortly.
+                </p>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                ref={formRef}
+                onSubmit={handleSubmit}
+                noValidate
+                initial={{opacity: 0, y: 8}}
+                animate={{opacity: 1, y: 0}}
+                exit={{opacity: 0, y: -8}}
+                transition={{duration: 0.35, ease: 'easeOut'}}
+              >
+                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white">
+                  Let&apos;s collaborate
+                  <span className="text-brand-accent">.</span>
+                </h2>
 
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-              <span className="text-white/65">I want to chat about designs for my</span>
-              {topics.map((t) => {
-                const selected = selectedTopics.includes(t);
-                return (
-                  <button
-                    key={t}
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => toggleTopic(t)}
-                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
-                      selected
-                        ? 'border-brand-accent bg-brand-accent/20 text-white'
-                        : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
-                    }`}
-                  >
-                    {t}
-                  </button>
-                );
-              })}
-            </div>
+                <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
+                  <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
+                    <span className="text-white/65">My name is</span>
+                    <input
+                      name="full_name"
+                      autoComplete="name"
+                      value={fullName}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        clearErrorOnEdit();
+                      }}
+                      placeholder="first & last name"
+                      disabled={status === 'loading'}
+                      className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                    />
+                    <span className="text-white/65">from</span>
+                    <input
+                      name="company"
+                      autoComplete="organization"
+                      value={company}
+                      onChange={(e) => {
+                        setCompany(e.target.value);
+                        clearErrorOnEdit();
+                      }}
+                      placeholder="company name"
+                      disabled={status === 'loading'}
+                      className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                    />
+                  </div>
 
-            <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-              <span className="text-white/65">You can reach me at</span>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="email address"
-                className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
-              />
-            </div>
-          </div>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                    <span className="text-white/65">I want to chat about designs for my</span>
+                    {topics.map((t) => {
+                      const selected = selectedTopics.includes(t);
+                      return (
+                        <button
+                          key={t}
+                          type="button"
+                          aria-pressed={selected}
+                          onClick={() => toggleTopic(t)}
+                          disabled={status === 'loading'}
+                          className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+                            selected
+                              ? 'border-brand-accent bg-brand-accent/20 text-white'
+                              : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      );
+                    })}
+                  </div>
 
-          <motion.button
-            type="button"
-            onClick={handleSubmit}
-            whileHover={{y: -1}}
-            whileTap={{scale: 0.98}}
-            className="group mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45"
-          >
-            <span className="text-base font-semibold">Submit</span>
-            <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-white/85" />
-          </motion.button>
+                  <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
+                    <span className="text-white/65">You can reach me at</span>
+                    <input
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        clearErrorOnEdit();
+                      }}
+                      placeholder="email address"
+                      disabled={status === 'loading'}
+                      className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                    />
+                  </div>
+                </div>
+
+                <input type="hidden" name="topics" value={selectedTopics.join(', ')} />
+
+                <AnimatePresence>
+                  {status === 'error' && errorMessage && (
+                    <motion.p
+                      key="error"
+                      initial={{opacity: 0, y: -4}}
+                      animate={{opacity: 1, y: 0}}
+                      exit={{opacity: 0, y: -4}}
+                      transition={{duration: 0.2}}
+                      role="alert"
+                      className="mt-6 text-sm text-rose-300/90"
+                    >
+                      {errorMessage}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+
+                <motion.button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  whileHover={status === 'loading' ? undefined : {y: -1}}
+                  whileTap={status === 'loading' ? undefined : {scale: 0.98}}
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
+                >
+                  <span className="text-base font-semibold">
+                    {status === 'loading' ? 'Sending…' : 'Submit'}
+                  </span>
+                  {status === 'loading' ? (
+                    <motion.span
+                      aria-hidden
+                      animate={{rotate: 360}}
+                      transition={{duration: 0.9, repeat: Infinity, ease: 'linear'}}
+                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-ink/30 border-t-brand-ink"
+                    />
+                  ) : (
+                    <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-white/85" />
+                  )}
+                </motion.button>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

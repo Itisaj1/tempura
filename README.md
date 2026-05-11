@@ -17,8 +17,20 @@ By default, the site runs at `http://localhost:3000`.
 
 ## Environment Variables
 
-This current UI does not require any environment variables.
-For future extensions (e.g., Gemini connectivity), see `.env.example`.
+The contact form (`CTA` section in `src/App.tsx`) submits via [EmailJS](https://www.emailjs.com).
+Copy `.env.example` to `.env.local` and fill in:
+
+- `VITE_EMAILJS_SERVICE_ID`
+- `VITE_EMAILJS_TEMPLATE_ID`
+- `VITE_EMAILJS_PUBLIC_KEY`
+
+These are read at build time via `import.meta.env` and inlined into the
+client bundle — that's expected and safe; EmailJS public keys are designed
+to be used from the browser. Restrict the allowed origins on your EmailJS
+service to your production domain to prevent abuse.
+
+If the variables are missing at runtime, the form surfaces a friendly
+"Email service is not configured" error and does not attempt a request.
 
 ## Build & Preview
 
