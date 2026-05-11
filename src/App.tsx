@@ -115,30 +115,30 @@ const Navbar = ({
   const vw = useWindowWidth();
   const dockedOffset = Math.max(24, (vw - 800) / 2);
 
-  const smoothDockProgress = useSpring(dockProgress, {stiffness: 180, damping: 32, mass: 0.28});
-  const top = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
-  const left = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', `${dockedOffset}px`]);
-  const right = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', `${dockedOffset}px`]);
-  const borderRadius = useTransform(smoothDockProgress, [0, 0.45, 1], ['0px', '18px', '20px']);
+  const smoothDockProgress = useSpring(dockProgress, {stiffness: 80, damping: 26, mass: 0.55});
+  const top = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
+  const left = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
+  const right = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
+  const borderRadius = useTransform(smoothDockProgress, [0, 1], ['0px', '20px']);
   const shellShadow = useTransform(
     smoothDockProgress,
-    [0, 0.55, 1],
-    ['0px 0px 0px rgba(15,23,42,0)', '0px 18px 50px rgba(15,23,42,0.10)', '0px 22px 60px rgba(15,23,42,0.14)'],
+    [0, 0.6, 1],
+    ['0px 0px 0px rgba(15,23,42,0)', '0px 14px 40px rgba(15,23,42,0.08)', '0px 22px 60px rgba(15,23,42,0.14)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
-    [0, 0.18, 0.5, 1],
-    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.72)', 'rgba(255, 255, 255, 0.82)'],
+    [0, 0.25, 0.7, 1],
+    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.18)', 'rgba(255, 255, 255, 0.65)', 'rgba(255, 255, 255, 0.82)'],
   );
   const shellBorder = useTransform(
     smoothDockProgress,
-    [0, 0.18, 0.5, 1],
-    ['rgba(15, 23, 42, 0)', 'rgba(15, 23, 42, 0)', 'rgba(15, 23, 42, 0.10)', 'rgba(15, 23, 42, 0.12)'],
+    [0, 0.25, 0.7, 1],
+    ['rgba(15, 23, 42, 0)', 'rgba(15, 23, 42, 0.03)', 'rgba(15, 23, 42, 0.09)', 'rgba(15, 23, 42, 0.12)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
-    [0, 0.18, 0.5, 1],
-    ['blur(0px)', 'blur(0px)', 'blur(14px)', 'blur(20px)'],
+    [0, 0.25, 0.7, 1],
+    ['blur(0px)', 'blur(6px)', 'blur(14px)', 'blur(20px)'],
   );
 
   return (
