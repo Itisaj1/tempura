@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ChevronRight,
   Globe,
+  Sparkle,
   Users,
 } from 'lucide-react';
 import {useEffect, useRef, useState, type RefObject} from 'react';
@@ -143,7 +144,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
-    <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-6 md:px-12 overflow-hidden min-h-screen flex flex-col justify-center">
+    <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-8 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div
         initial={{opacity: 0, scale: 0.94}}
         animate={{opacity: 1, scale: 1}}
@@ -208,10 +209,10 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="relative py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
+    <section id="about" className="relative py-16 md:py-20 px-4 md:px-8 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(750px_360px_at_95%_8%,rgba(0,129,167,0.12),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(550px_320px_at_-5%_85%,rgba(0,129,167,0.08),transparent_60%)]" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1400px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
         </div>
@@ -280,7 +281,7 @@ const CTA = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-28 px-6 md:px-12 overflow-hidden bg-brand-ink text-white">
+    <section id="contact" className="relative py-20 md:py-28 px-4 md:px-8 overflow-hidden bg-brand-ink text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
@@ -362,7 +363,7 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="bg-brand-ink text-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-14 pb-10">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-14 pb-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="text-sm text-white/55 max-w-sm leading-relaxed">
             Product & design for ambitious AI x B2B teams. Based everywhere, shipping fast.
@@ -394,8 +395,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-6 md:px-12 pt-10 pb-16">
-        <div className="max-w-7xl mx-auto">
+      <div className="border-t border-white/10 px-4 md:px-8 pt-10 pb-16">
+        <div className="max-w-[1400px] mx-auto">
           <div className="font-display font-bold tracking-tighter text-[clamp(3.5rem,12vw,9rem)] leading-[0.85]">
             <span className="inline-block">panko </span>
             <span className="inline-block">studio</span>
@@ -416,8 +417,8 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" className="py-16 md:py-20 px-6 md:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section id="work" className="py-16 md:py-20 px-4 md:px-8 bg-white">
+      <div className="max-w-[1400px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
             Selected Work
@@ -462,98 +463,228 @@ const Projects = () => {
   );
 };
 
+type PricingItem = {
+  title: string;
+  text: string;
+  tags?: string[];
+};
+
+type PricingPlan = {
+  summary: string;
+  team: { label: string; count: number }[];
+  items: PricingItem[];
+};
+
+const PRICING_PLANS: Record<'scaleups' | 'startups', PricingPlan> = {
+  scaleups: {
+    summary:
+      "You've raised $50m+. You need a senior product designer in your triad to accelerate your roadmap.",
+    team: [{ label: 'Design', count: 4 }],
+    items: [
+      {
+        title: 'Rituals',
+        text: "We embed into your product team's rituals. Anything from standup, design workshops, to test parties.",
+      },
+      {
+        title: 'Wireframes',
+        text:
+          'This is a huge focus for us. We triangulate information from your brief, any user docs you have & competitor analyses, to provide options on product direction.',
+        tags: ['User interviews', 'Competitor analysis', 'Brainstorm'],
+      },
+      {
+        title: 'Design systems',
+        text:
+          'We create and manage a scalable design system, making it easy for your engineering team to ship on brand. Teams get value from this beyond our engagement.',
+      },
+      {
+        title: 'High-fidelity',
+        text:
+          'We bring designs to life from wireframes. This involves using consistent design system components, and mapping out end-to-end annotated flows for easy engineer hand-off.',
+      },
+      {
+        title: 'Prototypes',
+        text:
+          'We bring designs to life from lo-fi wireframes. This involves using consistent design system components, and mapping out end-to-end annotated flows for easy engineer hand-off.',
+      },
+    ],
+  },
+  startups: {
+    summary:
+      "You've raised $2-20m. You need product managers & product designers to supercharge iterating as quickly as possible to get to product market fit.",
+    team: [
+      { label: 'Product', count: 3 },
+      { label: 'Design', count: 4 },
+    ],
+    items: [
+      {
+        title: 'Mind meld',
+        text:
+          'We run a structured onboarding process to dive deep into your product, industry and users. This gives us the right context in understanding your goals, and deliver value in product & design.',
+      },
+      {
+        title: 'Weekly jam',
+        text:
+          'We run weekly sessions (in-person, if location allows) where we go through design feedback, and brief new projects.',
+      },
+      {
+        title: 'Brainstorming',
+        text:
+          'The messy middle of a project often requires more than 1 weekly touchpoint. We jump on regular Slack huddles / ad-hoc calls throughout the week to get the context we need.',
+      },
+      {
+        title: 'Wireframes',
+        text:
+          'This is a huge focus for us. We triangulate information from your brief, any user docs you have & competitor analyses, to provide options on product direction.',
+        tags: ['User interviews', 'Competitor analysis', 'Brainstorm'],
+      },
+      {
+        title: 'Design systems',
+        text:
+          'We create and manage a scalable design system, making it easy for your engineering team to ship on brand. Teams get value from this beyond our engagement.',
+      },
+      {
+        title: 'High-fidelity',
+        text:
+          'We bring designs to life from wireframes. This involves using consistent design system components, and mapping out end-to-end annotated flows for easy engineer hand-off.',
+      },
+      {
+        title: 'Prototypes',
+        text:
+          'We build interactivity into lo-fi or hi-fi designs so you can easily validate product decisions with customers.',
+      },
+    ],
+  },
+};
+
+const AVATAR_TINTS = [
+  'from-brand-accent/45 to-brand-ink/35',
+  'from-amber-200 to-rose-300',
+  'from-sky-200 to-brand-accent/45',
+  'from-emerald-200 to-brand-accent/30',
+];
+
 const Pricing = () => {
-  const plans = [
-    {
-      name: 'Full service',
-      price: '$12,000 + tax',
-      period: '/mo',
-      desc: 'Senior product and design leadership embedded into your team.',
-      features: ['Dedicated PM & Designer', 'Unlimited requests', 'Weekly strategic reviews'],
-      buttonLabel: 'Subscribe',
-      buttonHref: '#contact',
-    },
-    {
-      name: 'Enterprise',
-      price: 'Contact us',
-      period: '',
-      desc: 'For companies seeking design and product expertise across multiple teams and products.',
-      features: [],
-      buttonLabel: 'Book a call',
-      buttonHref: '#contact',
-    },
-    {
-      name: 'Fixed Project',
-      price: 'Contact us',
-      period: '',
-      desc: 'For teams that have fixed-scope design need. This includes:',
-      features: ['Website design and build', 'Web and mobile app designs'],
-      buttonLabel: 'Book a call',
-      buttonHref: '#contact',
-    },
-  ];
+  const [tab, setTab] = useState<'scaleups' | 'startups'>('startups');
+  const active = PRICING_PLANS[tab];
 
   return (
-    <section id="pricing" className="relative py-16 md:py-20 px-6 md:px-12 bg-white overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_420px_at_0%_100%,rgba(0,129,167,0.08),transparent_60%)]" />
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Transparent investment.</h2>
+    <section id="pricing" className="relative py-16 md:py-24 px-4 md:px-8 bg-brand-bg overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_460px_at_0%_0%,rgba(0,129,167,0.10),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_110%,rgba(0,129,167,0.10),transparent_60%)]" />
+      <div className="relative max-w-[1400px] mx-auto">
+        <div className="mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-5 block">Pricing</span>
+          <h2 className="text-4xl md:text-6xl font-display font-bold leading-[1.04] tracking-tight">
+            No guesswork on pricing,
+            <br />
+            we charge $18K/mo<span className="text-brand-accent">.</span>
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {plans.map((plan, idx) => {
-            const featured = idx === 1;
-            return (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -5 }}
-                className={`relative p-8 rounded-[2rem] border flex flex-col justify-between backdrop-blur-sm ${
-                  featured
-                    ? 'border-brand-ink/30 bg-brand-ink text-white shadow-[0_24px_70px_rgba(15,23,42,0.22)]'
-                    : 'border-brand-ink/10 bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)]'
-                }`}
-              >
-                {featured && (
-                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(420px_260px_at_85%_-10%,rgba(0,129,167,0.32),transparent_60%)]" />
-                )}
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-bold font-display">{plan.name}</h3>
-                    {featured && (
-                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-full border border-brand-accent/45 bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
-                        Most popular
-                      </span>
+        <div className="mb-14">
+          <motion.a
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            href="#contact"
+            className="group inline-flex items-center gap-2 rounded-full border border-brand-ink/15 bg-white py-2 pl-2 pr-5 font-semibold text-brand-ink shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45"
+          >
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-accent text-white transition-transform group-hover:rotate-12">
+              <Sparkle className="h-4 w-4" />
+            </span>
+            <span className="text-sm font-semibold">Enquire</span>
+          </motion.a>
+        </div>
+
+        <div className="relative">
+          <div className="flex items-end gap-2">
+            {(['scaleups', 'startups'] as const).map((t) => {
+              const isActive = tab === t;
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setTab(t)}
+                  className={`relative rounded-2xl px-5 md:px-7 py-3 text-2xl md:text-3xl font-display font-bold tracking-tight transition-colors ${
+                    isActive ? 'text-brand-ink' : 'text-brand-ink/30 hover:text-brand-ink/55'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="pricing-tab-bg"
+                      className="absolute inset-0 rounded-2xl bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-brand-ink/10"
+                      transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+                    />
+                  )}
+                  <span className="relative">{t === 'scaleups' ? 'Scale-ups' : 'Startups'}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-6 mb-8 h-px bg-brand-ink/15" />
+
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+          >
+            <p className="text-base md:text-lg text-brand-ink/75 leading-relaxed max-w-3xl mb-3">
+              {active.summary}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm md:text-base text-brand-ink/75 mb-10">
+              <span>You&apos;ll work with</span>
+              {active.team.map((t, i) => (
+                <div key={t.label} className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    {Array.from({ length: t.count }).map((_, j) => (
+                      <div
+                        key={j}
+                        className={`h-8 w-8 rounded-full border-2 border-brand-bg bg-gradient-to-br ${
+                          AVATAR_TINTS[(i + j) % AVATAR_TINTS.length]
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="font-semibold text-brand-ink">{t.label}</span>
+                  {i < active.team.length - 1 && (
+                    <span className="text-brand-ink/35 font-medium">&amp;</span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-brand-ink/15">
+              {active.items.map((item, idx) => (
+                <motion.div
+                  key={`${tab}-${item.title}`}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 + idx * 0.03, duration: 0.3, ease: 'easeOut' }}
+                  className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-3 md:gap-14 py-7 border-b border-brand-ink/15"
+                >
+                  <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-ink/90">
+                    {item.title}
+                  </h3>
+                  <div>
+                    <p className="text-brand-ink/70 leading-relaxed">{item.text}</p>
+                    {item.tags && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {item.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-brand-ink/10 bg-white/70 px-3 py-1 text-xs font-medium text-brand-ink/70"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-4xl font-bold font-display">{plan.price}</span>
-                    <span className={`font-medium ${featured ? 'text-white/55' : 'text-brand-ink/40'}`}>{plan.period}</span>
-                  </div>
-                  <p className={`mb-6 leading-relaxed ${featured ? 'text-white/75' : 'text-brand-ink/60'}`}>{plan.desc}</p>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm font-medium">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <a
-                  href={plan.buttonHref}
-                  className={
-                    featured
-                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
-                      : `w-full text-center ${CTA_BUTTON_BASE}`
-                  }
-                >
-                  {plan.buttonLabel}
-                </a>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -562,9 +693,9 @@ const Pricing = () => {
 
 const Team = () => {
   return (
-    <section id="team" className="relative py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
+    <section id="team" className="relative py-16 md:py-20 px-4 md:px-8 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_0%,rgba(0,129,167,0.09),transparent_60%)]" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1400px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Our Team</span>
           <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
@@ -629,7 +760,7 @@ const Testimonials = () => {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_85%_-10%,rgba(0,129,167,0.14),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.10),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/35 to-transparent" />
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12">
+      <div className="relative max-w-[1400px] mx-auto px-4 md:px-8">
         <div className="mb-8 flex items-baseline gap-3">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/55">
