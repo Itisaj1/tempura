@@ -297,8 +297,8 @@ const About = () => {
 
           <div className="space-y-8">
             {[
-              { label: 74, sub: "happy teams across the globe", icon: <Globe className="w-5 h-5" />, suffix: '' },
-              { label: 12, sub: "years of combined expertise", icon: <Users className="w-5 h-5" />, suffix: '' }
+              { label: 12, sub: "happy teams across the globe", icon: <Globe className="w-5 h-5" />, suffix: '' },
+              { label: 7, sub: "years of combined expertise", icon: <Users className="w-5 h-5" />, suffix: '' }
             ].map((stat, idx) => (
               <motion.div 
                 key={idx}
