@@ -374,8 +374,8 @@ const CTA = () => {
     }
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined;
-    const notifyTemplateId = import.meta.env.VITE_EMAILJS_NOTIFY_TEMPLATE_ID as string | undefined;
-    const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID as
+    const notifyTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_TO_ME as string | undefined;
+    const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_AUTO_REPLY as
       | string
       | undefined;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined;
@@ -389,12 +389,9 @@ const CTA = () => {
     const topicsString = selectedTopics.join(', ');
 
     const templateParams = {
-      full_name: trimmedName,
-      from_name: trimmedName,
+      fullName: trimmedName,
       company: trimmedCompany,
       email: trimmedEmail,
-      reply_to: trimmedEmail,
-      to_email: trimmedEmail,
       topics: topicsString,
     };
 

@@ -24,8 +24,8 @@ and fill in:
 
 - `VITE_EMAILJS_SERVICE_ID`
 - `VITE_EMAILJS_PUBLIC_KEY`
-- `VITE_EMAILJS_NOTIFY_TEMPLATE_ID` — studio notification template
-- `VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID` — visitor auto-reply template
+- `VITE_EMAILJS_TEMPLATE_TO_ME` — studio notification template
+- `VITE_EMAILJS_TEMPLATE_AUTO_REPLY` — visitor auto-reply template
 
 These are read at build time via `import.meta.env` and inlined into the
 client bundle — that's expected and safe; EmailJS public keys are designed
