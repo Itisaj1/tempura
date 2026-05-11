@@ -107,7 +107,6 @@ const Navbar = ({
     {id: 'about', label: 'About'},
     {id: 'work', label: 'Work'},
     {id: 'pricing', label: 'Pricing'},
-    {id: 'team', label: 'Team'},
     {id: 'contact', label: 'Contact'},
   ];
 
@@ -342,7 +341,7 @@ const CTA = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-28 px-4 md:px-10 overflow-hidden bg-brand-ink text-white">
+    <section id="contact" className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
@@ -424,12 +423,12 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="bg-brand-ink text-white">
-      <div className="max-w-[1840px] mx-auto px-4 md:px-10 pt-14 pb-10">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
-          <div className="text-sm text-white/55 max-w-sm leading-relaxed">
-            Product & design for ambitious AI x B2B teams. Based everywhere, shipping fast.
+      <div className="max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
+          <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)]">
+            panko studio
           </div>
-          <div className="grid grid-cols-2 gap-x-16 gap-y-3 text-sm font-medium text-white/70">
+          <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/70">
             <a href="#about" className="hover:text-white transition-colors">
               About
             </a>
@@ -438,9 +437,6 @@ const Footer = () => {
             </a>
             <a href="#pricing" className="hover:text-white transition-colors">
               Pricing
-            </a>
-            <a href="#team" className="hover:text-white transition-colors">
-              Team
             </a>
             <a href="#contact" className="hover:text-white transition-colors">
               Contact
@@ -455,15 +451,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-      </div>
-      <div className="border-t border-white/10 px-4 md:px-10 pt-10 pb-16">
-        <div className="max-w-[1840px] mx-auto">
-          <div className="font-display font-bold tracking-tighter text-[clamp(3.5rem,12vw,9rem)] leading-[0.85]">
-            <span className="inline-block">panko </span>
-            <span className="inline-block">studio</span>
-          </div>
-          <div className="mt-6 text-sm text-white/45">© 2026 Panko Studio</div>
-        </div>
+        <div className="mt-10 text-sm text-white/45">© 2026 Panko Studio</div>
       </div>
     </footer>
   );
@@ -654,60 +642,6 @@ const Pricing = () => {
   );
 };
 
-const Team = () => {
-  return (
-    <section id="team" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_0%,rgba(0,129,167,0.09),transparent_60%)]" />
-      <div className="max-w-[1840px] mx-auto">
-        <div className="mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Our Team</span>
-          <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
-            Executed by a team who&apos;s
-            <br />
-            done it before.
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="aspect-square rounded-[2rem] overflow-hidden border border-brand-ink/10 bg-white/70 shadow-[0_18px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-              <img src="/portrait.jpeg" alt="Aj" className="h-full w-full object-cover" />
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08 }}
-            className="pt-2"
-          >
-            <h3 className="text-4xl md:text-5xl font-display font-bold mb-5">Aj</h3>
-            <div className="max-w-3xl space-y-5 text-lg md:text-xl text-brand-ink/70 leading-relaxed">
-              <p>
-                I launched Panko Studio in 2024 to help you design and ship beautiful products at
-                the speed you need.
-              </p>
-              <p>
-                Full-time designers are expensive – a senior PD salary is 150K/yr not including
-                taxes, and it could take months to hire the right one.
-              </p>
-              <p>Who has that kind of time when your users want features built yesterday?</p>
-              <p>
-                That&apos;s why I assembled a senior, global design team that you can onboard in
-                days, so you can get the same design quality without sacrificing time &amp; money.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Testimonials = () => {
   const reviews = [
     {company: 'Deputy', months: '8 MONTHS', status: 'ACTIVE', text: "Within two weeks, Panko deployed two senior designers who slotted right into our product triads and design rituals.", author: 'Deepesh Banerji', role: 'CPO'},
@@ -773,7 +707,7 @@ export default function App() {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    const sectionIds = ['home', 'about', 'work', 'pricing', 'team', 'contact'];
+    const sectionIds = ['home', 'about', 'work', 'pricing', 'contact'];
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((section): section is HTMLElement => Boolean(section));
@@ -810,7 +744,6 @@ export default function App() {
         <Testimonials />
         <Projects />
         <Pricing />
-        <Team />
         <CTA />
       </main>
       <Footer />
