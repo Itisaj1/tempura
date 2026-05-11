@@ -144,9 +144,22 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
   return (
     <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-6 md:px-12 overflow-hidden min-h-screen flex flex-col justify-center">
+      <motion.div
+        initial={{opacity: 0, scale: 0.94}}
+        animate={{opacity: 1, scale: 1}}
+        transition={{duration: 1.4, ease: 'easeOut'}}
+        className="pointer-events-none absolute -top-24 -left-24 hidden md:block h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_38%_40%,rgba(0,129,167,0.42),rgba(0,129,167,0.18)_45%,transparent_72%)] blur-3xl"
+      />
+      <motion.div
+        initial={{opacity: 0, scale: 0.94}}
+        animate={{opacity: 1, scale: 1}}
+        transition={{duration: 1.6, ease: 'easeOut', delay: 0.1}}
+        className="pointer-events-none absolute -bottom-40 -right-32 hidden md:block h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(0,129,167,0.30),transparent_65%)] blur-3xl"
+      />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-accent/35 to-transparent" />
       <motion.div 
         style={{opacity, y}}
-        className="max-w-5xl mx-auto w-full"
+        className="relative max-w-5xl mx-auto w-full"
       >
         <motion.div
           initial={{opacity: 0, y: 14}}
@@ -154,15 +167,6 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           transition={{duration: 0.7, ease: 'easeOut'}}
           className="relative"
         >
-          <div className="pointer-events-none absolute left-[10%] top-8 hidden md:block md:left-[16%]">
-            <motion.div
-              initial={{opacity: 0, scale: 0.98}}
-              animate={{opacity: 1, scale: 1}}
-              transition={{duration: 1.2, ease: 'easeOut'}}
-              className="h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(0,129,167,0.3),rgba(0,129,167,0.1)_45%,transparent_70%)] blur-3xl"
-            />
-          </div>
-
           <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
             Design for startups
             <span className="text-brand-ink/25"> and</span>
@@ -204,8 +208,9 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="relative py-16 md:py-20 px-6 md:px-12 bg-white overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_320px_at_95%_10%,rgba(0,129,167,0.10),transparent_60%)]" />
+    <section id="about" className="relative py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(750px_360px_at_95%_8%,rgba(0,129,167,0.12),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(550px_320px_at_-5%_85%,rgba(0,129,167,0.08),transparent_60%)]" />
       <div className="max-w-7xl mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
@@ -275,35 +280,41 @@ const CTA = () => {
   };
 
   return (
-    <section id="contact" className="relative py-16 md:py-20 px-6 md:px-12 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.92)_56%,rgba(0,129,167,0.09)_56%,rgba(0,129,167,0.09)_100%)]" />
+    <section id="contact" className="relative py-20 md:py-28 px-6 md:px-12 overflow-hidden bg-brand-ink text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
       <div className="relative max-w-3xl mx-auto">
-        <div className="px-1 md:px-0 py-8 md:py-10">
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-5">Contact</div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-8 text-brand-ink">
+        <div className="px-1 md:px-0 py-4 md:py-6">
+          <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
+            Contact
+          </div>
+          <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white">
             Let&apos;s collaborate
+            <span className="text-brand-accent">.</span>
           </h2>
 
-          <div className="space-y-6 text-base md:text-lg text-brand-ink/90 leading-relaxed">
+          <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
             <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-              <span className="text-brand-ink/70">My name is</span>
+              <span className="text-white/65">My name is</span>
               <input
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="first & last name"
-                className="min-w-[12rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+                className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
               />
-              <span className="text-brand-ink/70">from</span>
+              <span className="text-white/65">from</span>
               <input
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="company name"
-                className="min-w-[10rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+                className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
               />
             </div>
 
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-              <span className="text-brand-ink/70">I want to chat about designs for my</span>
+              <span className="text-white/65">I want to chat about designs for my</span>
               {topics.map((t) => (
                 <button
                   key={t}
@@ -311,8 +322,8 @@ const CTA = () => {
                   onClick={() => setTopic(t)}
                   className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                     topic === t
-                      ? 'border-brand-accent bg-brand-accent/10 text-brand-ink'
-                      : 'border-brand-ink/15 bg-white/40 text-brand-ink/70 hover:border-brand-ink/25'
+                      ? 'border-brand-accent bg-brand-accent/20 text-white'
+                      : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
                   }`}
                 >
                   {t}
@@ -321,13 +332,13 @@ const CTA = () => {
             </div>
 
             <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-              <span className="text-brand-ink/70">You can reach me at</span>
+              <span className="text-white/65">You can reach me at</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email address"
-                className="min-w-[14rem] flex-1 border-b border-brand-ink/20 bg-transparent px-1 py-1 text-brand-ink placeholder:text-brand-ink/35 focus:border-brand-accent focus:outline-none"
+                className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none"
               />
             </div>
           </div>
@@ -337,10 +348,10 @@ const CTA = () => {
             onClick={handleSubmit}
             whileHover={{y: -1}}
             whileTap={{scale: 0.98}}
-            className={`group mt-10 ${CTA_BUTTON_BASE}`}
+            className="group mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45"
           >
             <span className="text-base font-semibold">Submit</span>
-            <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/35 transition-colors group-hover:text-white/80" />
+            <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-white/85" />
           </motion.button>
         </div>
       </div>
@@ -426,10 +437,10 @@ const Projects = () => {
               transition={{delay: idx * 0.06}}
               className={`group ${tile.size}`}
             >
-              <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] border border-brand-ink/10 bg-gradient-to-br from-brand-ink/[0.04] via-white/40 to-brand-accent/[0.08]`}>
-                <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.10),transparent_55%)]" />
+              <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] border border-brand-ink/10 bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
+                <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.12),transparent_55%)]" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="rounded-2xl border border-brand-ink/10 bg-white/55 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                  <div className="rounded-2xl border border-brand-ink/10 bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
                     Case study placeholder
                   </div>
                 </div>
@@ -492,33 +503,57 @@ const Pricing = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {plans.map((plan, idx) => (
-            <motion.div 
-              key={idx}
-              whileHover={{ y: -5 }}
-              className="p-8 rounded-[2rem] border border-brand-ink/10 bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-sm flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="text-2xl font-bold font-display mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl font-bold font-display">{plan.price}</span>
-                  <span className="text-brand-ink/40 font-medium">{plan.period}</span>
+          {plans.map((plan, idx) => {
+            const featured = idx === 1;
+            return (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -5 }}
+                className={`relative p-8 rounded-[2rem] border flex flex-col justify-between backdrop-blur-sm ${
+                  featured
+                    ? 'border-brand-ink/30 bg-brand-ink text-white shadow-[0_24px_70px_rgba(15,23,42,0.22)]'
+                    : 'border-brand-ink/10 bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)]'
+                }`}
+              >
+                {featured && (
+                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(420px_260px_at_85%_-10%,rgba(0,129,167,0.32),transparent_60%)]" />
+                )}
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-2xl font-bold font-display">{plan.name}</h3>
+                    {featured && (
+                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-full border border-brand-accent/45 bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
+                        Most popular
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-4xl font-bold font-display">{plan.price}</span>
+                    <span className={`font-medium ${featured ? 'text-white/55' : 'text-brand-ink/40'}`}>{plan.period}</span>
+                  </div>
+                  <p className={`mb-6 leading-relaxed ${featured ? 'text-white/75' : 'text-brand-ink/60'}`}>{plan.desc}</p>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((f, i) => (
+                      <li key={i} className="flex items-center gap-3 text-sm font-medium">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <p className="text-brand-ink/60 mb-6 leading-relaxed">{plan.desc}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm font-medium">
-                      <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a href={plan.buttonHref} className={`w-full text-center ${CTA_BUTTON_BASE}`}>
-                {plan.buttonLabel}
-              </a>
-            </motion.div>
-          ))}
+                <a
+                  href={plan.buttonHref}
+                  className={
+                    featured
+                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                      : `w-full text-center ${CTA_BUTTON_BASE}`
+                  }
+                >
+                  {plan.buttonLabel}
+                </a>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
