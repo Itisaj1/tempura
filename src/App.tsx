@@ -323,20 +323,34 @@ const About = () => {
 };
 
 const CTA = () => {
+  const topics = ['Web app', 'Mobile app', 'Website'] as const;
+  type Topic = (typeof topics)[number];
+
   const [fullName, setFullName] = useState('');
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
-  const [topic, setTopic] = useState<'Web app' | 'Mobile app' | 'Website' | null>(null);
+  const [selectedTopics, setSelectedTopics] = useState<Topic[]>([]);
 
-  const topics = ['Web app', 'Mobile app', 'Website'] as const;
+  const toggleTopic = (t: Topic) => {
+    setSelectedTopics((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+  };
+
+  const formatList = (items: string[]) => {
+    if (items.length === 0) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return `${items[0]} and ${items[1]}`;
+    return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+  };
 
   const handleSubmit = () => {
-    if (!fullName.trim() || !company.trim() || !email.trim() || !topic) {
-      window.alert('Please fill in your name, company, email, and pick one focus area.');
+    if (!fullName.trim() || !company.trim() || !email.trim() || selectedTopics.length === 0) {
+      window.alert('Please fill in your name, company, email, and pick at least one focus area.');
       return;
     }
     window.alert(
-      `Thanks, ${fullName.trim()}!\n\nWe’ll reach you at ${email.trim()} about ${topic} for ${company.trim()}.`,
+      `Thanks, ${fullName.trim()}!\n\nWe’ll reach you at ${email.trim()} about ${formatList(
+        selectedTopics,
+      )} for ${company.trim()}.`,
     );
   };
 
@@ -376,20 +390,24 @@ const CTA = () => {
 
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
               <span className="text-white/65">I want to chat about designs for my</span>
-              {topics.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => setTopic(t)}
-                  className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
-                    topic === t
-                      ? 'border-brand-accent bg-brand-accent/20 text-white'
-                      : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
+              {topics.map((t) => {
+                const selected = selectedTopics.includes(t);
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => toggleTopic(t)}
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                      selected
+                        ? 'border-brand-accent bg-brand-accent/20 text-white'
+                        : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
