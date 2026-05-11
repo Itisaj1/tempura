@@ -3,7 +3,6 @@ import {
   ArrowRight,
   ChevronRight,
   Globe,
-  Sparkles,
   Users,
 } from 'lucide-react';
 import {useEffect, useRef, useState, type RefObject} from 'react';
@@ -338,12 +337,10 @@ const CTA = () => {
             onClick={handleSubmit}
             whileHover={{y: -1}}
             whileTap={{scale: 0.98}}
-            className={`mt-10 ${CTA_BUTTON_BASE}`}
+            className={`group mt-10 ${CTA_BUTTON_BASE}`}
           >
-            <span className="m-1 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-ink/[0.06] text-brand-ink">
-              <Sparkles className="w-5 h-5" />
-            </span>
-            <span className="px-5 text-lg font-semibold">Submit</span>
+            <span className="text-base font-semibold">Submit</span>
+            <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/35 transition-colors group-hover:text-white/80" />
           </motion.button>
         </div>
       </div>
@@ -390,17 +387,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto">
           <div className="font-display font-bold tracking-tighter text-[clamp(3.5rem,12vw,9rem)] leading-[0.85]">
             <span className="inline-block">panko </span>
-            <span className="inline-block">
-              stud
-              <span className="relative inline-block">
-                i
-                <Sparkles
-                  aria-hidden
-                  className="pointer-events-none absolute left-1/2 top-[0.06em] h-[0.42em] w-[0.42em] -translate-x-1/2 text-brand-accent"
-                />
-              </span>
-              o
-            </span>
+            <span className="inline-block">studio</span>
           </div>
           <div className="mt-6 text-sm text-white/45">© 2026 Panko Studio</div>
         </div>
@@ -420,19 +407,13 @@ const Projects = () => {
   return (
     <section id="work" className="py-16 md:py-20 px-6 md:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-5">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
-              Selected Work
-            </span>
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
-              Crafting digital excellence.
-            </h2>
-          </div>
-          <p className="text-brand-ink/55 max-w-md text-sm md:text-base leading-relaxed">
-            Case studies are being refreshed. For now, here’s the shape of the work—clean, bold,
-            and built for conversion.
-          </p>
+        <div className="mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
+            Selected Work
+          </span>
+          <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+            Crafting digital excellence.
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
@@ -505,7 +486,7 @@ const Pricing = () => {
     <section id="pricing" className="relative py-16 md:py-20 px-6 md:px-12 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_420px_at_0%_100%,rgba(0,129,167,0.08),transparent_60%)]" />
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
           <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Transparent investment.</h2>
         </div>
@@ -609,33 +590,37 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-16 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
-      <div className="max-w-7xl mx-auto relative">
-        <div className="mb-6 text-xs font-bold uppercase tracking-widest text-brand-ink/45">
+    <section className="relative py-16 md:py-20 bg-brand-ink text-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_460px_at_85%_-10%,rgba(0,129,167,0.22),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_0%_110%,rgba(0,129,167,0.18),transparent_60%)]" />
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12">
+        <div className="mb-8 text-xs font-bold uppercase tracking-widest text-white/55">
           Why Panko?
         </div>
-        <div className="pointer-events-none absolute left-0 top-8 bottom-0 w-14 bg-gradient-to-r from-brand-bg to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-8 bottom-0 w-14 bg-gradient-to-l from-brand-bg to-transparent z-10" />
-        <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar -mx-6 md:-mx-12 px-6 md:px-12">
+      </div>
+      <div className="relative mx-4 md:mx-6">
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-brand-ink to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-brand-ink to-transparent z-10" />
+        <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar">
           {reviews.map((rev, i) => (
-            <motion.div 
+            <motion.div
               key={i}
-              whileHover={{ scale: 1.02 }}
-              className="min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-[1.5rem] border border-brand-ink/10 bg-white/90 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.07)]"
+              whileHover={{ y: -4 }}
+              className="min-h-[360px] min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.35)] flex flex-col"
             >
-              <div className="mb-4 flex items-center justify-between">
+              <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="text-xs font-semibold rounded-full border border-brand-ink/10 px-2 py-1">{rev.months}</div>
-                  <div className="text-xs font-semibold rounded-full border border-brand-ink/10 px-2 py-1">{rev.status}</div>
+                  <div className="text-[11px] font-semibold tracking-wider rounded-full border border-white/15 px-2.5 py-1 text-white/75">{rev.months}</div>
+                  <div className="text-[11px] font-semibold tracking-wider rounded-full border border-brand-accent/40 bg-brand-accent/10 px-2.5 py-1 text-brand-accent">{rev.status}</div>
                 </div>
-                <div className="h-8 min-w-[96px] rounded-md border border-brand-ink/10 bg-brand-bg px-3 flex items-center justify-center text-sm font-semibold text-brand-ink/70">
+                <div className="h-8 min-w-[96px] rounded-md border border-white/15 bg-white/[0.06] px-3 flex items-center justify-center text-sm font-semibold text-white/80">
                   {rev.company}
                 </div>
               </div>
-              <p className="text-base leading-relaxed text-brand-ink/85 mb-5">{rev.text}</p>
-              <div className="pt-4 border-t border-brand-ink/10">
-                <div className="font-semibold text-brand-ink">{rev.author}</div>
-                <div className="text-brand-ink/50 text-sm font-medium">{rev.role}</div>
+              <p className="text-base leading-relaxed text-white/85 mb-6 flex-1">{rev.text}</p>
+              <div className="pt-4 border-t border-white/10">
+                <div className="font-semibold text-white">{rev.author}</div>
+                <div className="text-white/55 text-sm font-medium">{rev.role}</div>
               </div>
             </motion.div>
           ))}
@@ -679,7 +664,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), 700);
+    const timeout = window.setTimeout(() => setShowLoader(false), 1200);
     return () => window.clearTimeout(timeout);
   }, []);
 
