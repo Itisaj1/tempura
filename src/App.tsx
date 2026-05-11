@@ -291,9 +291,7 @@ const About = () => {
             
             <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
               Book a call
-              <div className="w-8 h-8 rounded-full border border-brand-ink/25 group-hover:border-white/35 flex items-center justify-center">
-                <ArrowRight className="w-5 h-5" />
-              </div>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </motion.a>
           </div>
 
@@ -308,7 +306,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="flex items-start gap-5 pb-6 border-b border-brand-ink/5"
+                className="flex items-start gap-5 pb-6"
               >
                 <div className="mt-2 text-brand-ink/40">{stat.icon}</div>
                 <div>
@@ -489,10 +487,10 @@ const Projects = () => {
               transition={{delay: idx * 0.06}}
               className={`group ${tile.size}`}
             >
-              <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] border border-brand-ink/10 bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
+              <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
                 <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.12),transparent_55%)]" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="rounded-2xl border border-brand-ink/10 bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                  <div className="rounded-2xl bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
                     Case study placeholder
                   </div>
                 </div>
@@ -502,7 +500,7 @@ const Projects = () => {
                   <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
                   <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
                 </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-brand-ink/10 bg-white/60 text-brand-ink/40 backdrop-blur-sm transition-colors group-hover:border-brand-accent/40 group-hover:text-brand-accent">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                   <ArrowRight className="h-5 w-5" />
                 </div>
               </div>
@@ -581,37 +579,31 @@ const Pricing = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className={`relative p-8 rounded-[2rem] border flex flex-col justify-between backdrop-blur-sm ${
-                  featured
-                    ? 'border-brand-ink/30 bg-brand-ink text-white shadow-[0_24px_70px_rgba(15,23,42,0.22)]'
-                    : 'border-brand-ink/10 bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)]'
-                }`}
+                className="relative p-8 rounded-[2rem] bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)] flex flex-col justify-between backdrop-blur-sm"
               >
                 {featured && (
-                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(420px_260px_at_85%_-10%,rgba(0,129,167,0.32),transparent_60%)]" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(420px_260px_at_85%_-10%,rgba(0,129,167,0.18),transparent_60%)]" />
                 )}
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-2xl font-bold font-display">{plan.name}</h3>
                     {featured && (
-                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-full border border-brand-accent/45 bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
+                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-full bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
                         Most popular
                       </span>
                     )}
                   </div>
                   <div className="flex items-baseline gap-1 mb-6">
                     <span className="text-4xl font-bold font-display">{plan.price}</span>
-                    <span className={`font-medium ${featured ? 'text-white/55' : 'text-brand-ink/40'}`}>{plan.period}</span>
+                    <span className="font-medium text-brand-ink/40">{plan.period}</span>
                   </div>
-                  <p className={`mb-6 font-semibold leading-relaxed ${featured ? 'text-white' : 'text-brand-ink/85'}`}>{plan.desc}</p>
+                  <p className="mb-6 font-semibold leading-relaxed text-brand-ink/85">{plan.desc}</p>
                   {plan.features.length > 0 && (
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((f, i) => (
                         <li
                           key={i}
-                          className={`flex items-center gap-3 text-sm font-medium ${
-                            featured ? 'text-white/85' : 'text-brand-ink/80'
-                          }`}
+                          className="flex items-center gap-3 text-sm font-medium text-brand-ink/80"
                         >
                           <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                           {f}
@@ -620,7 +612,7 @@ const Pricing = () => {
                     </ul>
                   )}
                   {plan.extra && (
-                    <p className={`mb-8 text-sm leading-relaxed ${featured ? 'text-white/70' : 'text-brand-ink/60'}`}>
+                    <p className="mb-8 text-sm leading-relaxed text-brand-ink/60">
                       {plan.extra}
                     </p>
                   )}
@@ -629,7 +621,7 @@ const Pricing = () => {
                   href={plan.buttonHref}
                   className={
                     featured
-                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-white hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
                       : `w-full text-center ${CTA_BUTTON_BASE}`
                   }
                 >
