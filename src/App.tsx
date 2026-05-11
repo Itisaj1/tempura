@@ -236,7 +236,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           </h1>
 
           <p className="mt-6 text-xl md:text-2xl text-brand-ink/65 max-w-2xl leading-relaxed">
-            Senior product managers and designers for ambitious AI x B2B teams.
+            Product management and design for ambitious AI x B2B teams.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
