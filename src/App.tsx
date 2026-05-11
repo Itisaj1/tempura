@@ -1,4 +1,4 @@
-import {motion, useScroll, useSpring, useTransform, type MotionValue} from 'motion/react';
+import {animate, motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue} from 'motion/react';
 import {
   ArrowRight,
   ChevronRight,
@@ -19,12 +19,17 @@ const useWindowWidth = () => {
   return width;
 };
 
-const LOADER_REVEAL_TRANSITION = {duration: 0.95, ease: [0.22, 1, 0.36, 1] as const};
+const LOADER_REVEAL_DURATION = 0.95;
+const LOADER_REVEAL_DELAY_MS = 1000;
+const LOADER_DOT_DIAMETER = 10;
 
 const LoadingLogo = () => {
   const textRef = useRef<HTMLSpanElement | null>(null);
   const [textWidth, setTextWidth] = useState(0);
-  const [revealed, setRevealed] = useState(false);
+
+  const progress = useMotionValue(0);
+  const clipPath = useTransform(progress, (p) => `inset(0 ${(1 - p) * 100}% 0 0)`);
+  const dotX = useTransform(progress, (p) => textWidth * p - LOADER_DOT_DIAMETER / 2);
 
   useLayoutEffect(() => {
     if (textRef.current) {
@@ -33,27 +38,24 @@ const LoadingLogo = () => {
   }, []);
 
   useEffect(() => {
-    if (textWidth > 0) {
-      const id = requestAnimationFrame(() => setRevealed(true));
-      return () => cancelAnimationFrame(id);
-    }
-  }, [textWidth]);
+    if (textWidth <= 0) return;
+    const start = window.setTimeout(() => {
+      animate(progress, 1, {
+        duration: LOADER_REVEAL_DURATION,
+        ease: [0.22, 1, 0.36, 1],
+      });
+    }, LOADER_REVEAL_DELAY_MS);
+    return () => window.clearTimeout(start);
+  }, [textWidth, progress]);
 
   return (
     <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
-      <motion.span
-        initial={{clipPath: 'inset(0 100% 0 0)'}}
-        animate={{clipPath: revealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)'}}
-        transition={LOADER_REVEAL_TRANSITION}
-        className="inline-block whitespace-nowrap"
-      >
+      <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
         <span ref={textRef}>panko studio</span>
       </motion.span>
       <motion.span
-        initial={{x: -10, y: '-50%'}}
-        animate={{x: revealed ? textWidth + 14 : -10, y: '-50%'}}
-        transition={LOADER_REVEAL_TRANSITION}
-        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent shadow-[0_0_18px_rgba(0,129,167,0.55)]"
+        style={{x: dotX, y: '-50%'}}
+        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent"
       />
     </div>
   );
@@ -280,7 +282,7 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-14">
           <div>
             <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6">
-              <span className="text-brand-ink/30">Product managers & designers</span>{' '}
+              <span className="text-brand-ink/30">Product management and design</span>{' '}
               <span className="text-brand-ink">for</span> AI x B2B teams.
             </h2>
             <p className="text-lg md:text-xl text-brand-ink/60 leading-relaxed mb-8">
@@ -676,7 +678,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), 1600);
+    const timeout = window.setTimeout(() => setShowLoader(false), 2600);
     return () => window.clearTimeout(timeout);
   }, []);
 
