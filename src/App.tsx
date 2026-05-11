@@ -6,7 +6,59 @@ import {
   Sparkle,
   Users,
 } from 'lucide-react';
-import {useEffect, useRef, useState, type RefObject} from 'react';
+import {useEffect, useLayoutEffect, useRef, useState, type RefObject} from 'react';
+
+const useWindowWidth = () => {
+  const [width, setWidth] = useState(() =>
+    typeof window === 'undefined' ? 1920 : window.innerWidth,
+  );
+  useEffect(() => {
+    const onResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  return width;
+};
+
+const LOADER_REVEAL_TRANSITION = {duration: 0.95, ease: [0.22, 1, 0.36, 1] as const};
+
+const LoadingLogo = () => {
+  const textRef = useRef<HTMLSpanElement | null>(null);
+  const [textWidth, setTextWidth] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+
+  useLayoutEffect(() => {
+    if (textRef.current) {
+      setTextWidth(textRef.current.offsetWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (textWidth > 0) {
+      const id = requestAnimationFrame(() => setRevealed(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [textWidth]);
+
+  return (
+    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
+      <motion.span
+        initial={{clipPath: 'inset(0 100% 0 0)'}}
+        animate={{clipPath: revealed ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)'}}
+        transition={LOADER_REVEAL_TRANSITION}
+        className="inline-block whitespace-nowrap"
+      >
+        <span ref={textRef}>panko studio</span>
+      </motion.span>
+      <motion.span
+        initial={{x: -10, y: '-50%'}}
+        animate={{x: revealed ? textWidth + 14 : -10, y: '-50%'}}
+        transition={LOADER_REVEAL_TRANSITION}
+        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent shadow-[0_0_18px_rgba(0,129,167,0.55)]"
+      />
+    </div>
+  );
+};
 
 const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
@@ -60,10 +112,13 @@ const Navbar = ({
     {id: 'contact', label: 'Contact'},
   ];
 
+  const vw = useWindowWidth();
+  const dockedOffset = Math.max(24, (vw - 800) / 2);
+
   const smoothDockProgress = useSpring(dockProgress, {stiffness: 180, damping: 32, mass: 0.28});
   const top = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '12px', '14px']);
-  const left = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', '120px']);
-  const right = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', '120px']);
+  const left = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', `${dockedOffset}px`]);
+  const right = useTransform(smoothDockProgress, [0, 0.35, 1], ['0px', '28px', `${dockedOffset}px`]);
   const borderRadius = useTransform(smoothDockProgress, [0, 0.45, 1], ['0px', '18px', '20px']);
   const shellShadow = useTransform(
     smoothDockProgress,
@@ -144,7 +199,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
-    <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-8 overflow-hidden min-h-screen flex flex-col justify-center">
+    <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div
         initial={{opacity: 0, scale: 0.94}}
         animate={{opacity: 1, scale: 1}}
@@ -209,10 +264,10 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="relative py-16 md:py-20 px-4 md:px-8 bg-brand-bg overflow-hidden">
+    <section id="about" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(750px_360px_at_95%_8%,rgba(0,129,167,0.12),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(550px_320px_at_-5%_85%,rgba(0,129,167,0.08),transparent_60%)]" />
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1840px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
         </div>
@@ -281,7 +336,7 @@ const CTA = () => {
   };
 
   return (
-    <section id="contact" className="relative py-20 md:py-28 px-4 md:px-8 overflow-hidden bg-brand-ink text-white">
+    <section id="contact" className="relative py-20 md:py-28 px-4 md:px-10 overflow-hidden bg-brand-ink text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
@@ -363,7 +418,7 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="bg-brand-ink text-white">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-14 pb-10">
+      <div className="max-w-[1840px] mx-auto px-4 md:px-10 pt-14 pb-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="text-sm text-white/55 max-w-sm leading-relaxed">
             Product & design for ambitious AI x B2B teams. Based everywhere, shipping fast.
@@ -395,8 +450,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-4 md:px-8 pt-10 pb-16">
-        <div className="max-w-[1400px] mx-auto">
+      <div className="border-t border-white/10 px-4 md:px-10 pt-10 pb-16">
+        <div className="max-w-[1840px] mx-auto">
           <div className="font-display font-bold tracking-tighter text-[clamp(3.5rem,12vw,9rem)] leading-[0.85]">
             <span className="inline-block">panko </span>
             <span className="inline-block">studio</span>
@@ -417,8 +472,8 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" className="py-16 md:py-20 px-4 md:px-8 bg-white">
-      <div className="max-w-[1400px] mx-auto">
+    <section id="work" className="py-16 md:py-20 px-4 md:px-10 bg-white">
+      <div className="max-w-[1840px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
             Selected Work
@@ -568,10 +623,10 @@ const Pricing = () => {
   const active = PRICING_PLANS[tab];
 
   return (
-    <section id="pricing" className="relative py-16 md:py-24 px-4 md:px-8 bg-brand-bg overflow-hidden">
+    <section id="pricing" className="relative py-16 md:py-24 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_460px_at_0%_0%,rgba(0,129,167,0.10),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_110%,rgba(0,129,167,0.10),transparent_60%)]" />
-      <div className="relative max-w-[1400px] mx-auto">
+      <div className="relative max-w-[1840px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-5 block">Pricing</span>
           <h2 className="text-4xl md:text-6xl font-display font-bold leading-[1.04] tracking-tight">
@@ -693,9 +748,9 @@ const Pricing = () => {
 
 const Team = () => {
   return (
-    <section id="team" className="relative py-16 md:py-20 px-4 md:px-8 bg-brand-bg overflow-hidden">
+    <section id="team" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_420px_at_100%_0%,rgba(0,129,167,0.09),transparent_60%)]" />
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1840px] mx-auto">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Our Team</span>
           <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
@@ -760,7 +815,7 @@ const Testimonials = () => {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_85%_-10%,rgba(0,129,167,0.14),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.10),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/35 to-transparent" />
-      <div className="relative max-w-[1400px] mx-auto px-4 md:px-8">
+      <div className="relative max-w-[1840px] mx-auto px-4 md:px-10">
         <div className="mb-8 flex items-baseline gap-3">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
           <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/55">
@@ -834,7 +889,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), 1200);
+    const timeout = window.setTimeout(() => setShowLoader(false), 1600);
     return () => window.clearTimeout(timeout);
   }, []);
 
@@ -859,10 +914,7 @@ export default function App() {
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
-        <div className="flex items-center gap-2 text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
-          panko studio
-          <span className="h-2 w-2 rounded-full bg-brand-accent animate-pulse" />
-        </div>
+        <LoadingLogo />
       </motion.div>
     </div>
   );
