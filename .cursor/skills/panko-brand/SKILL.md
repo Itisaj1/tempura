@@ -150,6 +150,7 @@ When a user asks for any Panko-branded piece, follow these steps:
 
 ## Reference
 
+- **Site code patterns** (React, Tailwind, motion, EmailJS): use the **`panko-site-code`** skill — `Claude Code Patterns Skill/` at repo root or `.cursor/skills/panko-site-code/`
 - Living style notes in the site README: `../../../README.md` → "Brand Style Guide" section
 - Site implementation: `../../../src/App.tsx`, `../../../src/index.css`
 - Email visual examples in production: the auto-reply (`template_wv5ry1n`) and studio-notification (`template_3nq5jyq`) templates in EmailJS
