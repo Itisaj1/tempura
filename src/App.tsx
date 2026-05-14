@@ -160,7 +160,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
 const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
-const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const SECTION_REVEAL_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 /** Fades/slides in the first time the block enters the viewport; never re-runs on scroll-back. */
 const SectionReveal = ({
@@ -174,10 +174,10 @@ const SectionReveal = ({
 }) => (
   <motion.div
     className={className}
-    initial={{opacity: 0, y: 36}}
-    whileInView={{opacity: 1, y: 0}}
+    initial={{opacity: 0, y: 44, filter: 'blur(10px)'}}
+    whileInView={{opacity: 1, y: 0, filter: 'blur(0px)'}}
     viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
-    transition={{duration: 1.05, ease: SECTION_REVEAL_EASE, delay}}
+    transition={{duration: 1.28, ease: SECTION_REVEAL_EASE, delay}}
   >
     {children}
   </motion.div>
@@ -234,7 +234,7 @@ const Navbar = ({
   const vw = useWindowWidth();
   const dockedOffset = Math.max(24, (vw - 800) / 2);
 
-  const smoothDockProgress = useSpring(dockProgress, {stiffness: 80, damping: 26, mass: 0.55});
+  const smoothDockProgress = useSpring(dockProgress, {stiffness: 48, damping: 28, mass: 0.72});
   const top = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
   const left = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
   const right = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
@@ -321,8 +321,16 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
     offset: ['start start', 'end start'],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
+  const smoothHeroScroll = useSpring(scrollYProgress, {
+    stiffness: 36,
+    damping: 30,
+    mass: 0.95,
+    restDelta: 0.0008,
+  });
+
+  const opacity = useTransform(smoothHeroScroll, [0, 0.78], [1, 0]);
+  const y = useTransform(smoothHeroScroll, [0, 0.78], [0, 68]);
+  const blur = useTransform(smoothHeroScroll, [0, 0.32, 0.78], ['blur(0px)', 'blur(4px)', 'blur(12px)']);
 
   return (
     <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
@@ -337,14 +345,14 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         <SectionRadials preset="hero" />
       </motion.div>
       <motion.div
-        style={{opacity, y}}
+        style={{opacity, y, filter: blur}}
         className="relative z-10 max-w-5xl mx-auto w-full"
       >
         <motion.div
-          initial={{opacity: 0, y: 14}}
-          whileInView={{opacity: 1, y: 0}}
+          initial={{opacity: 0, y: 18, filter: 'blur(8px)'}}
+          whileInView={{opacity: 1, y: 0, filter: 'blur(0px)'}}
           viewport={{once: true, amount: 0.25}}
-          transition={{duration: 1.05, ease: 'easeOut'}}
+          transition={{duration: 1.22, ease: [0.4, 0, 0.2, 1]}}
           className="relative"
         >
           <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
@@ -885,7 +893,7 @@ const Pricing = () => {
             return (
               <motion.div
                 key={idx}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -3 }}
                 className={`relative p-8 flex flex-col justify-between backdrop-blur-sm shadow-[0_18px_60px_rgba(15,23,42,0.06)] bg-brand-bg/90 ${
                   featured ? 'rounded-lg rounded-tl-2xl' : 'rounded-md'
                 }`}
