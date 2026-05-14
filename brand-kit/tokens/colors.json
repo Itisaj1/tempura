@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Panko Studio marketing site color tokens (matches src/index.css @theme)",
+  "colors": {
+    "brand-bg": {
+      "hex": "#f7f4ef",
+      "usage": "Default canvas — page background, cream field, email/slide base"
+    },
+    "brand-ink": {
+      "hex": "#0f172a",
+      "usage": "Primary text, headlines, dark sections (e.g. contact), favicon field"
+    },
+    "brand-accent": {
+      "hex": "#0081a7",
+      "usage": "Accent period, dots, primary filled CTAs, links — use sparingly"
+    }
+  },
+  "tailwindV4": {
+    "classes": ["bg-brand-bg", "text-brand-ink", "bg-brand-ink", "text-brand-accent", "bg-brand-accent"]
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Panko Studio">
+  <defs>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@700&amp;display=swap");
+    </style>
+  </defs>
+  <rect width="32" height="32" fill="#0f172a"/>
+  <text
+    x="16"
+    y="22"
+    text-anchor="middle"
+    font-family="Outfit, ui-sans-serif, system-ui, sans-serif"
+    font-weight="700"
+    font-size="19"
+    fill="#f7f4ef"
+  >p</text>
+</svg>

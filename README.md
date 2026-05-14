@@ -40,7 +40,11 @@ If the variables are missing at runtime, the form surfaces a friendly
 - Build: `npm run build`
 - Preview: `npm run preview`
 
-## Brand Style Guide
+## Brand kit
+
+Designers and partners: see **[`brand-kit/`](./brand-kit/)** for logos (SVG + PNG), **Outfit** font file, **favicon**, color **JSON/CSS tokens**, and **[`brand-kit/BRAND-GUIDE.md`](./brand-kit/BRAND-GUIDE.md)** (colors, typography, UI patterns, identity summary). Deeper copy/voice lives under `.cursor/skills/panko-brand/`.
+
+## Brand Style Guide (quick reference)
 
 ### Typography
 - Display/headings: `Outfit` (`--font-display`)

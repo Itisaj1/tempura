@@ -1,0 +1,12 @@
+/**
+ * Panko Studio — design tokens (subset)
+ * Source of truth in repo: src/index.css @theme
+ * Paste into design docs or sync to Figma variables.
+ */
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --color-brand-bg: #f7f4ef;
+  --color-brand-accent: #0081a7;
+  --color-brand-ink: #0f172a;
+}
