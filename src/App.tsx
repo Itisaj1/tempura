@@ -94,7 +94,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} -right-[18%] -top-[30%] h-[min(105vw,900px)] w-[min(105vw,900px)] bg-[radial-gradient(circle_at_36%_36%,rgba(0,129,167,0.3),transparent_58%)] blur-[58px]`}
           />
           <div
-            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.08),transparent_56%)] blur-[52px]`}
+            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.11),transparent_56%)] blur-[52px]`}
           />
         </>
       );
@@ -105,7 +105,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} -left-[22%] top-[8%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.16),transparent_62%)] blur-[48px]`}
           />
           <div
-            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[44px]`}
+            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.055),transparent_58%)] blur-[44px]`}
           />
         </>
       );
@@ -116,7 +116,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} right-[-12%] top-[-8%] h-[min(85vw,640px)] w-[min(85vw,640px)] bg-[radial-gradient(circle_at_40%_40%,rgba(0,129,167,0.11),transparent_60%)] blur-[52px]`}
           />
           <div
-            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.06),transparent_55%)] blur-[40px]`}
+            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.055),transparent_55%)] blur-[40px]`}
           />
         </>
       );
@@ -127,7 +127,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} right-[-10%] top-[20%] h-[min(80vw,600px)] w-[min(80vw,600px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[50px]`}
           />
           <div
-            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.04),transparent_55%)] blur-[42px]`}
+            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.065),transparent_55%)] blur-[42px]`}
           />
         </>
       );
@@ -159,7 +159,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
 };
 
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/25 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -277,14 +277,14 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-5 md:px-8 py-3 border"
+      className="fixed z-50 flex items-center px-5 md:px-8 py-3 border border-brand-ink/10"
     >
       <div className="flex items-center gap-2">
         <span className="text-xl md:text-2xl font-bold font-display tracking-tight">panko studio</span>
         <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
       </div>
 
-      <div className="hidden md:flex items-center gap-7 text-sm font-medium ml-auto text-brand-ink/80">
+      <div className="hidden md:flex items-center gap-7 text-sm font-medium ml-auto text-brand-ink/88">
         {navItems.map((item) => (
           <a
             key={item.id}
@@ -350,12 +350,12 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         >
           <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
             Design for startups
-            <span className="text-brand-ink/25"> and</span>
+            <span className="text-brand-ink/38"> and</span>
             <br />
             scale-ups<span className="text-brand-accent">.</span>
           </h1>
 
-          <p className="mt-6 text-xl md:text-2xl text-brand-ink/65 max-w-2xl leading-relaxed">
+          <p className="mt-6 text-xl md:text-2xl text-brand-ink/72 max-w-2xl leading-relaxed">
             Product management and design for ambitious AI x B2B teams.
           </p>
 
@@ -367,7 +367,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${CTA_BUTTON_BASE}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-ink/30 group-hover:text-white/80 transition-colors">
+              <span className="ml-1 text-brand-ink/42 group-hover:text-white/80 transition-colors">
                 <ArrowRight className="w-4 h-4" />
               </span>
             </motion.a>
@@ -375,7 +375,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/55 hover:text-brand-ink/80 transition-colors"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/62 hover:text-brand-ink/88 transition-colors"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -396,16 +396,16 @@ const About = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52">About</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-14">
             <div>
               <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6">
-                <span className="text-brand-ink/30">Product management and design</span>{' '}
+                <span className="text-brand-ink/42">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-ink/60 leading-relaxed mb-8">
+              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-8">
                 Senior product talent that drives design projects from wireframe to full release alongside your engineers.
               </p>
 
@@ -421,10 +421,10 @@ const About = () => {
                 { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
               ].map((stat, idx) => (
                 <div key={idx} className="flex items-start gap-5 pb-6">
-                  <div className="mt-2 text-brand-ink/40">{stat.icon}</div>
+                  <div className="mt-2 text-brand-ink/52">{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
-                    <div className="text-brand-ink/60">{stat.sub}</div>
+                    <div className="text-brand-ink/68">{stat.sub}</div>
                   </div>
                 </div>
               ))}
@@ -585,7 +585,7 @@ const CTA = () => {
 
                 <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-fullName" className="text-white/65">
+                    <label htmlFor="contact-fullName" className="text-white/72">
                       My name is
                     </label>
                     <input
@@ -603,7 +603,7 @@ const CTA = () => {
                       disabled={formStatus === 'loading'}
                       className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
                     />
-                    <label htmlFor="contact-company" className="text-white/65">
+                    <label htmlFor="contact-company" className="text-white/72">
                       from
                     </label>
                     <input
@@ -624,7 +624,7 @@ const CTA = () => {
                   </div>
 
                   <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="text-white/65 mr-1 inline">
+                    <legend className="text-white/72 mr-1 inline">
                       I want to chat about designs for my
                     </legend>
                     {topics.map((t) => {
@@ -650,7 +650,7 @@ const CTA = () => {
                   </fieldset>
 
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-email" className="text-white/65">
+                    <label htmlFor="contact-email" className="text-white/72">
                       You can reach me at
                     </label>
                     <input
@@ -778,7 +778,7 @@ const Projects = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52 mb-3 block">
               Selected Work
             </span>
             <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
@@ -789,22 +789,22 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl bg-gradient-to-br from-brand-bg via-brand-ink/[0.03] to-brand-accent/[0.11]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
                     <div className="absolute -left-[8%] -top-[12%] h-[72%] w-[58%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.14),transparent_68%)] blur-2xl" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                    <div className="rounded-sm bg-white/75 border border-brand-ink/[0.06] px-5 py-3 text-sm font-medium text-brand-ink/62 backdrop-blur-md">
                       Case study placeholder
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 flex items-center justify-between px-2">
                   <div>
-                    <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
-                    <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
+                    <h3 className="text-xl font-bold font-display text-brand-ink/90">Project</h3>
+                    <p className="text-sm font-medium text-brand-ink/52">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-ink/[0.07] text-brand-ink/50 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -846,7 +846,7 @@ const Pricing = () => {
       desc: 'Work with us on an ongoing basis.',
       features: [],
       extra:
-        'Share your requirements on a Trello card, & senior designers will deliver high-quality designs, one by one. This could be a product design, graphics for marketing, email banners, or wireframes — anything goes so long as you can explain it in a card.',
+        'Share your requirements on a Notion card, & senior designers will deliver high-quality designs, one by one. This could be a product design, graphics for marketing, email banners, or wireframes — anything goes so long as you can explain it in a card.',
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
@@ -876,8 +876,10 @@ const Pricing = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
-            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Transparent investment.</h2>
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52 mb-4 block">Pricing</span>
+            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+              Transparent investment.
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -887,7 +889,7 @@ const Pricing = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className={`relative p-8 flex flex-col justify-between backdrop-blur-sm shadow-[0_18px_60px_rgba(15,23,42,0.06)] bg-brand-bg/90 ${
+                className={`relative p-8 flex flex-col justify-between border border-brand-ink/10 backdrop-blur-sm shadow-[0_18px_60px_rgba(15,23,42,0.1)] bg-brand-bg/90 ${
                   featured ? 'rounded-lg rounded-tl-2xl' : 'rounded-md'
                 }`}
               >
@@ -901,7 +903,7 @@ const Pricing = () => {
                 )}
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-bold font-display">{plan.name}</h3>
+                    <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
                     {featured && (
                       <span className="text-[11px] font-semibold tracking-widest uppercase rounded-sm bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
                         Most popular
@@ -910,15 +912,15 @@ const Pricing = () => {
                   </div>
                   <div className="flex items-baseline gap-1 mb-6">
                     <span className="text-4xl font-bold font-display">{plan.price}</span>
-                    <span className="font-medium text-brand-ink/40">{plan.period}</span>
+                    <span className="font-medium text-brand-ink/50">{plan.period}</span>
                   </div>
-                  <p className="mb-6 font-semibold leading-relaxed text-brand-ink/85">{plan.desc}</p>
+                  <p className="mb-6 font-semibold leading-relaxed text-brand-ink/90">{plan.desc}</p>
                   {plan.features.length > 0 && (
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((f, i) => (
                         <li
                           key={i}
-                          className="flex items-center gap-3 text-sm font-medium text-brand-ink/80"
+                          className="flex items-center gap-3 text-sm font-medium text-brand-ink/85"
                         >
                           <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                           {f}
@@ -927,7 +929,7 @@ const Pricing = () => {
                     </ul>
                   )}
                   {plan.extra && (
-                    <p className="mb-8 text-sm leading-relaxed text-brand-ink/60">
+                    <p className="mb-8 text-sm leading-relaxed text-brand-ink/68">
                       {plan.extra}
                     </p>
                   )}
