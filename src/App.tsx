@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   ChevronRight,
   Globe,
+  Layers,
   Users,
 } from 'lucide-react';
 import {
@@ -389,24 +390,37 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section id="about" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="about" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
-          <div className="mb-10">
+          <div className="mb-10 md:mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52">About</span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
-              <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6">
+              <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
                 <span className="text-brand-ink/42">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-8">
+              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
                 Senior product talent that drives design projects from wireframe to full release alongside your engineers.
+              </p>
+              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
+                We sit in the messy middle between strategy decks and shipped code: framing problems with your leadership,
+                turning research into decisions, and keeping design artifacts honest enough that engineering can run with them.
+              </p>
+              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
+                Most of our work is with teams building AI-native workflows, complex data products, or redesigning legacy
+                tools under real commercial pressure. We are used to ambiguity, tight feedback loops, and stakeholders who
+                care about velocity without sacrificing craft.
+              </p>
+              <p className="text-base md:text-lg text-brand-ink/60 leading-relaxed mb-10">
+                Whether you need a focused sprint to unblock a roadmap bet or a longer partner for ongoing discovery and
+                delivery, we anchor on outcomes you can measure — adoption, time-to-task, and clarity for your customers.
               </p>
 
               <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
@@ -415,17 +429,48 @@ const About = () => {
               </motion.a>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-8 lg:space-y-10 lg:pt-2">
               {[
                 { label: 12, sub: 'happy teams across the globe', icon: <Globe className="w-5 h-5" />, suffix: '' },
                 { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
+                { label: 4, sub: 'week cycles from brief to reviewable UI', icon: <Layers className="w-5 h-5" />, suffix: '' },
               ].map((stat, idx) => (
-                <div key={idx} className="flex items-start gap-5 pb-6">
+                <div key={idx} className="flex items-start gap-5 pb-6 border-b border-brand-ink/[0.08] last:border-0 last:pb-0">
                   <div className="mt-2 text-brand-ink/52">{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
                     <div className="text-brand-ink/68">{stat.sub}</div>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-16 md:mt-24 lg:mt-28 pt-14 md:pt-16 border-t border-brand-ink/10">
+            <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-ink mb-8 md:mb-10">
+              How we work together<span className="text-brand-accent">.</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+              {[
+                {
+                  title: 'Shared context first',
+                  body: 'We start with your customers, constraints, and metrics — not a blank canvas. Workshops, async docs, and recorded walkthroughs keep everyone aligned.',
+                },
+                {
+                  title: 'Design that ships',
+                  body: 'Fidelity matches the decision: sketches when speed matters, prototypes when risk is high, and systems when scale breaks. Handoffs include rationale, not just pixels.',
+                },
+                {
+                  title: 'Steady through complexity',
+                  body: 'B2B and AI products rarely move in straight lines. We help you sequence bets, cut scope without losing the story, and keep quality visible to leadership and engineering.',
+                },
+              ].map((item) => (
+                <div key={item.title} className="space-y-3">
+                  <div className="flex items-center gap-2 text-brand-ink">
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-accent" strokeWidth={2} />
+                    <span className="font-display font-semibold text-lg md:text-xl tracking-tight">{item.title}</span>
+                  </div>
+                  <p className="text-sm md:text-base text-brand-ink/65 leading-relaxed pl-0 md:pl-7">{item.body}</p>
                 </div>
               ))}
             </div>
