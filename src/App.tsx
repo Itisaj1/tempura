@@ -16,7 +16,15 @@ import {
   Globe,
   Users,
 } from 'lucide-react';
-import {useEffect, useLayoutEffect, useRef, useState, type FormEvent, type RefObject} from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react';
 
 const useWindowWidth = () => {
   const [width, setWidth] = useState(() =>
@@ -74,6 +82,29 @@ const LoadingLogo = () => {
 
 const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+
+const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/** Fades/slides in the first time the block enters the viewport; never re-runs on scroll-back. */
+const SectionReveal = ({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) => (
+  <motion.div
+    className={className}
+    initial={{opacity: 0, y: 28}}
+    whileInView={{opacity: 1, y: 0}}
+    viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
+    transition={{duration: 0.58, ease: SECTION_REVEAL_EASE, delay}}
+  >
+    {children}
+  </motion.div>
+);
 
 const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   const [displayValue, setDisplayValue] = useState(0);
@@ -220,13 +251,15 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
     <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div
         initial={{opacity: 0, scale: 0.94}}
-        animate={{opacity: 1, scale: 1}}
+        whileInView={{opacity: 1, scale: 1}}
+        viewport={{once: true, amount: 0.2}}
         transition={{duration: 1.4, ease: 'easeOut'}}
         className="pointer-events-none absolute -top-24 -left-24 hidden md:block h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_38%_40%,rgba(0,129,167,0.42),rgba(0,129,167,0.18)_45%,transparent_72%)] blur-3xl"
       />
       <motion.div
         initial={{opacity: 0, scale: 0.94}}
-        animate={{opacity: 1, scale: 1}}
+        whileInView={{opacity: 1, scale: 1}}
+        viewport={{once: true, amount: 0.2}}
         transition={{duration: 1.6, ease: 'easeOut', delay: 0.1}}
         className="pointer-events-none absolute -bottom-40 -right-32 hidden md:block h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(0,129,167,0.30),transparent_65%)] blur-3xl"
       />
@@ -237,7 +270,8 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       >
         <motion.div
           initial={{opacity: 0, y: 14}}
-          animate={{opacity: 1, y: 0}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true, amount: 0.25}}
           transition={{duration: 0.7, ease: 'easeOut'}}
           className="relative"
         >
@@ -286,48 +320,43 @@ const About = () => {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(750px_360px_at_95%_8%,rgba(0,129,167,0.12),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(550px_320px_at_-5%_85%,rgba(0,129,167,0.08),transparent_60%)]" />
       <div className="max-w-[1840px] mx-auto">
-        <div className="mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-14">
-          <div>
-            <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6">
-              <span className="text-brand-ink/30">Product management and design</span>{' '}
-              <span className="text-brand-ink">for</span> AI x B2B teams.
-            </h2>
-            <p className="text-lg md:text-xl text-brand-ink/60 leading-relaxed mb-8">
-              Senior product talent that drives design projects from wireframe to full release alongside your engineers.
-            </p>
-            
-            <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
-              Book a call
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </motion.a>
+        <SectionReveal>
+          <div className="mb-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
           </div>
 
-          <div className="space-y-8">
-            {[
-              { label: 12, sub: "happy teams across the globe", icon: <Globe className="w-5 h-5" />, suffix: '' },
-              { label: 7, sub: "years of combined expertise", icon: <Users className="w-5 h-5" />, suffix: '' }
-            ].map((stat, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-start gap-5 pb-6"
-              >
-                <div className="mt-2 text-brand-ink/40">{stat.icon}</div>
-                <div>
-                  <CountUp value={stat.label} suffix={stat.suffix} />
-                  <div className="text-brand-ink/60">{stat.sub}</div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-14">
+            <div>
+              <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6">
+                <span className="text-brand-ink/30">Product management and design</span>{' '}
+                <span className="text-brand-ink">for</span> AI x B2B teams.
+              </h2>
+              <p className="text-lg md:text-xl text-brand-ink/60 leading-relaxed mb-8">
+                Senior product talent that drives design projects from wireframe to full release alongside your engineers.
+              </p>
+
+              <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
+                Book a call
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </motion.a>
+            </div>
+
+            <div className="space-y-8">
+              {[
+                { label: 12, sub: 'happy teams across the globe', icon: <Globe className="w-5 h-5" />, suffix: '' },
+                { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
+              ].map((stat, idx) => (
+                <div key={idx} className="flex items-start gap-5 pb-6">
+                  <div className="mt-2 text-brand-ink/40">{stat.icon}</div>
+                  <div>
+                    <CountUp value={stat.label} suffix={stat.suffix} />
+                    <div className="text-brand-ink/60">{stat.sub}</div>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </SectionReveal>
       </div>
     </section>
   );
@@ -426,12 +455,13 @@ const CTA = () => {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
       <div className="relative max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
-            Contact
-          </div>
+          <SectionReveal>
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
+              Contact
+            </div>
 
-          <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence mode="wait" initial={false}>
             {formStatus === 'success' ? (
               <motion.div
                 key="success"
@@ -466,8 +496,7 @@ const CTA = () => {
                 key="form"
                 onSubmit={handleSubmit}
                 noValidate
-                initial={{opacity: 0, y: 8}}
-                animate={{opacity: 1, y: 0}}
+                initial={false}
                 exit={{opacity: 0, y: -8}}
                 transition={{duration: 0.35, ease: 'easeOut'}}
                 aria-labelledby="contact-heading"
@@ -609,7 +638,8 @@ const CTA = () => {
                 </motion.button>
               </motion.form>
             )}
-          </AnimatePresence>
+            </AnimatePresence>
+          </SectionReveal>
         </div>
       </div>
     </section>
@@ -620,34 +650,36 @@ const Footer = () => {
   return (
     <footer className="bg-brand-ink text-white">
       <div className="max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-          <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)]">
-            panko studio
+        <SectionReveal>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)]">
+              panko studio
+            </div>
+            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/70">
+              <a href="#about" className="hover:text-white transition-colors">
+                About
+              </a>
+              <a href="#work" className="hover:text-white transition-colors">
+                Work
+              </a>
+              <a href="#pricing" className="hover:text-white transition-colors">
+                Pricing
+              </a>
+              <a href="#contact" className="hover:text-white transition-colors">
+                Contact
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                LinkedIn
+              </a>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/70">
-            <a href="#about" className="hover:text-white transition-colors">
-              About
-            </a>
-            <a href="#work" className="hover:text-white transition-colors">
-              Work
-            </a>
-            <a href="#pricing" className="hover:text-white transition-colors">
-              Pricing
-            </a>
-            <a href="#contact" className="hover:text-white transition-colors">
-              Contact
-            </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              LinkedIn
-            </a>
-          </div>
-        </div>
-        <div className="mt-10 text-sm text-white/45">© 2026 Panko Studio</div>
+          <div className="mt-10 text-sm text-white/45">© 2026 Panko Studio</div>
+        </SectionReveal>
       </div>
     </footer>
   );
@@ -664,45 +696,40 @@ const Projects = () => {
   return (
     <section id="work" className="py-16 md:py-20 px-4 md:px-10 bg-white">
       <div className="max-w-[1840px] mx-auto">
-        <div className="mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
-            Selected Work
-          </span>
-          <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
-            Crafting digital excellence.
-          </h2>
-        </div>
+        <SectionReveal>
+          <div className="mb-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
+              Selected Work
+            </span>
+            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+              Crafting digital excellence.
+            </h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
-          {placeholders.map((tile, idx) => (
-            <motion.div
-              key={tile.id}
-              initial={{opacity: 0, y: 18}}
-              whileInView={{opacity: 1, y: 0}}
-              viewport={{once: true}}
-              transition={{delay: idx * 0.06}}
-              className={`group ${tile.size}`}
-            >
-              <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
-                <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.12),transparent_55%)]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="rounded-2xl bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
-                    Case study placeholder
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
+            {placeholders.map((tile) => (
+              <div key={tile.id} className={`group ${tile.size}`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
+                  <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.12),transparent_55%)]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="rounded-2xl bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                      Case study placeholder
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-5 flex items-center justify-between px-2">
+                  <div>
+                    <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
+                    <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
+                  </div>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                    <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
               </div>
-              <div className="mt-5 flex items-center justify-between px-2">
-                <div>
-                  <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
-                  <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
-                </div>
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
@@ -763,12 +790,13 @@ const Pricing = () => {
     <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_420px_at_0%_100%,rgba(0,129,167,0.08),transparent_60%)]" />
       <div className="relative max-w-[1840px] mx-auto">
-        <div className="mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Transparent investment.</h2>
-        </div>
+        <SectionReveal>
+          <div className="mb-12">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
+            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">Transparent investment.</h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((plan, idx) => {
             const featured = idx === 1;
             return (
@@ -827,6 +855,7 @@ const Pricing = () => {
             );
           })}
         </div>
+        </SectionReveal>
       </div>
     </section>
   );

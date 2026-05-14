@@ -5,9 +5,10 @@ Supplement to [SKILL.md](SKILL.md). Paste and adapt; keep tokens and motion feel
 ## New section checklist
 
 1. Add `<section id="uniqueId" ...>` with `id` matching a slug you will add to nav if it should appear in the header.
-2. Wrap main content in `max-w-[1840px] mx-auto px-4 md:px-10` (or match sibling sections).
-3. Register `id` in `App` scroll effect `sectionIds` array if it should drive the active nav dot.
-4. If it needs a nav link, add `{ id: 'uniqueId', label: 'Label' }` to `Navbar` `navItems`.
+2. Wrap the section's main inner content in **`SectionReveal`** (`src/App.tsx`) — `motion.div` with `initial={{ opacity: 0, y: 28 }}`, `whileInView={{ opacity: 1, y: 0 }}`, `viewport={{ once: true, amount: 0.12, margin: '0px 0px -12% 0px' }}` so the block animates in **the first time** it enters the viewport and never re-runs when scrolling back.
+3. Wrap main content in `max-w-[1840px] mx-auto px-4 md:px-10` (or match sibling sections).
+4. Register `id` in `App` scroll effect `sectionIds` array if it should drive the active nav dot.
+5. If it needs a nav link, add `{ id: 'uniqueId', label: 'Label' }` to `Navbar` `navItems`.
 
 ## Eyebrow + heading (matches About / Work / Pricing)
 
