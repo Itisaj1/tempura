@@ -80,8 +80,38 @@ const LoadingLogo = () => {
   );
 };
 
+/** Filled accent region in normalized coordinates (0–100), plus optional cut line. */
+const AccentZoneSVG = ({
+  polygon,
+  cut,
+  fill,
+  stroke = 'rgba(0, 129, 167, 0.4)',
+  className = 'absolute inset-0 h-full w-full',
+}: {
+  polygon: string;
+  cut?: {x1: number; y1: number; x2: number; y2: number};
+  fill: string;
+  stroke?: string;
+  className?: string;
+}) => (
+  <svg className={className} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points={polygon} fill={fill} />
+    {cut && (
+      <line
+        x1={cut.x1}
+        y1={cut.y1}
+        x2={cut.x2}
+        y2={cut.y2}
+        stroke={stroke}
+        strokeWidth="0.35"
+        vectorEffect="nonScalingStroke"
+      />
+    )}
+  </svg>
+);
+
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -161,7 +191,7 @@ const Navbar = ({
   const top = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
   const left = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
   const right = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
-  const borderRadius = useTransform(smoothDockProgress, [0, 1], ['0px', '20px']);
+  const borderRadius = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
@@ -211,7 +241,7 @@ const Navbar = ({
           <a
             key={item.id}
             href={`#${item.id}`}
-            className={`inline-flex items-center gap-2 rounded-full px-1 py-0.5 transition-all ${
+            className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
               activeSection === item.id ? 'translate-x-1 text-brand-ink' : 'translate-x-0 hover:bg-brand-ink/[0.04]'
             }`}
           >
@@ -257,15 +287,16 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute left-[5vw] top-[8%] bottom-[12%] w-px bg-[rgba(0,129,167,0.12)] md:w-[2px]" />
-        <div className="absolute left-0 right-[12%] top-[16%] h-px bg-[rgba(0,129,167,0.10)] md:h-[2px]" />
-        <div className="absolute right-[6vw] top-[22%] bottom-[18%] w-px bg-[rgba(0,129,167,0.10)] md:w-[2px]" />
-        <div className="absolute -right-[5%] bottom-[26%] h-px w-[min(78vw,920px)] max-w-none origin-right rotate-[28deg] bg-[rgba(0,129,167,0.10)]" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-[rgba(0,129,167,0.08)] md:h-[2px]" />
+        <AccentZoneSVG
+          polygon="100,0 100,100 52,100 72,0"
+          cut={{x1: 72, y1: 0, x2: 52, y2: 100}}
+          fill="rgba(0, 129, 167, 0.14)"
+          stroke="rgba(0, 129, 167, 0.42)"
+        />
       </motion.div>
-      <motion.div 
+      <motion.div
         style={{opacity, y}}
-        className="relative max-w-5xl mx-auto w-full"
+        className="relative z-10 max-w-5xl mx-auto w-full"
       >
         <motion.div
           initial={{opacity: 0, y: 14}}
@@ -317,12 +348,14 @@ const About = () => {
   return (
     <section id="about" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-x-0 top-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
-        <div className="absolute right-[7vw] top-0 bottom-[8%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
-        <div className="absolute left-0 bottom-[14%] w-[min(48vw,640px)] h-px bg-[rgba(0,129,167,0.10)] md:h-[2px]" />
-        <div className="absolute left-[10vw] top-[38%] bottom-[22%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
+        <AccentZoneSVG
+          polygon="0,0 0,100 46,100 0,24"
+          cut={{x1: 0, y1: 24, x2: 46, y2: 100}}
+          fill="rgba(0, 129, 167, 0.09)"
+          stroke="rgba(0, 129, 167, 0.32)"
+        />
       </div>
-      <div className="max-w-[1840px] mx-auto">
+      <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40">About</span>
@@ -454,13 +487,14 @@ const CTA = () => {
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-[rgba(0,129,167,0.30)] md:w-[3px]" />
-        <div className="absolute inset-x-0 bottom-[22%] h-px bg-[rgba(0,129,167,0.16)] md:h-[2px]" />
-        <div className="absolute right-[8vw] top-[12%] bottom-[18%] w-px bg-[rgba(0,129,167,0.14)] md:w-[2px]" />
-        <div className="absolute left-[18%] right-0 top-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-[rgba(0,129,167,0.20)] md:h-[2px]" />
+        <AccentZoneSVG
+          polygon="100,0 100,100 38,100 66,0"
+          cut={{x1: 66, y1: 0, x2: 38, y2: 100}}
+          fill="rgba(0, 129, 167, 0.24)"
+          stroke="rgba(0, 200, 215, 0.45)"
+        />
       </div>
-      <div className="relative max-w-3xl mx-auto w-full">
+      <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
@@ -484,7 +518,7 @@ const CTA = () => {
                   initial={{scale: 0.6, opacity: 0}}
                   animate={{scale: 1, opacity: 1}}
                   transition={{delay: 0.1, type: 'spring', stiffness: 220, damping: 18}}
-                  className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent mb-6"
+                  className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-brand-accent/15 text-brand-accent mb-6"
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
@@ -570,7 +604,7 @@ const CTA = () => {
                           aria-label={`Topic: ${t}`}
                           onClick={() => toggleTopic(t)}
                           disabled={formStatus === 'loading'}
-                          className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+                          className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
                               ? 'border-brand-accent bg-brand-accent/20 text-white'
                               : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
@@ -627,7 +661,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -657,8 +691,12 @@ const Footer = () => {
   return (
     <footer className="relative bg-brand-ink text-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute right-[8vw] top-[20%] bottom-[15%] w-px bg-[rgba(0,129,167,0.14)] md:w-[2px]" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
+        <AccentZoneSVG
+          polygon="100,100 100,0 70,0 100,58"
+          cut={{x1: 70, y1: 0, x2: 100, y2: 58}}
+          fill="rgba(0, 129, 167, 0.14)"
+          stroke="rgba(0, 129, 167, 0.38)"
+        />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
         <SectionReveal>
@@ -707,11 +745,14 @@ const Projects = () => {
   return (
     <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute left-[5vw] top-[8%] bottom-[10%] w-px bg-[rgba(0,129,167,0.10)] md:w-[2px]" />
-        <div className="absolute right-[6vw] top-[15%] bottom-[20%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
-        <div className="absolute inset-x-0 top-[42%] h-px bg-[rgba(0,129,167,0.06)] md:h-[2px]" />
+        <AccentZoneSVG
+          polygon="100,0 100,100 50,100 74,0"
+          cut={{x1: 74, y1: 0, x2: 50, y2: 100}}
+          fill="rgba(0, 129, 167, 0.10)"
+          stroke="rgba(0, 129, 167, 0.36)"
+        />
       </div>
-      <div className="max-w-[1840px] mx-auto">
+      <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-3 block">
@@ -725,13 +766,13 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
-                  <div className="pointer-events-none absolute inset-0 rounded-[2rem]" aria-hidden>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
+                  <div className="pointer-events-none absolute inset-0 rounded-md rounded-br-xl" aria-hidden>
                     <div className="absolute left-5 top-5 bottom-8 w-px bg-[rgba(0,129,167,0.12)]" />
                     <div className="absolute left-5 top-5 right-[22%] h-px bg-[rgba(0,129,167,0.10)]" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-2xl bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
+                    <div className="rounded-sm bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
                       Case study placeholder
                     </div>
                   </div>
@@ -741,7 +782,7 @@ const Projects = () => {
                     <h3 className="text-xl font-bold font-display text-brand-ink/80">Project</h3>
                     <p className="text-sm font-medium text-brand-ink/40">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-ink/[0.04] text-brand-ink/40 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -808,11 +849,14 @@ const Pricing = () => {
   return (
     <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute left-0 bottom-0 right-[18%] h-px bg-[rgba(0,129,167,0.08)] md:h-[2px]" />
-        <div className="absolute right-[5vw] top-[18%] bottom-[12%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
-        <div className="absolute left-[12%] right-0 top-0 h-px bg-[rgba(0,129,167,0.06)] md:h-[2px]" />
+        <AccentZoneSVG
+          polygon="100,0 100,100 48,100 76,0"
+          cut={{x1: 76, y1: 0, x2: 48, y2: 100}}
+          fill="rgba(0, 129, 167, 0.09)"
+          stroke="rgba(0, 129, 167, 0.34)"
+        />
       </div>
-      <div className="relative max-w-[1840px] mx-auto">
+      <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/40 mb-4 block">Pricing</span>
@@ -826,10 +870,15 @@ const Pricing = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className="relative p-8 rounded-[2rem] bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)] flex flex-col justify-between backdrop-blur-sm"
+                className={`relative p-8 flex flex-col justify-between backdrop-blur-sm shadow-[0_18px_60px_rgba(15,23,42,0.06)] bg-brand-bg/90 ${
+                  featured ? 'rounded-lg rounded-tl-2xl' : 'rounded-md'
+                }`}
               >
                 {featured && (
-                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] overflow-hidden" aria-hidden>
+                  <div
+                    className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
+                    aria-hidden
+                  >
                     <div className="absolute right-6 top-6 w-[min(52%,220px)] h-px bg-[rgba(0,129,167,0.18)]" />
                     <div className="absolute right-6 top-6 bottom-[32%] w-px bg-[rgba(0,129,167,0.18)]" />
                   </div>
@@ -838,7 +887,7 @@ const Pricing = () => {
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-2xl font-bold font-display">{plan.name}</h3>
                     {featured && (
-                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-full bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
+                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-sm bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
                         Most popular
                       </span>
                     )}
@@ -871,7 +920,7 @@ const Pricing = () => {
                   href={plan.buttonHref}
                   className={
                     featured
-                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
                       : `w-full text-center ${CTA_BUTTON_BASE}`
                   }
                 >

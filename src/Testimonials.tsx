@@ -34,12 +34,12 @@ const Testimonials = () => {
             <motion.div
               key={i}
               whileHover={{ y: -4 }}
-              className="min-h-[360px] min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-[1.5rem] border border-brand-ink/10 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.07)] flex flex-col"
+              className="min-h-[360px] min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-md rounded-tr-xl border border-brand-ink/10 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.07)] flex flex-col"
             >
               <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="text-[11px] font-semibold tracking-wider rounded-full border border-brand-ink/15 px-2.5 py-1 text-brand-ink/60">{rev.months}</div>
-                  <div className="text-[11px] font-semibold tracking-wider rounded-full border border-brand-accent/40 bg-brand-accent/10 px-2.5 py-1 text-brand-accent">{rev.status}</div>
+                  <div className="text-[11px] font-semibold tracking-wider rounded-sm border border-brand-ink/15 px-2.5 py-1 text-brand-ink/60">{rev.months}</div>
+                  <div className="text-[11px] font-semibold tracking-wider rounded-sm border border-brand-accent/40 bg-brand-accent/10 px-2.5 py-1 text-brand-accent">{rev.status}</div>
                 </div>
                 <div className="h-8 min-w-[96px] rounded-md border border-brand-ink/10 bg-brand-bg/70 px-3 flex items-center justify-center text-sm font-semibold text-brand-ink/75">
                   {rev.company}

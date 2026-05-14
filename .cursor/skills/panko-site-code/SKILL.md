@@ -63,7 +63,7 @@ Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-acc
 
 ```tsx
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 ```
 
 Use: `className={\`group ${CTA_BUTTON_BASE}\`}` on `motion.a` / links. Dark contact submit is a **variant** (white pill → accent hover) — keep that contrast for ink backgrounds only.
