@@ -236,10 +236,10 @@ const Navbar = ({
   const dockedOffset = Math.max(24, (vw - 800) / 2);
 
   const smoothDockProgress = useSpring(dockProgress, {stiffness: 80, damping: 26, mass: 0.55});
-  const top = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
+  const top = useTransform(smoothDockProgress, [0, 1], ['0px', '10px']);
   const left = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
   const right = useTransform(smoothDockProgress, [0, 1], ['0px', `${dockedOffset}px`]);
-  const borderRadius = useTransform(smoothDockProgress, [0, 1], ['0px', '14px']);
+  const borderRadius = useTransform(smoothDockProgress, [0, 1], ['0px', '12px']);
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
@@ -277,14 +277,14 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-5 md:px-8 py-3 border border-brand-ink/10"
+      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/10"
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl md:text-2xl font-bold font-display tracking-tight">panko studio</span>
+        <span className="text-lg md:text-xl font-bold font-display tracking-tight">panko studio</span>
         <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
       </div>
 
-      <div className="hidden md:flex items-center gap-7 text-sm font-medium ml-auto text-brand-ink/88">
+      <div className="hidden md:flex items-center gap-6 text-sm font-medium ml-auto text-brand-ink/88">
         {navItems.map((item) => (
           <a
             key={item.id}
@@ -307,7 +307,7 @@ const Navbar = ({
         whileHover={{y: -1}}
         whileTap={{scale: 0.98}}
         href="#contact"
-        className={`ml-4 text-sm ${CTA_BUTTON_BASE}`}
+        className={`ml-3 md:ml-4 text-sm ${CTA_BUTTON_BASE} !py-2 !px-5`}
       >
         Book call
       </motion.a>
@@ -326,7 +326,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
-    <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
+    <section id="home" ref={targetRef} className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div
         initial={{opacity: 0}}
         whileInView={{opacity: 1}}
