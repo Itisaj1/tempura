@@ -97,10 +97,10 @@ const SectionReveal = ({
 }) => (
   <motion.div
     className={className}
-    initial={{opacity: 0, y: 28}}
+    initial={{opacity: 0, y: 36}}
     whileInView={{opacity: 1, y: 0}}
     viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
-    transition={{duration: 0.58, ease: SECTION_REVEAL_EASE, delay}}
+    transition={{duration: 1.05, ease: SECTION_REVEAL_EASE, delay}}
   >
     {children}
   </motion.div>
@@ -250,20 +250,19 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   return (
     <section id="home" ref={targetRef} className="relative pt-28 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
       <motion.div
-        initial={{opacity: 0, scale: 0.94}}
-        whileInView={{opacity: 1, scale: 1}}
+        initial={{opacity: 0}}
+        whileInView={{opacity: 1}}
         viewport={{once: true, amount: 0.2}}
-        transition={{duration: 1.4, ease: 'easeOut'}}
-        className="pointer-events-none absolute -top-24 -left-24 hidden md:block h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle_at_38%_40%,rgba(0,129,167,0.42),rgba(0,129,167,0.18)_45%,transparent_72%)] blur-3xl"
-      />
-      <motion.div
-        initial={{opacity: 0, scale: 0.94}}
-        whileInView={{opacity: 1, scale: 1}}
-        viewport={{once: true, amount: 0.2}}
-        transition={{duration: 1.6, ease: 'easeOut', delay: 0.1}}
-        className="pointer-events-none absolute -bottom-40 -right-32 hidden md:block h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(0,129,167,0.30),transparent_65%)] blur-3xl"
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-accent/35 to-transparent" />
+        transition={{duration: 1.35, ease: 'easeOut'}}
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden
+      >
+        <div className="absolute left-[5vw] top-[8%] bottom-[12%] w-px bg-[rgba(0,129,167,0.12)] md:w-[2px]" />
+        <div className="absolute left-0 right-[12%] top-[16%] h-px bg-[rgba(0,129,167,0.10)] md:h-[2px]" />
+        <div className="absolute right-[6vw] top-[22%] bottom-[18%] w-px bg-[rgba(0,129,167,0.10)] md:w-[2px]" />
+        <div className="absolute -right-[5%] bottom-[26%] h-px w-[min(78vw,920px)] max-w-none origin-right rotate-[28deg] bg-[rgba(0,129,167,0.10)]" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[rgba(0,129,167,0.08)] md:h-[2px]" />
+      </motion.div>
       <motion.div 
         style={{opacity, y}}
         className="relative max-w-5xl mx-auto w-full"
@@ -272,7 +271,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           initial={{opacity: 0, y: 14}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, amount: 0.25}}
-          transition={{duration: 0.7, ease: 'easeOut'}}
+          transition={{duration: 1.05, ease: 'easeOut'}}
           className="relative"
         >
           <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
@@ -317,8 +316,12 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 const About = () => {
   return (
     <section id="about" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(750px_360px_at_95%_8%,rgba(0,129,167,0.12),transparent_60%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(550px_320px_at_-5%_85%,rgba(0,129,167,0.08),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute inset-x-0 top-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
+        <div className="absolute right-[7vw] top-0 bottom-[8%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
+        <div className="absolute left-0 bottom-[14%] w-[min(48vw,640px)] h-px bg-[rgba(0,129,167,0.10)] md:h-[2px]" />
+        <div className="absolute left-[10vw] top-[38%] bottom-[22%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
+      </div>
       <div className="max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
@@ -450,9 +453,13 @@ const CTA = () => {
       id="contact"
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_540px_at_85%_-15%,rgba(0,129,167,0.30),transparent_60%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_460px_at_-5%_110%,rgba(0,129,167,0.16),transparent_60%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/45 to-transparent" />
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-[rgba(0,129,167,0.30)] md:w-[3px]" />
+        <div className="absolute inset-x-0 bottom-[22%] h-px bg-[rgba(0,129,167,0.16)] md:h-[2px]" />
+        <div className="absolute right-[8vw] top-[12%] bottom-[18%] w-px bg-[rgba(0,129,167,0.14)] md:w-[2px]" />
+        <div className="absolute left-[18%] right-0 top-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-[rgba(0,129,167,0.20)] md:h-[2px]" />
+      </div>
       <div className="relative max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
@@ -648,8 +655,12 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-brand-ink text-white">
-      <div className="max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
+    <footer className="relative bg-brand-ink text-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute right-[8vw] top-[20%] bottom-[15%] w-px bg-[rgba(0,129,167,0.14)] md:w-[2px]" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[rgba(0,129,167,0.12)] md:h-[2px]" />
+      </div>
+      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
         <SectionReveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)]">
@@ -694,7 +705,12 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" className="py-16 md:py-20 px-4 md:px-10 bg-white">
+    <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute left-[5vw] top-[8%] bottom-[10%] w-px bg-[rgba(0,129,167,0.10)] md:w-[2px]" />
+        <div className="absolute right-[6vw] top-[15%] bottom-[20%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
+        <div className="absolute inset-x-0 top-[42%] h-px bg-[rgba(0,129,167,0.06)] md:h-[2px]" />
+      </div>
       <div className="max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
@@ -710,7 +726,10 @@ const Projects = () => {
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
                 <div className={`relative ${tile.ratio} overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
-                  <div className="absolute inset-0 bg-[radial-gradient(700px_420px_at_30%_0%,rgba(0,129,167,0.12),transparent_55%)]" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[2rem]" aria-hidden>
+                    <div className="absolute left-5 top-5 bottom-8 w-px bg-[rgba(0,129,167,0.12)]" />
+                    <div className="absolute left-5 top-5 right-[22%] h-px bg-[rgba(0,129,167,0.10)]" />
+                  </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-2xl bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
                       Case study placeholder
@@ -788,7 +807,11 @@ const Pricing = () => {
 
   return (
     <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(800px_420px_at_0%_100%,rgba(0,129,167,0.08),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute left-0 bottom-0 right-[18%] h-px bg-[rgba(0,129,167,0.08)] md:h-[2px]" />
+        <div className="absolute right-[5vw] top-[18%] bottom-[12%] w-px bg-[rgba(0,129,167,0.08)] md:w-[2px]" />
+        <div className="absolute left-[12%] right-0 top-0 h-px bg-[rgba(0,129,167,0.06)] md:h-[2px]" />
+      </div>
       <div className="relative max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-12">
@@ -806,7 +829,10 @@ const Pricing = () => {
                 className="relative p-8 rounded-[2rem] bg-brand-bg/90 shadow-[0_18px_60px_rgba(15,23,42,0.06)] flex flex-col justify-between backdrop-blur-sm"
               >
                 {featured && (
-                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(420px_260px_at_85%_-10%,rgba(0,129,167,0.18),transparent_60%)]" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[2rem] overflow-hidden" aria-hidden>
+                    <div className="absolute right-6 top-6 w-[min(52%,220px)] h-px bg-[rgba(0,129,167,0.18)]" />
+                    <div className="absolute right-6 top-6 bottom-[32%] w-px bg-[rgba(0,129,167,0.18)]" />
+                  </div>
                 )}
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
