@@ -95,7 +95,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} -right-[18%] -top-[30%] h-[min(105vw,900px)] w-[min(105vw,900px)] bg-[radial-gradient(circle_at_36%_36%,rgba(0,129,167,0.3),transparent_58%)] blur-[58px]`}
           />
           <div
-            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.11),transparent_56%)] blur-[52px]`}
+            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.14),transparent_56%)] blur-[52px]`}
           />
         </>
       );
@@ -106,7 +106,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} -left-[22%] top-[8%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.16),transparent_62%)] blur-[48px]`}
           />
           <div
-            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.055),transparent_58%)] blur-[44px]`}
+            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.08),transparent_58%)] blur-[44px]`}
           />
         </>
       );
@@ -117,7 +117,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} right-[-12%] top-[-8%] h-[min(85vw,640px)] w-[min(85vw,640px)] bg-[radial-gradient(circle_at_40%_40%,rgba(0,129,167,0.11),transparent_60%)] blur-[52px]`}
           />
           <div
-            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.055),transparent_55%)] blur-[40px]`}
+            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.08),transparent_55%)] blur-[40px]`}
           />
         </>
       );
@@ -128,7 +128,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
             className={`${blob} right-[-10%] top-[20%] h-[min(80vw,600px)] w-[min(80vw,600px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[50px]`}
           />
           <div
-            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.065),transparent_55%)] blur-[42px]`}
+            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.09),transparent_55%)] blur-[42px]`}
           />
         </>
       );
@@ -160,7 +160,7 @@ const SectionRadials = ({preset}: {preset: RadialPreset}) => {
 };
 
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/25 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/30 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -278,10 +278,10 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/10"
+      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/18"
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg md:text-xl font-bold font-display tracking-tight">panko studio</span>
+        <span className="text-lg md:text-xl font-bold font-display tracking-tight text-brand-ink">panko studio</span>
         <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
       </div>
 
@@ -327,7 +327,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
-    <section id="home" ref={targetRef} className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center">
+    <section id="home" ref={targetRef} className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center border-b border-brand-ink/12">
       <motion.div
         initial={{opacity: 0}}
         whileInView={{opacity: 1}}
@@ -349,14 +349,14 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           transition={{duration: 0.42, ease: [0.22, 1, 0.36, 1]}}
           className="relative"
         >
-          <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter">
+          <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-ink">
             Design for startups
-            <span className="text-brand-ink/38"> and</span>
+            <span className="text-brand-ink/45"> and</span>
             <br />
             scale-ups<span className="text-brand-accent">.</span>
           </h1>
 
-          <p className="mt-6 text-xl md:text-2xl text-brand-ink/72 max-w-2xl leading-relaxed">
+          <p className="mt-6 text-xl md:text-2xl text-brand-ink/78 max-w-2xl leading-relaxed">
             Product management and design for ambitious AI x B2B teams.
           </p>
 
@@ -403,7 +403,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
               <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
-                <span className="text-brand-ink/42">Product management and design</span>{' '}
+                <span className="text-brand-ink/48">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
               <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
@@ -435,7 +435,7 @@ const About = () => {
                 { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
                 { label: 4, sub: 'week cycles from brief to reviewable UI', icon: <Layers className="w-5 h-5" />, suffix: '' },
               ].map((stat, idx) => (
-                <div key={idx} className="flex items-start gap-5 pb-6 border-b border-brand-ink/[0.08] last:border-0 last:pb-0">
+                <div key={idx} className="flex items-start gap-5 pb-6 border-b border-brand-ink/15 last:border-0 last:pb-0">
                   <div className="mt-2 text-brand-ink/52">{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
@@ -446,7 +446,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="mt-16 md:mt-24 lg:mt-28 pt-14 md:pt-16 border-t border-brand-ink/10">
+          <div className="mt-16 md:mt-24 lg:mt-28 pt-14 md:pt-16 border-t border-brand-ink/15 rounded-lg border border-brand-ink/12 bg-brand-ink/[0.035] px-6 py-10 md:px-10 md:py-12">
             <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-ink mb-8 md:mb-10">
               How we work together<span className="text-brand-accent">.</span>
             </h3>
@@ -619,6 +619,7 @@ const CTA = () => {
                 exit={{opacity: 0, y: -8}}
                 transition={{duration: 0.35, ease: 'easeOut'}}
                 aria-labelledby="contact-heading"
+                className="rounded-xl border border-white/15 bg-white/[0.04] p-6 md:p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
                 <h2
                   id="contact-heading"
@@ -739,7 +740,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/15 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:border-transparent hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-white disabled:hover:text-brand-ink"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -767,17 +768,17 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-ink text-white overflow-hidden">
+    <footer className="relative bg-brand-ink text-white overflow-hidden border-t border-white/12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
         <SectionReveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)]">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-white">
               panko studio
             </div>
-            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/70">
+            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/75">
               <a href="#about" className="hover:text-white transition-colors">
                 About
               </a>
@@ -800,7 +801,7 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="mt-10 text-sm text-white/45">© 2026 Panko Studio</div>
+          <div className="mt-10 text-sm text-white/55 border-t border-white/10 pt-8">© 2026 Panko Studio</div>
         </SectionReveal>
       </div>
     </footer>
@@ -816,7 +817,7 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
+    <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="work" />
       </div>
@@ -834,12 +835,12 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl bg-gradient-to-br from-brand-bg via-brand-ink/[0.03] to-brand-accent/[0.11]`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/14 bg-gradient-to-br from-white via-brand-ink/[0.04] to-brand-accent/[0.12]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
                     <div className="absolute -left-[8%] -top-[12%] h-[72%] w-[58%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.14),transparent_68%)] blur-2xl" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm bg-white/75 border border-brand-ink/[0.06] px-5 py-3 text-sm font-medium text-brand-ink/62 backdrop-blur-md">
+                    <div className="rounded-sm bg-white/85 border border-brand-ink/14 px-5 py-3 text-sm font-medium text-brand-ink/68 backdrop-blur-md shadow-sm shadow-black/10">
                       Case study placeholder
                     </div>
                   </div>
@@ -849,7 +850,7 @@ const Projects = () => {
                     <h3 className="text-xl font-bold font-display text-brand-ink/90">Project</h3>
                     <p className="text-sm font-medium text-brand-ink/52">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-ink/[0.07] text-brand-ink/50 transition-colors group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/12 bg-brand-ink/[0.08] text-brand-ink/55 transition-colors group-hover:border-brand-accent/35 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -914,7 +915,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
+    <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="pricing" />
       </div>
@@ -934,7 +935,7 @@ const Pricing = () => {
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className={`relative p-8 flex flex-col justify-between border border-brand-ink/10 backdrop-blur-sm shadow-[0_18px_60px_rgba(15,23,42,0.1)] bg-brand-bg/90 ${
+                className={`relative p-8 flex flex-col justify-between border border-brand-ink/16 bg-white/90 backdrop-blur-sm shadow-[0_20px_64px_rgba(15,23,42,0.14)] ${
                   featured ? 'rounded-lg rounded-tl-2xl' : 'rounded-md'
                 }`}
               >
@@ -967,7 +968,7 @@ const Pricing = () => {
                           key={i}
                           className="flex items-center gap-3 text-sm font-medium text-brand-ink/85"
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                          <div className="w-1.5 h-1.5 shrink-0 rounded-[1px] bg-brand-ink/80" />
                           {f}
                         </li>
                       ))}
@@ -1070,7 +1071,7 @@ export default function App() {
         initial={{opacity: 1}}
         animate={{opacity: showLoader ? 1 : 0}}
         transition={{duration: 0.45, ease: 'easeOut'}}
-        className={`fixed inset-0 z-[100] flex items-center justify-center bg-white ${
+        className={`fixed inset-0 z-[100] flex items-center justify-center bg-brand-bg ${
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
