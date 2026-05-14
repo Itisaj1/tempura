@@ -22,9 +22,9 @@ Supplement to [SKILL.md](SKILL.md). Paste and adapt; keep tokens and motion feel
 
 Dark section (contact): `text-white/55` eyebrow + accent dot span `h-1.5 w-1.5 rounded-full bg-brand-accent`.
 
-## Hero-style geometric accents
+## Hero-style atmosphere (radials)
 
-Hero uses **hard-edged accent lines** (vertical rules, horizontal bands, one rotated rule) in `rgba(0,129,167,…)` at ~0.08–0.12 opacity — no blur blobs. Section-level backdrops follow the same language (thin slabs / rules that divide space).
+Hero and other sections use **`SectionRadials`** in `src/App.tsx`: stacked **blurred radial gradients** in accent and ink tints (`blur-[40px]`–`blur-[64px]`), `pointer-events-none`, `absolute` blobs — no hairline rules or wedge SVGs. Global `body` in `src/index.css` uses additional fixed **elliptical radials** for a quiet cream-field depth.
 
 ## Accent period in JSX
 

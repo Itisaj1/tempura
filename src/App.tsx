@@ -80,35 +80,82 @@ const LoadingLogo = () => {
   );
 };
 
-/** Filled accent region in normalized coordinates (0–100), plus optional cut line. */
-const AccentZoneSVG = ({
-  polygon,
-  cut,
-  fill,
-  stroke = 'rgba(0, 129, 167, 0.4)',
-  className = 'absolute inset-0 h-full w-full',
-}: {
-  polygon: string;
-  cut?: {x1: number; y1: number; x2: number; y2: number};
-  fill: string;
-  stroke?: string;
-  className?: string;
-}) => (
-  <svg className={className} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-    <polygon points={polygon} fill={fill} />
-    {cut && (
-      <line
-        x1={cut.x1}
-        y1={cut.y1}
-        x2={cut.x2}
-        y2={cut.y2}
-        stroke={stroke}
-        strokeWidth="0.35"
-        vectorEffect="nonScalingStroke"
-      />
-    )}
-  </svg>
-);
+type RadialPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
+
+/** Soft accent atmosphere — blurred radials only (no lines or hard geometry). */
+const SectionRadials = ({preset}: {preset: RadialPreset}) => {
+  const blob = 'pointer-events-none absolute rounded-full';
+  switch (preset) {
+    case 'hero':
+      return (
+        <>
+          <div
+            className={`${blob} -right-[18%] -top-[30%] h-[min(105vw,900px)] w-[min(105vw,900px)] bg-[radial-gradient(circle_at_36%_36%,rgba(0,129,167,0.3),transparent_58%)] blur-[58px]`}
+          />
+          <div
+            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.08),transparent_56%)] blur-[52px]`}
+          />
+        </>
+      );
+    case 'about':
+      return (
+        <>
+          <div
+            className={`${blob} -left-[22%] top-[8%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.16),transparent_62%)] blur-[48px]`}
+          />
+          <div
+            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[44px]`}
+          />
+        </>
+      );
+    case 'work':
+      return (
+        <>
+          <div
+            className={`${blob} right-[-12%] top-[-8%] h-[min(85vw,640px)] w-[min(85vw,640px)] bg-[radial-gradient(circle_at_40%_40%,rgba(0,129,167,0.11),transparent_60%)] blur-[52px]`}
+          />
+          <div
+            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.06),transparent_55%)] blur-[40px]`}
+          />
+        </>
+      );
+    case 'pricing':
+      return (
+        <>
+          <div
+            className={`${blob} right-[-10%] top-[20%] h-[min(80vw,600px)] w-[min(80vw,600px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[50px]`}
+          />
+          <div
+            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.04),transparent_55%)] blur-[42px]`}
+          />
+        </>
+      );
+    case 'contact':
+      return (
+        <>
+          <div
+            className={`${blob} right-[-8%] -top-[25%] h-[min(95vw,720px)] w-[min(95vw,720px)] bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.42),transparent_56%)] blur-[64px]`}
+          />
+          <div
+            className={`${blob} -left-[20%] bottom-[-35%] h-[min(90vw,680px)] w-[min(90vw,680px)] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),transparent_55%)] blur-[56px]`}
+          />
+        </>
+      );
+    case 'footer':
+      return (
+        <>
+          <div
+            className={`${blob} right-[-15%] bottom-[-40%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.22),transparent_58%)] blur-[48px]`}
+          />
+          <div
+            className={`${blob} left-[-25%] top-[-30%] h-[min(55vw,400px)] w-[min(55vw,400px)] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_55%)] blur-[40px]`}
+          />
+        </>
+      );
+    default:
+      return null;
+  }
+};
 
 const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
@@ -287,12 +334,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
       >
-        <AccentZoneSVG
-          polygon="100,0 100,100 52,100 72,0"
-          cut={{x1: 72, y1: 0, x2: 52, y2: 100}}
-          fill="rgba(0, 129, 167, 0.14)"
-          stroke="rgba(0, 129, 167, 0.42)"
-        />
+        <SectionRadials preset="hero" />
       </motion.div>
       <motion.div
         style={{opacity, y}}
@@ -348,12 +390,7 @@ const About = () => {
   return (
     <section id="about" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <AccentZoneSVG
-          polygon="0,0 0,100 46,100 0,24"
-          cut={{x1: 0, y1: 24, x2: 46, y2: 100}}
-          fill="rgba(0, 129, 167, 0.09)"
-          stroke="rgba(0, 129, 167, 0.32)"
-        />
+        <SectionRadials preset="about" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -487,12 +524,7 @@ const CTA = () => {
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <AccentZoneSVG
-          polygon="100,0 100,100 38,100 66,0"
-          cut={{x1: 66, y1: 0, x2: 38, y2: 100}}
-          fill="rgba(0, 129, 167, 0.24)"
-          stroke="rgba(0, 200, 215, 0.45)"
-        />
+        <SectionRadials preset="contact" />
       </div>
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
@@ -691,12 +723,7 @@ const Footer = () => {
   return (
     <footer className="relative bg-brand-ink text-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <AccentZoneSVG
-          polygon="100,100 100,0 70,0 100,58"
-          cut={{x1: 70, y1: 0, x2: 100, y2: 58}}
-          fill="rgba(0, 129, 167, 0.14)"
-          stroke="rgba(0, 129, 167, 0.38)"
-        />
+        <SectionRadials preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
         <SectionReveal>
@@ -745,12 +772,7 @@ const Projects = () => {
   return (
     <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <AccentZoneSVG
-          polygon="100,0 100,100 50,100 74,0"
-          cut={{x1: 74, y1: 0, x2: 50, y2: 100}}
-          fill="rgba(0, 129, 167, 0.10)"
-          stroke="rgba(0, 129, 167, 0.36)"
-        />
+        <SectionRadials preset="work" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -767,9 +789,8 @@ const Projects = () => {
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
                 <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl bg-gradient-to-br from-brand-bg via-white to-brand-accent/[0.10]`}>
-                  <div className="pointer-events-none absolute inset-0 rounded-md rounded-br-xl" aria-hidden>
-                    <div className="absolute left-5 top-5 bottom-8 w-px bg-[rgba(0,129,167,0.12)]" />
-                    <div className="absolute left-5 top-5 right-[22%] h-px bg-[rgba(0,129,167,0.10)]" />
+                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
+                    <div className="absolute -left-[8%] -top-[12%] h-[72%] w-[58%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.14),transparent_68%)] blur-2xl" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm bg-white/70 px-5 py-3 text-sm font-medium text-brand-ink/55 backdrop-blur-md">
@@ -849,12 +870,7 @@ const Pricing = () => {
   return (
     <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <AccentZoneSVG
-          polygon="100,0 100,100 48,100 76,0"
-          cut={{x1: 76, y1: 0, x2: 48, y2: 100}}
-          fill="rgba(0, 129, 167, 0.09)"
-          stroke="rgba(0, 129, 167, 0.34)"
-        />
+        <SectionRadials preset="pricing" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -879,8 +895,7 @@ const Pricing = () => {
                     className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
                     aria-hidden
                   >
-                    <div className="absolute right-6 top-6 w-[min(52%,220px)] h-px bg-[rgba(0,129,167,0.18)]" />
-                    <div className="absolute right-6 top-6 bottom-[32%] w-px bg-[rgba(0,129,167,0.18)]" />
+                    <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.18),transparent_58%)] blur-3xl" />
                   </div>
                 )}
                 <div className="relative">
