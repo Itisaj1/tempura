@@ -11,14 +11,7 @@ import {
   useTransform,
   type MotionValue,
 } from 'motion/react';
-import {
-  ArrowRight,
-  CheckCircle2,
-  ChevronRight,
-  Globe,
-  Layers,
-  Users,
-} from 'lucide-react';
+import {ArrowRight, CheckCircle2, ChevronRight, Globe, Layers, Users} from 'lucide-react';
 import {
   useEffect,
   useLayoutEffect,
@@ -165,6 +158,169 @@ const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/30 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+type ServiceTileVariant = 'accent' | 'light' | 'ink';
+type ServiceDotPattern = 'ring' | 'bars' | 'diamond' | 'spread' | 'line' | 'hex';
+
+const SERVICE_DOT_CELLS: Record<ServiceDotPattern, [number, number][]> = {
+  ring: [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [0, 1],
+    [2, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+  ],
+  bars: [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 0],
+    [1, 2],
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  diamond: [
+    [1, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1],
+    [1, 2],
+  ],
+  spread: [
+    [0, 0],
+    [2, 0],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+  ],
+  line: [
+    [1, 0],
+    [1, 1],
+    [1, 2],
+  ],
+  hex: [
+    [1, 0],
+    [0, 1],
+    [2, 1],
+    [0, 2],
+    [2, 2],
+    [1, 2],
+  ],
+};
+
+const HOW_WE_WORK_TILES: Array<{
+  title: string;
+  description: string;
+  variant: ServiceTileVariant;
+  pattern: ServiceDotPattern;
+}> = [
+  {
+    title: 'AI features',
+    description:
+      'Flows and interfaces for AI-native products — clear states, trust, and handoffs between models and your team.',
+    variant: 'accent',
+    pattern: 'ring',
+  },
+  {
+    title: 'UI design',
+    description:
+      'Screens and systems that match the decision at hand, from wireframes through polished UI ready for engineering.',
+    variant: 'light',
+    pattern: 'bars',
+  },
+  {
+    title: 'User research & testing',
+    description:
+      'Lightweight research and validation so you ship with evidence, not assumptions, on tight timelines.',
+    variant: 'ink',
+    pattern: 'diamond',
+  },
+  {
+    title: 'Prototyping',
+    description:
+      'Clickable prototypes to test ideas early — enough fidelity to learn, not so much that you stall.',
+    variant: 'light',
+    pattern: 'spread',
+  },
+  {
+    title: 'Design systems',
+    description:
+      'Tokens, components, and documentation that keep product and marketing aligned as you scale.',
+    variant: 'ink',
+    pattern: 'line',
+  },
+  {
+    title: 'UX design',
+    description:
+      'End-to-end journeys, information architecture, and interaction design for complex B2B workflows.',
+    variant: 'light',
+    pattern: 'hex',
+  },
+];
+
+const ServiceDotMark = ({pattern, tone}: {pattern: ServiceDotPattern; tone: 'ink' | 'cream'}) => {
+  const active = new Set(SERVICE_DOT_CELLS[pattern].map(([r, c]) => `${r}-${c}`));
+  const dotClass = tone === 'ink' ? 'bg-brand-ink' : 'bg-brand-bg';
+
+  return (
+    <div className="grid grid-cols-3 gap-[5px] w-fit" aria-hidden>
+      {Array.from({length: 9}, (_, i) => {
+        const row = Math.floor(i / 3);
+        const col = i % 3;
+        const on = active.has(`${row}-${col}`);
+        return (
+          <span
+            key={i}
+            className={`h-[7px] w-[7px] rounded-full ${on ? dotClass : 'bg-transparent'}`}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+const ServiceFlipTile = ({
+  title,
+  description,
+  variant,
+  pattern,
+}: (typeof HOW_WE_WORK_TILES)[number]) => {
+  const frontStyles: Record<ServiceTileVariant, string> = {
+    accent: 'bg-brand-accent/18 border border-brand-accent/35 text-brand-ink',
+    light: 'bg-white border border-brand-ink/14 text-brand-ink',
+    ink: 'bg-brand-ink border border-brand-ink text-brand-bg',
+  };
+  const backStyles: Record<ServiceTileVariant, string> = {
+    accent: 'bg-brand-ink text-brand-bg border border-brand-ink',
+    light: 'bg-brand-ink text-brand-bg border border-brand-ink',
+    ink: 'bg-brand-bg text-brand-ink border border-brand-ink/14',
+  };
+  const dotTone = variant === 'ink' ? 'cream' : 'ink';
+
+  return (
+    <article
+      tabIndex={0}
+      className="flip-card aspect-[5/4] min-h-[148px] rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+      aria-label={`${title}. ${description}`}
+    >
+      <div className="flip-card-inner h-full w-full">
+        <div className={`flip-card-face ${frontStyles[variant]}`}>
+          <ServiceDotMark pattern={pattern} tone={dotTone} />
+          <h4 className="font-display font-semibold text-lg md:text-xl tracking-tight leading-snug pr-2">
+            {title}
+          </h4>
+        </div>
+        <div className={`flip-card-face flip-card-back justify-center ${backStyles[variant]}`}>
+          <p className="text-sm md:text-[0.9375rem] leading-relaxed opacity-95">{description}</p>
+        </div>
+      </div>
+    </article>
+  );
+};
 
 /** Fades/slides in the first time the block enters the viewport; never re-runs on scroll-back. */
 const SectionReveal = ({
@@ -465,28 +621,9 @@ const About = () => {
             <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-ink mb-8 md:mb-10">
               How we work together<span className="text-brand-accent">.</span>
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
-              {[
-                {
-                  title: 'Shared context first',
-                  body: 'We align on customers, constraints, and metrics before pixels.',
-                },
-                {
-                  title: 'Design that ships',
-                  body: 'Right fidelity for the decision — with rationale in every handoff.',
-                },
-                {
-                  title: 'Steady through complexity',
-                  body: 'We help you sequence bets and keep quality visible as scope shifts.',
-                },
-              ].map((item) => (
-                <div key={item.title} className="space-y-3">
-                  <div className="flex items-center gap-2 text-brand-ink">
-                    <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-accent" strokeWidth={2} aria-hidden />
-                    <span className="font-display font-semibold text-lg md:text-xl tracking-tight">{item.title}</span>
-                  </div>
-                  <p className="text-sm md:text-base text-brand-ink/65 leading-relaxed pl-0 md:pl-7">{item.body}</p>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              {HOW_WE_WORK_TILES.map((tile) => (
+                <ServiceFlipTile key={tile.title} {...tile} />
               ))}
             </div>
           </div>
@@ -792,7 +929,6 @@ const Footer = () => {
         <SectionRadials preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
-        <SectionReveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-white">
               panko studio
@@ -822,7 +958,6 @@ const Footer = () => {
             </div>
           </div>
           <div className="mt-10 text-sm text-white/55 border-t border-white/10 pt-8">© 2026 Panko Studio</div>
-        </SectionReveal>
       </div>
     </footer>
   );
