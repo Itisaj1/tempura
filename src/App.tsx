@@ -190,8 +190,11 @@ const SuccessDotBurst = () => {
 
 const ConversationalInput = ({
   className: inputClassName = '',
+  onFocus,
+  onBlur,
   ...inputProps
 }: InputHTMLAttributes<HTMLInputElement>) => {
+  const reduceMotion = useReducedMotion();
   const [focused, setFocused] = useState(false);
 
   return (
@@ -200,11 +203,11 @@ const ConversationalInput = ({
         {...inputProps}
         onFocus={(e) => {
           setFocused(true);
-          inputProps.onFocus?.(e);
+          onFocus?.(e);
         }}
         onBlur={(e) => {
           setFocused(false);
-          inputProps.onBlur?.(e);
+          onBlur?.(e);
         }}
         className={`${inputClassName} ${focused ? 'border-brand-accent/80' : ''}`.trim()}
       />
@@ -213,7 +216,7 @@ const ConversationalInput = ({
         className="pointer-events-none absolute bottom-0 left-0 right-0 h-0.5 origin-left bg-brand-accent"
         initial={false}
         animate={{scaleX: focused ? 1 : 0, opacity: focused ? 1 : 0}}
-        transition={{duration: 0.28, ease: [0.22, 1, 0.36, 1]}}
+        transition={{duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1]}}
       />
     </span>
   );
@@ -711,7 +714,16 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               variants={reduceMotion ? undefined : HERO_HEADLINE_LINE}
               className="block"
             >
-              scale-ups<span className="text-brand-accent">.</span>
+              scale-ups
+              <motion.span
+                className="text-brand-accent inline-block"
+                initial={false}
+                animate={reduceMotion ? {scale: 1} : {scale: [1, 1.2, 1]}}
+                transition={reduceMotion ? {duration: 0} : {delay: 0.85, duration: 0.48, ease: 'easeOut'}}
+                aria-hidden
+              >
+                .
+              </motion.span>
             </motion.span>
           </motion.h1>
 
@@ -1362,13 +1374,21 @@ const Pricing = () => {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/16 via-brand-accent/5 to-transparent" />
                     <motion.div
-                      initial={reduceMotion ? false : {opacity: 0.35}}
-                      whileInView={reduceMotion ? undefined : {opacity: [0.35, 1, 0.65]}}
+                      initial={reduceMotion ? false : {scaleX: 0, opacity: 0.35}}
+                      whileInView={
+                        reduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 1, opacity: [0.35, 1, 0.65, 1]}
+                      }
                       viewport={{once: true, amount: 0.5}}
-                      transition={{duration: 1.15, times: [0, 0.4, 1]}}
-                      className="absolute top-0 left-0 right-0 h-[2px] bg-brand-accent/65 section-accent-line-glow"
+                      transition={{duration: 0.85, ease: [0.22, 1, 0.36, 1]}}
+                      className="absolute top-0 left-0 right-0 h-[2px] origin-left bg-brand-accent section-accent-line-glow"
                     />
-                    <div className="absolute top-0 right-0 h-16 w-[2px] bg-brand-accent/55 section-accent-line-glow" />
+                    <motion.div
+                      initial={reduceMotion ? false : {scaleY: 0, opacity: 0.4}}
+                      whileInView={{scaleY: 1, opacity: 1}}
+                      viewport={{once: true, amount: 0.5}}
+                      transition={{delay: 0.1, duration: 0.45, ease: [0.22, 1, 0.36, 1]}}
+                      className="absolute top-0 right-0 h-16 w-[2px] origin-top bg-brand-accent/55 section-accent-line-glow"
+                    />
                   </div>
                 )}
                 <div className="relative">
