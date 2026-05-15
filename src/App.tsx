@@ -177,8 +177,6 @@ const SERVICE_DOT_CELLS: Record<ServiceDotPattern, [number, number][]> = {
     [0, 0],
     [0, 1],
     [0, 2],
-    [1, 0],
-    [1, 2],
     [2, 0],
     [2, 1],
     [2, 2],
@@ -304,18 +302,18 @@ const ServiceFlipTile = ({
   return (
     <article
       tabIndex={0}
-      className="flip-card aspect-[5/4] min-h-[148px] rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+      className="flip-card aspect-[5/2] min-h-[88px] rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
       aria-label={`${title}. ${description}`}
     >
       <div className="flip-card-inner h-full w-full">
         <div className={`flip-card-face ${frontStyles[variant]}`}>
           <ServiceDotMark pattern={pattern} tone={dotTone} />
-          <h4 className="font-display font-semibold text-lg md:text-xl tracking-tight leading-snug pr-2">
+          <h4 className="font-display font-semibold text-xl md:text-2xl tracking-tight leading-snug pr-2">
             {title}
           </h4>
         </div>
         <div className={`flip-card-face flip-card-back justify-center ${backStyles[variant]}`}>
-          <p className="text-sm md:text-[0.9375rem] leading-relaxed opacity-95">{description}</p>
+          <p className="text-base md:text-lg leading-relaxed opacity-95">{description}</p>
         </div>
       </div>
     </article>
@@ -618,9 +616,6 @@ const About = () => {
           </div>
 
           <div className="mt-16 md:mt-24 lg:mt-28">
-            <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-fg mb-8 md:mb-10">
-              How we work together<span className="text-brand-accent">.</span>
-            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
               {HOW_WE_WORK_TILES.map((tile) => (
                 <ServiceFlipTile key={tile.title} {...tile} />
