@@ -503,7 +503,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       id="home"
       ref={targetRef}
       aria-labelledby="hero-heading"
-      className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center border-b border-brand-fg/12"
+      className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center"
     >
       <motion.div
         initial={{opacity: 0}}
@@ -617,7 +617,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="mt-16 md:mt-24 lg:mt-28 pt-14 md:pt-16 border-t border-brand-fg/15 rounded-lg border border-brand-fg/12 bg-brand-fg/[0.04] px-6 py-10 md:px-10 md:py-12">
+          <div className="mt-16 md:mt-24 lg:mt-28">
             <h3 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-brand-fg mb-8 md:mb-10">
               How we work together<span className="text-brand-accent">.</span>
             </h3>
@@ -772,7 +772,6 @@ const CTA = () => {
                 exit={{opacity: 0, y: -8}}
                 transition={{duration: 0.35, ease: 'easeOut'}}
                 aria-labelledby="contact-heading"
-                className="rounded-xl border border-white/15 bg-white/[0.04] p-6 md:p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
               >
                 <h2
                   id="contact-heading"
@@ -924,7 +923,7 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-ink text-white overflow-hidden border-t border-white/12" aria-label="Site footer">
+    <footer className="relative bg-brand-ink text-white overflow-hidden" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="footer" />
       </div>
@@ -972,7 +971,7 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-fg/12">
+    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="work" />
       </div>
@@ -1070,7 +1069,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-fg/12">
+    <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="pricing" />
       </div>
