@@ -58,12 +58,12 @@
 
   body {
     @apply bg-brand-bg text-brand-fg font-sans antialiased;
+    background-color: var(--color-brand-bg);
     background-image:
-      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(46, 184, 220, 0.16), transparent 52%),
-      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(46, 184, 220, 0.1), transparent 50%),
-      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(0, 0, 0, 0.45), transparent 48%);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+      linear-gradient(180deg, rgba(11, 16, 24, 0.55) 0%, transparent 28%, transparent 72%, rgba(11, 16, 24, 0.65) 100%),
+      radial-gradient(circle, rgba(46, 184, 220, 0.09) 1px, transparent 1px);
+    background-size: 100% 100%, 32px 32px;
+    background-repeat: no-repeat, repeat;
     background-attachment: fixed;
   }
 }
@@ -134,5 +134,27 @@
 
   .flip-card-back {
     transform: rotateY(180deg);
+  }
+
+  .section-accent-grid {
+    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.38) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .section-accent-grid-ink {
+    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.42) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .section-accent-fade-b {
+    mask-image: linear-gradient(to bottom, black 0%, transparent 88%);
+  }
+
+  .section-accent-fade-t {
+    mask-image: linear-gradient(to top, black 0%, transparent 88%);
+  }
+
+  .section-accent-fade-r {
+    mask-image: linear-gradient(to right, black 0%, transparent 82%);
   }
 }

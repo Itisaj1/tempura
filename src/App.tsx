@@ -77,81 +77,52 @@ const LoadingLogo = () => {
   );
 };
 
-type RadialPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
+type AccentPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
 
-/** Soft accent atmosphere — blurred radials only (no lines or hard geometry). */
-const SectionRadials = ({preset}: {preset: RadialPreset}) => {
-  const blob = 'pointer-events-none absolute rounded-full';
-  switch (preset) {
-    case 'hero':
-      return (
+/** Section atmosphere — dot grid + thin accent hairlines (no radial blur). */
+const SectionAccent = ({preset}: {preset: AccentPreset}) => {
+  const onInk = preset === 'contact' || preset === 'footer';
+  const gridClass = onInk ? 'section-accent-grid-ink' : 'section-accent-grid';
+  const lineClass = onInk ? 'bg-brand-accent/40' : 'bg-brand-accent/22';
+  const line = `absolute ${lineClass}`;
+
+  return (
+    <>
+      <div className={`absolute inset-0 opacity-[0.38] ${gridClass} section-accent-fade-b`} aria-hidden />
+      {preset === 'hero' && (
         <>
-          <div
-            className={`${blob} -right-[18%] -top-[30%] h-[min(105vw,900px)] w-[min(105vw,900px)] bg-[radial-gradient(circle_at_36%_36%,rgba(0,129,167,0.3),transparent_58%)] blur-[58px]`}
-          />
-          <div
-            className={`${blob} -left-[28%] bottom-[-24%] h-[min(75vw,560px)] w-[min(75vw,560px)] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.32),transparent_56%)] blur-[52px]`}
-          />
+          <div className={`${line} top-0 right-[10%] h-[min(38vh,300px)] w-px`} aria-hidden />
+          <div className={`${line} top-[16%] right-[10%] h-px w-[min(26vw,220px)]`} aria-hidden />
+          <div className={`${line} bottom-[20%] left-[5%] h-px w-[min(34vw,300px)]`} aria-hidden />
         </>
-      );
-    case 'about':
-      return (
+      )}
+      {preset === 'about' && (
         <>
-          <div
-            className={`${blob} -left-[22%] top-[8%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.16),transparent_62%)] blur-[48px]`}
-          />
-          <div
-            className={`${blob} right-[-18%] bottom-[5%] h-[min(65vw,480px)] w-[min(65vw,480px)] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.28),transparent_58%)] blur-[44px]`}
-          />
+          <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
+          <div className={`${line} bottom-[18%] right-[8%] h-[min(28vh,220px)] w-px`} aria-hidden />
         </>
-      );
-    case 'work':
-      return (
+      )}
+      {preset === 'work' && (
+        <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
+      )}
+      {preset === 'pricing' && (
+        <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
+      )}
+      {preset === 'contact' && (
         <>
-          <div
-            className={`${blob} right-[-12%] top-[-8%] h-[min(85vw,640px)] w-[min(85vw,640px)] bg-[radial-gradient(circle_at_40%_40%,rgba(0,129,167,0.11),transparent_60%)] blur-[52px]`}
-          />
-          <div
-            className={`${blob} left-[-15%] bottom-[-12%] h-[min(55vw,420px)] w-[min(55vw,420px)] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.25),transparent_55%)] blur-[40px]`}
-          />
+          <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
+          <div className={`${line} top-[22%] left-[12%] h-px w-[min(30vw,240px)]`} aria-hidden />
+          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-fg/10`} aria-hidden />
         </>
-      );
-    case 'pricing':
-      return (
+      )}
+      {preset === 'footer' && (
         <>
-          <div
-            className={`${blob} right-[-10%] top-[20%] h-[min(80vw,600px)] w-[min(80vw,600px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.1),transparent_58%)] blur-[50px]`}
-          />
-          <div
-            className={`${blob} left-[5%] -top-[20%] h-[min(50vw,380px)] w-[min(50vw,380px)] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.22),transparent_55%)] blur-[42px]`}
-          />
+          <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
+          <div className={`${line} top-[20%] left-[4%] h-[min(24vh,180px)] w-px`} aria-hidden />
         </>
-      );
-    case 'contact':
-      return (
-        <>
-          <div
-            className={`${blob} right-[-8%] -top-[25%] h-[min(95vw,720px)] w-[min(95vw,720px)] bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.42),transparent_56%)] blur-[64px]`}
-          />
-          <div
-            className={`${blob} -left-[20%] bottom-[-35%] h-[min(90vw,680px)] w-[min(90vw,680px)] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09),transparent_55%)] blur-[56px]`}
-          />
-        </>
-      );
-    case 'footer':
-      return (
-        <>
-          <div
-            className={`${blob} right-[-15%] bottom-[-40%] h-[min(70vw,520px)] w-[min(70vw,520px)] bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.22),transparent_58%)] blur-[48px]`}
-          />
-          <div
-            className={`${blob} left-[-25%] top-[-30%] h-[min(55vw,400px)] w-[min(55vw,400px)] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_55%)] blur-[40px]`}
-          />
-        </>
-      );
-    default:
-      return null;
-  }
+      )}
+    </>
+  );
 };
 
 const CTA_BUTTON_BASE =
@@ -511,7 +482,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
       >
-        <SectionRadials preset="hero" />
+        <SectionAccent preset="hero" />
       </motion.div>
       <motion.div
         style={{opacity, y}}
@@ -570,7 +541,7 @@ const About = () => {
   return (
     <section id="about" aria-labelledby="about-heading" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionRadials preset="about" />
+        <SectionAccent preset="about" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -718,7 +689,7 @@ const CTA = () => {
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionRadials preset="contact" />
+        <SectionAccent preset="contact" />
       </div>
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
@@ -920,7 +891,7 @@ const Footer = () => {
   return (
     <footer className="relative bg-brand-ink text-white overflow-hidden" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionRadials preset="footer" />
+        <SectionAccent preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
@@ -968,7 +939,7 @@ const Projects = () => {
   return (
     <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionRadials preset="work" />
+        <SectionAccent preset="work" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -986,7 +957,8 @@ const Projects = () => {
               <div key={tile.id} className={`group ${tile.size}`}>
                 <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-fg/14 bg-gradient-to-br from-brand-surface via-brand-elevated to-brand-accent/[0.18]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
-                    <div className="absolute -left-[8%] -top-[12%] h-[72%] w-[58%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,129,167,0.14),transparent_68%)] blur-2xl" />
+                    <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/35" />
+                    <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/35" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm bg-brand-elevated/92 border border-brand-fg/14 px-5 py-3 text-sm font-medium text-brand-fg/68 backdrop-blur-md shadow-sm shadow-black/25">
@@ -1066,7 +1038,7 @@ const Pricing = () => {
   return (
     <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionRadials preset="pricing" />
+        <SectionAccent preset="pricing" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -1093,7 +1065,8 @@ const Pricing = () => {
                     className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
                     aria-hidden
                   >
-                    <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.18),transparent_58%)] blur-3xl" />
+                    <div className="absolute top-0 left-0 right-0 h-px bg-brand-accent/30" />
+                    <div className="absolute top-0 right-0 h-12 w-px bg-brand-accent/25" />
                   </div>
                 )}
                 <div className="relative">
