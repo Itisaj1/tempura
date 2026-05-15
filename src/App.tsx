@@ -5,6 +5,7 @@ import {
   animate,
   motion,
   useMotionValue,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -75,6 +76,7 @@ const LoadingLogo = () => {
         <span ref={textRef}>panko studio</span>
       </motion.span>
       <motion.span
+        aria-hidden
         style={{x: dotX, y: '-50%'}}
         className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent"
       />
@@ -173,17 +175,20 @@ const SectionReveal = ({
   children: ReactNode;
   className?: string;
   delay?: number;
-}) => (
-  <motion.div
-    className={className}
-    initial={{opacity: 0, y: 36}}
-    whileInView={{opacity: 1, y: 0}}
-    viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
-    transition={{duration: 1.05, ease: SECTION_REVEAL_EASE, delay}}
-  >
-    {children}
-  </motion.div>
-);
+}) => {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 36}}
+      whileInView={{opacity: 1, y: 0}}
+      viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
+      transition={{duration: reduceMotion ? 0 : 1.05, ease: SECTION_REVEAL_EASE, delay: reduceMotion ? 0 : delay}}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   const [displayValue, setDisplayValue] = useState(0);
@@ -262,11 +267,14 @@ const Navbar = ({
     ['blur(0px)', 'blur(6px)', 'blur(14px)', 'blur(20px)'],
   );
 
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.nav
-      initial={{y: -100}}
+      aria-label="Primary"
+      initial={reduceMotion ? {y: 0} : {y: -100}}
       animate={{y: 0}}
-      transition={{type: 'spring', stiffness: 220, damping: 28}}
+      transition={reduceMotion ? {duration: 0} : {type: 'spring', stiffness: 220, damping: 28}}
       style={{
         top,
         left,
@@ -280,29 +288,36 @@ const Navbar = ({
       }}
       className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/18"
     >
-      <div className="flex items-center gap-2">
-        <span className="text-lg md:text-xl font-bold font-display tracking-tight text-brand-ink">panko studio</span>
-        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
-      </div>
+      <a
+        href="#home"
+        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-ink"
+        aria-current={activeSection === 'home' ? 'page' : undefined}
+      >
+        panko studio
+        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent motion-reduce:animate-none animate-pulse" aria-hidden />
+      </a>
 
-      <div className="hidden md:flex items-center gap-6 text-sm font-medium ml-auto text-brand-ink/88">
+      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-ink/88 list-none p-0 m-0">
         {navItems.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
-              activeSection === item.id ? 'translate-x-1 text-brand-ink' : 'translate-x-0 hover:bg-brand-ink/[0.04]'
-            }`}
-          >
-            <span
-              className={`h-1.5 w-1.5 rounded-full transition-all ${
-                activeSection === item.id ? 'opacity-100 bg-brand-accent scale-100' : 'opacity-0 scale-0'
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              aria-current={activeSection === item.id ? 'page' : undefined}
+              className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
+                activeSection === item.id ? 'translate-x-1 text-brand-ink' : 'translate-x-0 hover:bg-brand-ink/[0.04]'
               }`}
-            />
-            {item.label}
-          </a>
+            >
+              <span
+                aria-hidden
+                className={`h-1.5 w-1.5 rounded-full transition-all ${
+                  activeSection === item.id ? 'opacity-100 bg-brand-accent scale-100' : 'opacity-0 scale-0'
+                }`}
+              />
+              {item.label}
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <motion.a
         whileHover={{y: -1}}
@@ -318,6 +333,7 @@ const Navbar = ({
 
 const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const targetRef = heroRef;
+  const reduceMotion = useReducedMotion();
   const {scrollYProgress} = useScroll({
     target: targetRef,
     offset: ['start start', 'end start'],
@@ -327,7 +343,12 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
 
   return (
-    <section id="home" ref={targetRef} className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center border-b border-brand-ink/12">
+    <section
+      id="home"
+      ref={targetRef}
+      aria-labelledby="hero-heading"
+      className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center border-b border-brand-ink/12"
+    >
       <motion.div
         initial={{opacity: 0}}
         whileInView={{opacity: 1}}
@@ -343,13 +364,16 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         className="relative z-10 max-w-5xl mx-auto w-full"
       >
         <motion.div
-          initial={{opacity: 0, y: 12, filter: 'blur(6px)'}}
+          initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 12, filter: 'blur(6px)'}}
           whileInView={{opacity: 1, y: 0, filter: 'blur(0px)'}}
           viewport={{once: true, amount: 0.25}}
-          transition={{duration: 0.42, ease: [0.22, 1, 0.36, 1]}}
+          transition={{duration: reduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1]}}
           className="relative"
         >
-          <h1 className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-ink">
+          <h1
+            id="hero-heading"
+            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-ink"
+          >
             Design for startups
             <span className="text-brand-ink/45"> and</span>
             <br />
@@ -368,8 +392,8 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${CTA_BUTTON_BASE}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-ink/42 group-hover:text-white/80 transition-colors">
-                <ArrowRight className="w-4 h-4" />
+              <span className="ml-1 text-brand-ink/42 group-hover:text-white/80 transition-colors" aria-hidden>
+                <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
 
@@ -379,7 +403,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/62 hover:text-brand-ink/88 transition-colors"
             >
               View selected work
-              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </motion.a>
           </div>
         </motion.div>
@@ -390,37 +414,25 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="about" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52">About</span>
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/60">About</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
-              <h2 className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
+              <h2 id="about-heading" className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
                 <span className="text-brand-ink/48">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
-                Senior product talent that drives design projects from wireframe to full release alongside your engineers.
-              </p>
-              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
-                We sit in the messy middle between strategy decks and shipped code: framing problems with your leadership,
-                turning research into decisions, and keeping design artifacts honest enough that engineering can run with them.
-              </p>
-              <p className="text-lg md:text-xl text-brand-ink/68 leading-relaxed mb-6">
-                Most of our work is with teams building AI-native workflows, complex data products, or redesigning legacy
-                tools under real commercial pressure. We are used to ambiguity, tight feedback loops, and stakeholders who
-                care about velocity without sacrificing craft.
-              </p>
-              <p className="text-base md:text-lg text-brand-ink/60 leading-relaxed mb-10">
-                Whether you need a focused sprint to unblock a roadmap bet or a longer partner for ongoing discovery and
-                delivery, we anchor on outcomes you can measure — adoption, time-to-task, and clarity for your customers.
+              <p className="text-lg md:text-xl text-brand-ink/75 leading-relaxed mb-10">
+                Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
+                that need clear decisions, honest handoffs, and design that ships.
               </p>
 
               <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
@@ -435,8 +447,11 @@ const About = () => {
                 { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
                 { label: 4, sub: 'week cycles from brief to reviewable UI', icon: <Layers className="w-5 h-5" />, suffix: '' },
               ].map((stat, idx) => (
-                <div key={idx} className="flex items-start gap-5 pb-6 border-b border-brand-ink/15 last:border-0 last:pb-0">
-                  <div className="mt-2 text-brand-ink/52">{stat.icon}</div>
+                <div key={idx}
+                  role="group"
+                  aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
+                  className="flex items-start gap-5 pb-6 border-b border-brand-ink/15 last:border-0 last:pb-0">
+                  <div className="mt-2 text-brand-ink/52" aria-hidden>{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
                     <div className="text-brand-ink/68">{stat.sub}</div>
@@ -454,20 +469,20 @@ const About = () => {
               {[
                 {
                   title: 'Shared context first',
-                  body: 'We start with your customers, constraints, and metrics — not a blank canvas. Workshops, async docs, and recorded walkthroughs keep everyone aligned.',
+                  body: 'We align on customers, constraints, and metrics before pixels.',
                 },
                 {
                   title: 'Design that ships',
-                  body: 'Fidelity matches the decision: sketches when speed matters, prototypes when risk is high, and systems when scale breaks. Handoffs include rationale, not just pixels.',
+                  body: 'Right fidelity for the decision — with rationale in every handoff.',
                 },
                 {
                   title: 'Steady through complexity',
-                  body: 'B2B and AI products rarely move in straight lines. We help you sequence bets, cut scope without losing the story, and keep quality visible to leadership and engineering.',
+                  body: 'We help you sequence bets and keep quality visible as scope shifts.',
                 },
               ].map((item) => (
                 <div key={item.title} className="space-y-3">
                   <div className="flex items-center gap-2 text-brand-ink">
-                    <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-accent" strokeWidth={2} />
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-accent" strokeWidth={2} aria-hidden />
                     <span className="font-display font-semibold text-lg md:text-xl tracking-tight">{item.title}</span>
                   </div>
                   <p className="text-sm md:text-base text-brand-ink/65 leading-relaxed pl-0 md:pl-7">{item.body}</p>
@@ -567,6 +582,7 @@ const CTA = () => {
   return (
     <section
       id="contact"
+      aria-labelledby="contact-heading"
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -576,7 +592,7 @@ const CTA = () => {
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
               Contact
             </div>
 
@@ -631,7 +647,7 @@ const CTA = () => {
 
                 <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-fullName" className="text-white/72">
+                    <label htmlFor="contact-fullName" className="text-white/80">
                       My name is
                     </label>
                     <input
@@ -639,7 +655,8 @@ const CTA = () => {
                       name="fullName"
                       type="text"
                       autoComplete="name"
-                      aria-label="Your full name"
+                      required
+                      aria-required="true"
                       value={fullName}
                       onChange={(e) => {
                         setFullName(e.target.value);
@@ -649,7 +666,7 @@ const CTA = () => {
                       disabled={formStatus === 'loading'}
                       className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
                     />
-                    <label htmlFor="contact-company" className="text-white/72">
+                    <label htmlFor="contact-company" className="text-white/80">
                       from
                     </label>
                     <input
@@ -657,7 +674,8 @@ const CTA = () => {
                       name="company"
                       type="text"
                       autoComplete="organization"
-                      aria-label="Your company"
+                      required
+                      aria-required="true"
                       value={company}
                       onChange={(e) => {
                         setCompany(e.target.value);
@@ -670,8 +688,8 @@ const CTA = () => {
                   </div>
 
                   <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="text-white/72 mr-1 inline">
-                      I want to chat about designs for my
+                    <legend className="text-white/80 mr-1 inline">
+                      I want to chat about designs for my (pick at least one)
                     </legend>
                     {topics.map((t) => {
                       const selected = selectedTopics.includes(t);
@@ -696,7 +714,7 @@ const CTA = () => {
                   </fieldset>
 
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-email" className="text-white/72">
+                    <label htmlFor="contact-email" className="text-white/80">
                       You can reach me at
                     </label>
                     <input
@@ -704,7 +722,8 @@ const CTA = () => {
                       name="email"
                       type="email"
                       autoComplete="email"
-                      aria-label="Your email address"
+                      required
+                      aria-required="true"
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
@@ -768,7 +787,7 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-ink text-white overflow-hidden border-t border-white/12">
+    <footer className="relative bg-brand-ink text-white overflow-hidden border-t border-white/12" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="footer" />
       </div>
@@ -794,7 +813,8 @@ const Footer = () => {
               <a
                 href="https://www.linkedin.com"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn (opens in new tab)"
                 className="hover:text-white transition-colors"
               >
                 LinkedIn
@@ -817,17 +837,17 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
+    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="work" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52 mb-3 block">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/60 mb-3 block">
               Selected Work
-            </span>
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+            </p>
+            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
               Crafting digital excellence.
             </h2>
           </div>
@@ -915,15 +935,15 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
+    <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden border-t border-brand-ink/12">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionRadials preset="pricing" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-brand-ink/52 mb-4 block">Pricing</span>
-            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/60 mb-4 block">Pricing</p>
+            <h2 id="pricing-heading" className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
               Transparent investment.
             </h2>
           </div>
@@ -1058,8 +1078,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen selection:bg-brand-accent selection:text-brand-ink">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Navbar dockProgress={dockProgress} activeSection={activeSection} />
-      <main>
+      <main id="main-content" tabIndex={-1} inert={showLoader ? true : undefined}>
         <Hero heroRef={heroRef} />
         <About />
         <Projects />
@@ -1071,6 +1094,11 @@ export default function App() {
         initial={{opacity: 1}}
         animate={{opacity: showLoader ? 1 : 0}}
         transition={{duration: 0.45, ease: 'easeOut'}}
+        role="status"
+        aria-live="polite"
+        aria-busy={showLoader}
+        aria-hidden={!showLoader}
+        aria-label="Loading site"
         className={`fixed inset-0 z-[100] flex items-center justify-center bg-brand-bg ${
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
