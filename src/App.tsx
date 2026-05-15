@@ -816,8 +816,14 @@ const About = () => {
 
           <div className="mt-16 md:mt-24 lg:mt-28">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {HOW_WE_WORK_TILES.map((tile) => (
-                <ServiceFlipTile key={tile.title} {...tile} />
+              {HOW_WE_WORK_TILES.map(({title, description, variant, pattern}) => (
+                <ServiceFlipTile
+                  key={title}
+                  title={title}
+                  description={description}
+                  variant={variant}
+                  pattern={pattern}
+                />
               ))}
             </div>
           </div>
