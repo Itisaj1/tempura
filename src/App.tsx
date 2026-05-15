@@ -1173,7 +1173,7 @@ const Projects = () => {
 
   return (
     <section id="work" ref={sectionRef} aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <motion.div className="pointer-events-none absolute inset-0" aria-hidden>
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="work" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
