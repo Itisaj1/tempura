@@ -983,7 +983,7 @@ const Footer = () => {
                 Contact
               </a>
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/in/ahania/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn (opens in new tab)"
