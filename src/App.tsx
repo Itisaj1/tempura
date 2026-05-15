@@ -81,64 +81,37 @@ const LoadingLogo = () => {
 
 type AccentPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
 
-/** Section atmosphere — dot grid + thin accent hairlines (no radial blur). */
+/** Section atmosphere — sparse accent hairlines only. */
 const SectionAccent = ({preset}: {preset: AccentPreset}) => {
   const onInk = preset === 'contact' || preset === 'footer';
-  const gridClass = onInk ? 'section-accent-grid-ink' : 'section-accent-grid';
-  const lineClass = onInk ? 'bg-brand-accent/58' : 'bg-brand-accent/48';
-  const creamLineClass = onInk ? 'bg-brand-cream/22' : 'bg-brand-cream/16';
+  const lineClass = onInk ? 'bg-brand-accent/35' : 'bg-brand-accent/22';
   const line = `absolute ${lineClass}`;
-  const creamLine = `absolute ${creamLineClass}`;
 
   return (
     <>
-      <div
-        className="absolute inset-x-0 top-0 h-[min(42vh,360px)] bg-gradient-to-b from-brand-cream/[0.05] to-transparent"
-        aria-hidden
-      />
-      <div className={`absolute inset-0 opacity-[0.55] ${gridClass} section-accent-fade-b`} aria-hidden />
-      <div className={`absolute inset-0 opacity-[0.35] section-accent-grid-cream section-accent-fade-b`} aria-hidden />
       {preset === 'hero' && (
         <>
           <div className={`${line} top-0 right-[10%] h-[min(38vh,300px)] w-px`} aria-hidden />
           <div className={`${line} top-[16%] right-[10%] h-px w-[min(26vw,220px)]`} aria-hidden />
-          <div className={`${line} bottom-[20%] left-[5%] h-px w-[min(34vw,300px)]`} aria-hidden />
-          <div className={`${creamLine} top-[28%] left-[8%] h-px w-[min(28vw,240px)]`} aria-hidden />
-          <div className={`${creamLine} bottom-[12%] right-[6%] h-[min(22vh,180px)] w-px`} aria-hidden />
         </>
       )}
       {preset === 'about' && (
-        <>
-          <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
-          <div className={`${line} bottom-[18%] right-[8%] h-[min(28vh,220px)] w-px`} aria-hidden />
-          <div className={`${creamLine} top-[38%] right-[4%] h-px w-[min(32vw,280px)]`} aria-hidden />
-        </>
+        <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
       )}
       {preset === 'work' && (
-        <>
-          <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
-          <div className={`${creamLine} bottom-[24%] left-0 h-px w-[min(36vw,300px)]`} aria-hidden />
-        </>
+        <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
       )}
       {preset === 'pricing' && (
-        <>
-          <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
-          <div className={`${creamLine} top-[10%] right-[5%] h-[min(20vh,160px)] w-px`} aria-hidden />
-        </>
+        <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
       )}
       {preset === 'contact' && (
         <>
           <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
-          <div className={`${line} top-[22%] left-[12%] h-px w-[min(30vw,240px)]`} aria-hidden />
-          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-cream/20`} aria-hidden />
+          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-cream/12`} aria-hidden />
         </>
       )}
       {preset === 'footer' && (
-        <>
-          <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
-          <div className={`${line} top-[20%] left-[4%] h-[min(24vh,180px)] w-px`} aria-hidden />
-          <div className={`${creamLine} top-[8%] right-[10%] h-px w-[min(30vw,260px)]`} aria-hidden />
-        </>
+        <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
       )}
     </>
   );
