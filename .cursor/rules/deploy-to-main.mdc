@@ -1,0 +1,18 @@
+---
+description: After completing site edits, commit and push to main so Vercel deploys immediately.
+alwaysApply: true
+---
+
+# Deploy to main after edits
+
+When you finish implementing or fixing changes in this repo (especially `src/`, `public/`, or config that affects the live site):
+
+1. **Commit and push to `main` by default** — do not wait for the user to ask, unless they explicitly say not to commit, not to push, or want changes kept local only.
+2. Use a clear commit message focused on why the change was made.
+3. Push with `git push origin main` after a successful commit.
+4. Briefly confirm the commit hash and that `main` was pushed so the user knows Vercel can pick it up.
+
+Skip auto-commit/push only when:
+- The user asked for a plan, review, or explanation with no code changes.
+- There are no meaningful changes to commit.
+- The user said to hold off on git operations.
