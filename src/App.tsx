@@ -66,7 +66,7 @@ const LoadingLogo = () => {
   }, [textWidth, progress]);
 
   return (
-    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-fg">
+    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-cream">
       <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
         <span ref={textRef}>panko studio</span>
       </motion.span>
@@ -85,42 +85,59 @@ type AccentPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer'
 const SectionAccent = ({preset}: {preset: AccentPreset}) => {
   const onInk = preset === 'contact' || preset === 'footer';
   const gridClass = onInk ? 'section-accent-grid-ink' : 'section-accent-grid';
-  const lineClass = onInk ? 'bg-brand-accent/40' : 'bg-brand-accent/22';
+  const lineClass = onInk ? 'bg-brand-accent/58' : 'bg-brand-accent/48';
+  const creamLineClass = onInk ? 'bg-brand-cream/22' : 'bg-brand-cream/16';
   const line = `absolute ${lineClass}`;
+  const creamLine = `absolute ${creamLineClass}`;
 
   return (
     <>
-      <div className={`absolute inset-0 opacity-[0.38] ${gridClass} section-accent-fade-b`} aria-hidden />
+      <div
+        className="absolute inset-x-0 top-0 h-[min(42vh,360px)] bg-gradient-to-b from-brand-cream/[0.05] to-transparent"
+        aria-hidden
+      />
+      <div className={`absolute inset-0 opacity-[0.55] ${gridClass} section-accent-fade-b`} aria-hidden />
+      <div className={`absolute inset-0 opacity-[0.35] section-accent-grid-cream section-accent-fade-b`} aria-hidden />
       {preset === 'hero' && (
         <>
           <div className={`${line} top-0 right-[10%] h-[min(38vh,300px)] w-px`} aria-hidden />
           <div className={`${line} top-[16%] right-[10%] h-px w-[min(26vw,220px)]`} aria-hidden />
           <div className={`${line} bottom-[20%] left-[5%] h-px w-[min(34vw,300px)]`} aria-hidden />
+          <div className={`${creamLine} top-[28%] left-[8%] h-px w-[min(28vw,240px)]`} aria-hidden />
+          <div className={`${creamLine} bottom-[12%] right-[6%] h-[min(22vh,180px)] w-px`} aria-hidden />
         </>
       )}
       {preset === 'about' && (
         <>
           <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
           <div className={`${line} bottom-[18%] right-[8%] h-[min(28vh,220px)] w-px`} aria-hidden />
+          <div className={`${creamLine} top-[38%] right-[4%] h-px w-[min(32vw,280px)]`} aria-hidden />
         </>
       )}
       {preset === 'work' && (
-        <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
+        <>
+          <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
+          <div className={`${creamLine} bottom-[24%] left-0 h-px w-[min(36vw,300px)]`} aria-hidden />
+        </>
       )}
       {preset === 'pricing' && (
-        <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
+        <>
+          <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
+          <div className={`${creamLine} top-[10%] right-[5%] h-[min(20vh,160px)] w-px`} aria-hidden />
+        </>
       )}
       {preset === 'contact' && (
         <>
           <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
           <div className={`${line} top-[22%] left-[12%] h-px w-[min(30vw,240px)]`} aria-hidden />
-          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-fg/10`} aria-hidden />
+          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-cream/20`} aria-hidden />
         </>
       )}
       {preset === 'footer' && (
         <>
           <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
           <div className={`${line} top-[20%] left-[4%] h-[min(24vh,180px)] w-px`} aria-hidden />
+          <div className={`${creamLine} top-[8%] right-[10%] h-px w-[min(30vw,260px)]`} aria-hidden />
         </>
       )}
     </>
@@ -128,7 +145,7 @@ const SectionAccent = ({preset}: {preset: AccentPreset}) => {
 };
 
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-fg/22 bg-brand-elevated px-6 py-3 font-semibold text-brand-fg transition-colors hover:bg-brand-fg hover:text-brand-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-cream/30 bg-brand-cream/[0.08] px-6 py-3 font-semibold text-brand-cream transition-colors hover:bg-brand-cream hover:text-brand-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -169,7 +186,7 @@ const ConversationalInput = ({
           setFocused(false);
           onBlur?.(e);
         }}
-        className={`w-full border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:outline-none disabled:opacity-60 ${inputClassName ?? ''}`}
+        className={`w-full border-b border-brand-cream/35 bg-transparent px-1 py-1 text-brand-cream placeholder:text-brand-cream/45 focus:outline-none disabled:opacity-60 ${inputClassName ?? ''}`}
       />
       <motion.span
         aria-hidden
@@ -311,14 +328,14 @@ const ServiceFlipTile = ({
   pattern,
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-accent/22 border border-brand-accent/40 text-brand-fg',
-    light: 'bg-brand-surface border border-brand-fg/14 text-brand-fg',
-    ink: 'bg-brand-elevated border border-brand-fg/18 text-brand-fg',
+    accent: 'bg-brand-accent/22 border border-brand-accent/50 text-brand-cream',
+    light: 'bg-brand-surface border border-brand-cream/22 text-brand-cream',
+    ink: 'bg-brand-elevated border border-brand-cream/26 text-brand-cream',
   };
   const backStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-ink text-brand-cream border border-brand-fg/12',
-    light: 'bg-brand-ink text-brand-cream border border-brand-fg/12',
-    ink: 'bg-brand-surface text-brand-fg border border-brand-fg/14',
+    accent: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
+    light: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
+    ink: 'bg-brand-surface text-brand-cream border border-brand-cream/22',
   };
   const dotTone = variant === 'ink' ? 'cream' : 'ink';
 
@@ -394,7 +411,7 @@ const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   }, [hasAnimated, value]);
 
   return (
-    <div ref={ref} className="text-3xl md:text-4xl font-bold font-display mb-1">
+    <div ref={ref} className="text-3xl md:text-4xl font-bold font-display mb-1 text-brand-cream">
       {displayValue}
       {suffix}
     </div>
@@ -426,7 +443,7 @@ const Navbar = ({
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 14px 40px rgba(0,0,0,0.28)', '0px 22px 60px rgba(0,0,0,0.42)'],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(0,0,0,0.2)', '0px 12px 32px rgba(0,0,0,0.28)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
@@ -436,12 +453,12 @@ const Navbar = ({
   const shellBorder = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(235, 230, 222, 0)', 'rgba(235, 230, 222, 0.06)', 'rgba(235, 230, 222, 0.1)', 'rgba(235, 230, 222, 0.14)'],
+    ['rgba(247, 244, 239, 0)', 'rgba(247, 244, 239, 0.1)', 'rgba(247, 244, 239, 0.16)', 'rgba(247, 244, 239, 0.22)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['blur(0px)', 'blur(6px)', 'blur(14px)', 'blur(20px)'],
+    ['blur(0px)', 'blur(4px)', 'blur(8px)', 'blur(10px)'],
   );
 
   const reduceMotion = useReducedMotion();
@@ -463,25 +480,25 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-fg/18"
+      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-cream/22"
     >
       <a
         href="#home"
-        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-fg"
+        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-cream"
         aria-current={activeSection === 'home' ? 'page' : undefined}
       >
         panko studio
-        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent motion-reduce:animate-none animate-pulse" aria-hidden />
+        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
       </a>
 
-      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-fg/88 list-none p-0 m-0">
+      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-cream/92 list-none p-0 m-0">
         {navItems.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
               aria-current={activeSection === item.id ? 'page' : undefined}
               className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
-                activeSection === item.id ? 'translate-x-1 text-brand-fg' : 'translate-x-0 hover:bg-brand-fg/[0.06]'
+                activeSection === item.id ? 'translate-x-1 text-brand-cream' : 'translate-x-0 hover:bg-brand-cream/10'
               }`}
             >
               <span
@@ -547,11 +564,11 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             initial={reduceMotion ? false : 'hidden'}
             whileInView={reduceMotion ? undefined : 'visible'}
             viewport={{once: true, amount: 0.25}}
-            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-fg"
+            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-cream"
           >
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               Design for startups
-              <span className="text-brand-fg/45"> and</span>
+              <span className="text-brand-cream/58"> and</span>
             </motion.span>
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               scale-ups
@@ -576,7 +593,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-fg/78 max-w-2xl leading-relaxed"
+            className="mt-6 text-xl md:text-2xl text-brand-cream/88 max-w-2xl leading-relaxed"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
@@ -589,7 +606,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${CTA_BUTTON_BASE}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-fg/42 group-hover:text-brand-bg/90 transition-colors" aria-hidden>
+              <span className="ml-1 text-brand-cream/50 group-hover:text-brand-bg/90 transition-colors" aria-hidden>
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
@@ -597,7 +614,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-fg/62 hover:text-brand-fg/88 transition-colors"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-cream/78 hover:text-brand-cream transition-colors"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
@@ -618,16 +635,16 @@ const About = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-fg/60">About</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72">About</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
               <h2 id="about-heading" className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
-                <span className="text-brand-fg/48">Product management and design</span>{' '}
-                <span className="text-brand-fg">for</span> AI x B2B teams.
+                <span className="text-brand-cream/62">Product management and design</span>{' '}
+                <span className="text-brand-cream">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-fg/75 leading-relaxed mb-10">
+              <p className="text-lg md:text-xl text-brand-cream/88 leading-relaxed mb-10">
                 Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
                 that need clear decisions, honest handoffs, and design that ships.
               </p>
@@ -647,11 +664,11 @@ const About = () => {
                 <div key={idx}
                   role="group"
                   aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
-                  className="flex items-start gap-5 pb-6 border-b border-brand-fg/15 last:border-0 last:pb-0">
-                  <div className="mt-2 text-brand-fg/52" aria-hidden>{stat.icon}</div>
+                  className="flex items-start gap-5 pb-6 border-b border-brand-cream/24 last:border-0 last:pb-0">
+                  <div className="mt-2 text-brand-cream/75" aria-hidden>{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
-                    <div className="text-brand-fg/68">{stat.sub}</div>
+                    <div className="text-brand-cream/82">{stat.sub}</div>
                   </div>
                 </div>
               ))}
@@ -758,7 +775,7 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
+      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-brand-cream min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="contact" />
@@ -766,7 +783,7 @@ const CTA = () => {
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-white/55 mb-5 flex items-center gap-3">
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-cream/70 mb-5 flex items-center gap-3">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
               Contact
             </div>
@@ -791,13 +808,13 @@ const CTA = () => {
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
-                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-white">
+                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-cream">
                   Thank you, {submittedName}
                   <span className="text-brand-accent">.</span>
                 </h2>
-                <p className="text-lg md:text-xl text-white/70 max-w-xl leading-relaxed">
+                <p className="text-lg md:text-xl text-brand-cream/85 max-w-xl leading-relaxed">
                   We&apos;ve got your note and a confirmation on the way to{' '}
-                  <span className="text-white/90">{email.trim()}</span>. We&apos;ll be in touch
+                  <span className="text-brand-cream">{email.trim()}</span>. We&apos;ll be in touch
                   shortly.
                 </p>
               </motion.div>
@@ -813,17 +830,17 @@ const CTA = () => {
               >
                 <h2
                   id="contact-heading"
-                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-white"
+                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-cream"
                 >
                   Let&apos;s collaborate
                   <span className="text-brand-accent">.</span>
                 </h2>
 
-                <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
+                <div className="space-y-6 text-base md:text-lg text-brand-cream/90 leading-relaxed">
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-fullName"
-                      className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white"
+                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
                     >
                       My name is
                     </label>
@@ -845,7 +862,7 @@ const CTA = () => {
                     />
                     <label
                       htmlFor="contact-company"
-                      className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white"
+                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
                     >
                       from
                     </label>
@@ -868,7 +885,7 @@ const CTA = () => {
                   </div>
 
                   <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="text-white/80 mr-1 inline">
+                    <legend className="text-brand-cream/85 mr-1 inline">
                       I want to chat about designs for my (pick at least one)
                     </legend>
                     {topics.map((t) => {
@@ -883,8 +900,8 @@ const CTA = () => {
                           disabled={formStatus === 'loading'}
                           className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
-                              ? 'border-brand-accent bg-brand-accent/20 text-white'
-                              : 'border-white/20 bg-white/[0.04] text-white/70 hover:border-white/35 hover:bg-white/[0.08]'
+                              ? 'border-brand-accent bg-brand-accent/22 text-brand-cream'
+                              : 'border-brand-cream/25 bg-brand-cream/[0.06] text-brand-cream/78 hover:border-brand-cream/40 hover:bg-brand-cream/12'
                           }`}
                         >
                           {t}
@@ -896,7 +913,7 @@ const CTA = () => {
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-email"
-                      className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white"
+                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
                     >
                       You can reach me at
                     </label>
@@ -942,7 +959,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-white/15 bg-brand-cream px-6 py-3 font-semibold text-brand-ink transition-colors hover:border-transparent hover:bg-brand-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-cream disabled:hover:text-brand-ink"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-cream/25 bg-brand-cream px-6 py-3 font-semibold text-brand-ink transition-colors hover:border-transparent hover:bg-brand-accent hover:text-brand-cream focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-cream disabled:hover:text-brand-ink"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -952,10 +969,10 @@ const CTA = () => {
                       aria-hidden
                       animate={{rotate: 360}}
                       transition={{duration: 0.9, repeat: Infinity, ease: 'linear'}}
-                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-fg/30 border-t-brand-ink"
+                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-cream/35 border-t-brand-ink"
                     />
                   ) : (
-                    <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-white/85" />
+                    <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-brand-cream/90" />
                   )}
                 </motion.button>
               </motion.form>
@@ -970,26 +987,26 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-ink text-white overflow-hidden" aria-label="Site footer">
+    <footer className="relative bg-brand-ink text-brand-cream overflow-hidden" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-white">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-cream">
               panko studio
             </div>
-            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-white/75">
-              <a href="#about" className="hover:text-white transition-colors">
+            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-cream/88">
+              <a href="#about" className="hover:text-brand-cream transition-colors">
                 About
               </a>
-              <a href="#work" className="hover:text-white transition-colors">
+              <a href="#work" className="hover:text-brand-cream transition-colors">
                 Work
               </a>
-              <a href="#pricing" className="hover:text-white transition-colors">
+              <a href="#pricing" className="hover:text-brand-cream transition-colors">
                 Pricing
               </a>
-              <a href="#contact" className="hover:text-white transition-colors">
+              <a href="#contact" className="hover:text-brand-cream transition-colors">
                 Contact
               </a>
               <a
@@ -997,13 +1014,13 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn (opens in new tab)"
-                className="hover:text-white transition-colors"
+                className="hover:text-brand-cream transition-colors"
               >
                 LinkedIn
               </a>
             </div>
           </div>
-          <div className="mt-10 text-sm text-white/55 border-t border-white/10 pt-8">© 2026 Panko Studio</div>
+          <div className="mt-10 text-sm text-brand-cream/65 border-t border-brand-cream/18 pt-8">© 2026 Panko Studio</div>
       </div>
     </footer>
   );
@@ -1025,10 +1042,10 @@ const Projects = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-fg/60 mb-3 block">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72 mb-3 block">
               Selected Work
             </p>
-            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-fg">
+            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-cream">
               Crafting digital excellence.
             </h2>
           </div>
@@ -1036,23 +1053,23 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-fg/14 bg-gradient-to-br from-brand-surface via-brand-elevated to-brand-accent/[0.18]`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-cream/22 bg-gradient-to-br from-brand-surface via-brand-elevated to-brand-cream/[0.06]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
-                    <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/35" />
-                    <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/35" />
+                    <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/55" />
+                    <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/55" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm bg-brand-elevated/92 border border-brand-fg/14 px-5 py-3 text-sm font-medium text-brand-fg/68 backdrop-blur-md shadow-sm shadow-black/25">
+                    <div className="rounded-sm bg-brand-elevated/92 border border-brand-cream/22 px-5 py-3 text-sm font-medium text-brand-cream/82 shadow-sm shadow-black/20">
                       Case study placeholder
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 flex items-center justify-between px-2">
                   <div>
-                    <h3 className="text-xl font-bold font-display text-brand-fg/90">Project</h3>
-                    <p className="text-sm font-medium text-brand-fg/52">Coming soon</p>
+                    <h3 className="text-xl font-bold font-display text-brand-cream">Project</h3>
+                    <p className="text-sm font-medium text-brand-cream/75">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-fg/12 bg-brand-fg/[0.08] text-brand-fg/55 transition-colors group-hover:border-brand-accent/35 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-cream/20 bg-brand-cream/10 text-brand-cream/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/18 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -1125,8 +1142,8 @@ const Pricing = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-12">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-fg/60 mb-4 block">Pricing</p>
-            <h2 id="pricing-heading" className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-fg">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72 mb-4 block">Pricing</p>
+            <h2 id="pricing-heading" className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-cream">
               Transparent investment.
             </h2>
           </div>
@@ -1138,10 +1155,10 @@ const Pricing = () => {
               <motion.div
                 key={idx}
                 whileHover={{y: featured ? -6 : -3}}
-                className={`relative p-8 flex flex-col justify-between border bg-brand-surface/95 backdrop-blur-sm shadow-[0_20px_64px_rgba(0,0,0,0.38)] transition-colors ${
+                className={`relative p-8 flex flex-col justify-between border bg-brand-surface/95 shadow-[0_8px_28px_rgba(0,0,0,0.22)] transition-colors ${
                   featured
-                    ? 'border-brand-accent/40 rounded-lg rounded-tl-2xl'
-                    : 'border-brand-fg/16 rounded-md'
+                    ? 'border-brand-accent/55 rounded-lg rounded-tl-2xl'
+                    : 'border-brand-cream/24 rounded-md'
                 }`}
               >
                 {featured && (
@@ -1149,28 +1166,25 @@ const Pricing = () => {
                     className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
                     aria-hidden
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/16 via-brand-accent/5 to-transparent" />
                     <motion.div
-                      initial={reduceMotion ? false : {scaleX: 0, opacity: 0.35}}
-                      whileInView={
-                        reduceMotion ? {scaleX: 1, opacity: 1} : {scaleX: 1, opacity: [0.35, 1, 0.65, 1]}
-                      }
+                      initial={reduceMotion ? false : {scaleX: 0}}
+                      whileInView={{scaleX: 1}}
                       viewport={{once: true, amount: 0.5}}
-                      transition={{duration: 0.85, ease: SECTION_REVEAL_EASE}}
-                      className="absolute top-0 left-0 right-0 h-[2px] origin-left bg-brand-accent section-accent-line-glow"
+                      transition={{duration: 0.65, ease: SECTION_REVEAL_EASE}}
+                      className="absolute top-0 left-0 right-0 h-px origin-left bg-brand-accent"
                     />
                     <motion.div
-                      initial={reduceMotion ? false : {scaleY: 0, opacity: 0.4}}
-                      whileInView={{scaleY: 1, opacity: 1}}
+                      initial={reduceMotion ? false : {scaleY: 0}}
+                      whileInView={{scaleY: 1}}
                       viewport={{once: true, amount: 0.5}}
-                      transition={{delay: 0.1, duration: 0.45, ease: SECTION_REVEAL_EASE}}
-                      className="absolute top-0 right-0 h-16 w-[2px] origin-top bg-brand-accent/55 section-accent-line-glow"
+                      transition={{delay: 0.08, duration: 0.4, ease: SECTION_REVEAL_EASE}}
+                      className="absolute top-0 right-0 h-14 w-px origin-top bg-brand-accent/70"
                     />
                   </div>
                 )}
                 <div className="relative">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-bold font-display text-brand-fg">{plan.name}</h3>
+                    <h3 className="text-2xl font-bold font-display text-brand-cream">{plan.name}</h3>
                     {featured && (
                       <span className="text-[11px] font-semibold tracking-widest uppercase rounded-sm bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
                         Most popular
@@ -1179,24 +1193,24 @@ const Pricing = () => {
                   </div>
                   <div className="flex items-baseline gap-1 mb-6">
                     <span className="text-4xl font-bold font-display">{plan.price}</span>
-                    <span className="font-medium text-brand-fg/50">{plan.period}</span>
+                    <span className="font-medium text-brand-cream/70">{plan.period}</span>
                   </div>
-                  <p className="mb-6 font-semibold leading-relaxed text-brand-fg/90">{plan.desc}</p>
+                  <p className="mb-6 font-semibold leading-relaxed text-brand-cream/92">{plan.desc}</p>
                   {plan.features.length > 0 && (
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((f, i) => (
                         <li
                           key={i}
-                          className="flex items-center gap-3 text-sm font-medium text-brand-fg/85"
+                          className="flex items-center gap-3 text-sm font-medium text-brand-cream/88"
                         >
-                          <div className="w-1.5 h-1.5 shrink-0 rounded-[1px] bg-brand-fg/80" />
+                          <div className="w-1.5 h-1.5 shrink-0 rounded-[1px] bg-brand-cream" />
                           {f}
                         </li>
                       ))}
                     </ul>
                   )}
                   {plan.extra && (
-                    <p className="mb-8 text-sm leading-relaxed text-brand-fg/68">
+                    <p className="mb-8 text-sm leading-relaxed text-brand-cream/82">
                       {plan.extra}
                     </p>
                   )}
@@ -1205,7 +1219,7 @@ const Pricing = () => {
                   href={plan.buttonHref}
                   className={
                     featured
-                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-fg hover:text-brand-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-cream transition-colors hover:bg-brand-cream hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
                       : `w-full text-center ${CTA_BUTTON_BASE}`
                   }
                 >

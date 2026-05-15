@@ -10,8 +10,8 @@
   --color-brand-fg: #ebe6de;
   --color-brand-cream: #f7f4ef;
   --color-brand-ink: #0f172a;
-  --color-brand-surface: #141c28;
-  --color-brand-elevated: #1c2636;
+  --color-brand-surface: #161e2c;
+  --color-brand-elevated: #1f2a3c;
   --color-brand-accent: #2eb8dc;
 }
 
@@ -60,8 +60,8 @@
     @apply bg-brand-bg text-brand-fg font-sans antialiased;
     background-color: var(--color-brand-bg);
     background-image:
-      linear-gradient(180deg, rgba(11, 16, 24, 0.55) 0%, transparent 28%, transparent 72%, rgba(11, 16, 24, 0.65) 100%),
-      radial-gradient(circle, rgba(46, 184, 220, 0.09) 1px, transparent 1px);
+      linear-gradient(180deg, rgba(11, 16, 24, 0.4) 0%, transparent 28%, transparent 72%, rgba(11, 16, 24, 0.5) 100%),
+      radial-gradient(circle, rgba(247, 244, 239, 0.07) 1px, transparent 1px);
     background-size: 100% 100%, 32px 32px;
     background-repeat: no-repeat, repeat;
     background-attachment: fixed;
@@ -137,13 +137,18 @@
   }
 
   .section-accent-grid {
-    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.38) 1px, transparent 1px);
-    background-size: 26px 26px;
+    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.52) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
   .section-accent-grid-ink {
-    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.42) 1px, transparent 1px);
-    background-size: 26px 26px;
+    background-image: radial-gradient(circle, rgba(46, 184, 220, 0.58) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .section-accent-grid-cream {
+    background-image: radial-gradient(circle, rgba(247, 244, 239, 0.14) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
   .section-accent-fade-b {
@@ -156,9 +161,5 @@
 
   .section-accent-fade-r {
     mask-image: linear-gradient(to right, black 0%, transparent 82%);
-  }
-
-  .section-accent-line-glow {
-    box-shadow: 0 0 22px rgba(46, 184, 220, 0.38);
   }
 }
