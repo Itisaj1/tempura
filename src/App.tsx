@@ -10,6 +10,7 @@ import {
   useSpring,
   useTransform,
   type MotionValue,
+  type Variants,
 } from 'motion/react';
 import {ArrowRight, CheckCircle2, ChevronRight, Globe, Layers, Users} from 'lucide-react';
 import {
@@ -18,6 +19,7 @@ import {
   useRef,
   useState,
   type FormEvent,
+  type InputHTMLAttributes,
   type ReactNode,
   type RefObject,
 } from 'react';
@@ -79,46 +81,246 @@ const LoadingLogo = () => {
 
 type AccentPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
 
-/** Section atmosphere — dot grid + thin accent hairlines (no radial blur). */
-const SectionAccent = ({preset}: {preset: AccentPreset}) => {
+const AccentDotCluster = ({className}: {className?: string}) => (
+  <div className={`grid grid-cols-3 gap-[6px] w-fit ${className ?? ''}`} aria-hidden>
+    {[true, true, true, true, false, true, true, false, false].map((on, i) => (
+      <span
+        key={i}
+        className={`h-2.5 w-2.5 rounded-full ${on ? 'bg-brand-accent opacity-90' : 'bg-transparent'}`}
+      />
+    ))}
+  </div>
+);
+
+const HERO_HEADLINE_CONTAINER: Variants = {
+  hidden: {},
+  show: {
+    transition: {staggerChildren: 0.11, delayChildren: 0.14},
+  },
+};
+
+const HERO_HEADLINE_LINE: Variants = {
+  hidden: {opacity: 0, y: 32},
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {duration: 0.58, ease: [0.22, 1, 0.36, 1]},
+  },
+};
+
+const HeroCursorCluster = ({sectionRef}: {sectionRef: RefObject<HTMLElement | null>}) => {
+  const reduceMotion = useReducedMotion();
+  const width = useWindowWidth();
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const clusterX = useSpring(pointerX, {stiffness: 110, damping: 22, mass: 0.45});
+  const clusterY = useSpring(pointerY, {stiffness: 110, damping: 22, mass: 0.45});
+  const clusterOpacity = useSpring(0, {stiffness: 200, damping: 28});
+
+  useEffect(() => {
+    if (reduceMotion || width < 768) return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const onMove = (event: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      pointerX.set(event.clientX - rect.left);
+      pointerY.set(event.clientY - rect.top);
+      clusterOpacity.set(1);
+    };
+
+    const onLeave = () => clusterOpacity.set(0);
+
+    section.addEventListener('mousemove', onMove);
+    section.addEventListener('mouseleave', onLeave);
+    return () => {
+      section.removeEventListener('mousemove', onMove);
+      section.removeEventListener('mouseleave', onLeave);
+    };
+  }, [sectionRef, reduceMotion, width, pointerX, pointerY, clusterOpacity]);
+
+  if (reduceMotion || width < 768) return null;
+
+  return (
+    <motion.div
+      aria-hidden
+      className="pointer-events-none absolute z-[1] opacity-70"
+      style={{
+        x: clusterX,
+        y: clusterY,
+        translateX: '-50%',
+        translateY: '-50%',
+        opacity: clusterOpacity,
+      }}
+    >
+      <AccentDotCluster />
+    </motion.div>
+  );
+};
+
+const SuccessDotBurst = () => {
+  const reduceMotion = useReducedMotion();
+  const dots = Array.from({length: 6}, (_, i) => (i / 6) * Math.PI * 2);
+
+  if (reduceMotion) return null;
+
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden>
+      {dots.map((angle, i) => (
+        <motion.span
+          key={i}
+          className="absolute left-1/2 top-1/2 h-2 w-2 -ml-1 -mt-1 rounded-full bg-brand-accent"
+          initial={{opacity: 0, scale: 0, x: 0, y: 0}}
+          animate={{
+            opacity: [0, 0.95, 0],
+            scale: [0, 1, 0.35],
+            x: [0, Math.cos(angle) * 34],
+            y: [0, Math.sin(angle) * 34],
+          }}
+          transition={{
+            duration: 0.62,
+            delay: 0.12 + i * 0.045,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const ConversationalInput = ({
+  className: inputClassName = '',
+  ...inputProps
+}: InputHTMLAttributes<HTMLInputElement>) => {
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <span className="relative inline-flex min-w-0 flex-1 flex-col">
+      <input
+        {...inputProps}
+        onFocus={(e) => {
+          setFocused(true);
+          inputProps.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setFocused(false);
+          inputProps.onBlur?.(e);
+        }}
+        className={`${inputClassName} ${focused ? 'border-brand-accent/80' : ''}`.trim()}
+      />
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-0.5 origin-left bg-brand-accent"
+        initial={false}
+        animate={{scaleX: focused ? 1 : 0, opacity: focused ? 1 : 0}}
+        transition={{duration: 0.28, ease: [0.22, 1, 0.36, 1]}}
+      />
+    </span>
+  );
+};
+
+type PricingMode = 'project' | 'ongoing';
+
+/** Section atmosphere — dot grid, diagonal washes, and accent rules (no radial blur). */
+const SectionAccent = ({
+  preset,
+  containerRef,
+}: {
+  preset: AccentPreset;
+  containerRef?: RefObject<HTMLElement | null>;
+}) => {
+  const reduceMotion = useReducedMotion();
   const onInk = preset === 'contact' || preset === 'footer';
   const gridClass = onInk ? 'section-accent-grid-ink' : 'section-accent-grid';
-  const lineClass = onInk ? 'bg-brand-accent/40' : 'bg-brand-accent/22';
-  const line = `absolute ${lineClass}`;
+  const washClass = onInk ? 'section-accent-wash-ink' : 'section-accent-wash-canvas';
+  const lineClass = onInk ? 'bg-brand-accent/70' : 'bg-brand-accent/55';
+  const line = `absolute ${lineClass} section-accent-line-glow`;
+
+  const {scrollYProgress} = useScroll(
+    containerRef
+      ? {target: containerRef, offset: ['start end', 'end start']}
+      : {offset: ['start start', 'end end']},
+  );
+  const parallaxY1 = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
+  const parallaxY2 = useTransform(scrollYProgress, [0, 1], ['8%', '-8%']);
 
   return (
     <>
-      <div className={`absolute inset-0 opacity-[0.38] ${gridClass} section-accent-fade-b`} aria-hidden />
+      <div className={`absolute inset-0 ${washClass}`} aria-hidden />
+      <motion.div
+        className={`absolute inset-0 opacity-[0.5] ${gridClass} section-accent-fade-b`}
+        aria-hidden
+        style={reduceMotion ? undefined : {y: parallaxY1}}
+      />
+      <motion.div
+        className={`absolute inset-0 opacity-[0.34] ${gridClass} section-accent-fade-b`}
+        aria-hidden
+        style={
+          reduceMotion
+            ? undefined
+            : {y: parallaxY2, backgroundSize: '30px 30px', backgroundPosition: '11px 11px'}
+        }
+      />
       {preset === 'hero' && (
         <>
-          <div className={`${line} top-0 right-[10%] h-[min(38vh,300px)] w-px`} aria-hidden />
-          <div className={`${line} top-[16%] right-[10%] h-px w-[min(26vw,220px)]`} aria-hidden />
-          <div className={`${line} bottom-[20%] left-[5%] h-px w-[min(34vw,300px)]`} aria-hidden />
+          <div
+            className="absolute -right-[8%] -top-[18%] h-[min(52vh,440px)] w-[min(52vw,520px)] bg-gradient-to-bl from-brand-accent/28 via-brand-accent/8 to-transparent"
+            aria-hidden
+          />
+          <AccentDotCluster className="absolute top-[14%] right-[8%]" />
+          <div className={`${line} top-0 right-[10%] h-[min(44vh,360px)] w-[2px]`} aria-hidden />
+          <div className={`${line} top-[14%] right-[10%] h-[2px] w-[min(32vw,280px)]`} aria-hidden />
+          <div className={`${line} bottom-[18%] left-[4%] h-[2px] w-[min(40vw,360px)]`} aria-hidden />
         </>
       )}
       {preset === 'about' && (
         <>
-          <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
-          <div className={`${line} bottom-[18%] right-[8%] h-[min(28vh,220px)] w-px`} aria-hidden />
+          <div
+            className="absolute -left-[12%] top-[6%] h-[min(40vh,320px)] w-[min(48vw,440px)] bg-gradient-to-br from-brand-accent/22 via-brand-accent/6 to-transparent"
+            aria-hidden
+          />
+          <AccentDotCluster className="absolute bottom-[22%] left-[6%]" />
+          <div className={`${line} top-[10%] left-0 h-[2px] w-[min(48vw,420px)]`} aria-hidden />
+          <div className={`${line} bottom-[16%] right-[6%] h-[min(32vh,260px)] w-[2px]`} aria-hidden />
         </>
       )}
       {preset === 'work' && (
-        <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
+        <>
+          <div
+            className="absolute top-0 right-0 h-[min(36vh,300px)] w-[min(44vw,400px)] bg-gradient-to-bl from-brand-accent/18 to-transparent"
+            aria-hidden
+          />
+          <div className={`${line} top-[6%] right-0 h-[2px] w-[min(56vw,500px)]`} aria-hidden />
+          <div className={`${line} top-[6%] right-[18%] h-[min(22vh,180px)] w-[2px]`} aria-hidden />
+        </>
       )}
       {preset === 'pricing' && (
-        <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
+        <>
+          <AccentDotCluster className="absolute top-[18%] right-[10%]" />
+          <div className={`${line} bottom-[12%] left-[4%] h-[2px] w-[min(46vw,400px)]`} aria-hidden />
+          <div className={`${line} bottom-[12%] left-[4%] h-[min(20vh,160px)] w-[2px]`} aria-hidden />
+        </>
       )}
       {preset === 'contact' && (
         <>
-          <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
-          <div className={`${line} top-[22%] left-[12%] h-px w-[min(30vw,240px)]`} aria-hidden />
-          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-fg/10`} aria-hidden />
+          <div
+            className="absolute -left-[10%] -top-[12%] h-[min(50vh,420px)] w-[min(50vw,480px)] bg-gradient-to-br from-brand-accent/32 via-brand-accent/12 to-transparent"
+            aria-hidden
+          />
+          <AccentDotCluster className="absolute top-[10%] left-[10%]" />
+          <div className={`${line} top-0 left-[10%] h-[min(38vh,300px)] w-[2px]`} aria-hidden />
+          <div className={`${line} top-[18%] left-[10%] h-[2px] w-[min(36vw,300px)]`} aria-hidden />
+          <div className="absolute top-0 right-0 h-[2px] w-[min(58vw,520px)] bg-brand-fg/18 section-accent-line-glow" aria-hidden />
         </>
       )}
       {preset === 'footer' && (
         <>
-          <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
-          <div className={`${line} top-[20%] left-[4%] h-[min(24vh,180px)] w-px`} aria-hidden />
+          <div
+            className="absolute -right-[14%] bottom-[-10%] h-[min(46vh,380px)] w-[min(52vw,460px)] bg-gradient-to-tl from-brand-accent/26 via-brand-accent/8 to-transparent"
+            aria-hidden
+          />
+          <div className={`${line} bottom-[24%] right-[12%] h-[2px] w-[min(42vw,380px)]`} aria-hidden />
+          <div className={`${line} top-[16%] left-[3%] h-[min(30vh,240px)] w-[2px]`} aria-hidden />
         </>
       )}
     </>
@@ -482,34 +684,53 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
       >
-        <SectionAccent preset="hero" />
+        <SectionAccent preset="hero" containerRef={targetRef} />
       </motion.div>
+      <HeroCursorCluster sectionRef={targetRef} />
       <motion.div
         style={{opacity, y}}
         className="relative z-10 max-w-5xl mx-auto w-full"
       >
-        <motion.div
-          initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 12, filter: 'blur(6px)'}}
-          whileInView={{opacity: 1, y: 0, filter: 'blur(0px)'}}
-          viewport={{once: true, amount: 0.25}}
-          transition={{duration: reduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1]}}
-          className="relative"
-        >
-          <h1
+        <div className="relative">
+          <motion.h1
             id="hero-heading"
+            variants={reduceMotion ? undefined : HERO_HEADLINE_CONTAINER}
+            initial={reduceMotion ? false : 'hidden'}
+            whileInView={reduceMotion ? undefined : 'show'}
+            viewport={{once: true, amount: 0.35}}
             className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-fg"
           >
-            Design for startups
-            <span className="text-brand-fg/45"> and</span>
-            <br />
-            scale-ups<span className="text-brand-accent">.</span>
-          </h1>
+            <motion.span
+              variants={reduceMotion ? undefined : HERO_HEADLINE_LINE}
+              className="block"
+            >
+              Design for startups
+              <span className="text-brand-fg/45"> and</span>
+            </motion.span>
+            <motion.span
+              variants={reduceMotion ? undefined : HERO_HEADLINE_LINE}
+              className="block"
+            >
+              scale-ups<span className="text-brand-accent">.</span>
+            </motion.span>
+          </motion.h1>
 
-          <p className="mt-6 text-xl md:text-2xl text-brand-fg/78 max-w-2xl leading-relaxed">
+          <motion.p
+            initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 16}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, amount: 0.35}}
+            transition={{duration: reduceMotion ? 0 : 0.48, delay: reduceMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1]}}
+            className="mt-6 text-xl md:text-2xl text-brand-fg/78 max-w-2xl leading-relaxed"
+          >
             Product management and design for ambitious AI x B2B teams.
-          </p>
+          </motion.p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <motion.div
+            initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 14}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true, amount: 0.35}}
+            transition={{duration: reduceMotion ? 0 : 0.45, delay: reduceMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1]}}
+            className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <motion.a
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
@@ -530,18 +751,25 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </motion.a>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </motion.div>
     </section>
   );
 };
 
 const About = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section
+      id="about"
+      ref={sectionRef}
+      aria-labelledby="about-heading"
+      className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden"
+    >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="about" />
+        <SectionAccent preset="about" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -682,14 +910,17 @@ const CTA = () => {
     }
   };
 
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
     <section
       id="contact"
+      ref={sectionRef}
       aria-labelledby="contact-heading"
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-white min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="contact" />
+        <SectionAccent preset="contact" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
@@ -715,9 +946,10 @@ const CTA = () => {
                   initial={{scale: 0.6, opacity: 0}}
                   animate={{scale: 1, opacity: 1}}
                   transition={{delay: 0.1, type: 'spring', stiffness: 220, damping: 18}}
-                  className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-brand-accent/15 text-brand-accent mb-6"
+                  className="relative inline-flex h-16 w-16 items-center justify-center rounded-xl bg-brand-accent/15 text-brand-accent mb-6"
                 >
-                  <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
+                  <SuccessDotBurst />
+                  <CheckCircle2 className="relative h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
                 <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-white">
                   Thank you, {submittedName}
@@ -748,11 +980,11 @@ const CTA = () => {
                 </h2>
 
                 <div className="space-y-6 text-base md:text-lg text-white/85 leading-relaxed">
-                  <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-fullName" className="text-white/80">
+                  <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
+                    <label htmlFor="contact-fullName" className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white">
                       My name is
                     </label>
-                    <input
+                    <ConversationalInput
                       id="contact-fullName"
                       name="fullName"
                       type="text"
@@ -766,12 +998,12 @@ const CTA = () => {
                       }}
                       placeholder="first & last name"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                      className="min-w-[12rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:outline-none disabled:opacity-60"
                     />
-                    <label htmlFor="contact-company" className="text-white/80">
+                    <label htmlFor="contact-company" className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white">
                       from
                     </label>
-                    <input
+                    <ConversationalInput
                       id="contact-company"
                       name="company"
                       type="text"
@@ -785,7 +1017,7 @@ const CTA = () => {
                       }}
                       placeholder="company name"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                      className="min-w-[10rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:outline-none disabled:opacity-60"
                     />
                   </div>
 
@@ -816,10 +1048,10 @@ const CTA = () => {
                   </fieldset>
 
                   <div className="flex flex-wrap items-end gap-x-2 gap-y-3">
-                    <label htmlFor="contact-email" className="text-white/80">
+                    <label htmlFor="contact-email" className="text-white/80 transition-colors duration-200 group-focus-within/field:text-white">
                       You can reach me at
                     </label>
-                    <input
+                    <ConversationalInput
                       id="contact-email"
                       name="email"
                       type="email"
@@ -833,7 +1065,7 @@ const CTA = () => {
                       }}
                       placeholder="email address"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:border-brand-accent focus:outline-none disabled:opacity-60"
+                      className="min-w-[14rem] flex-1 border-b border-white/25 bg-transparent px-1 py-1 text-white placeholder:text-white/35 focus:outline-none disabled:opacity-60"
                     />
                   </div>
                 </div>
@@ -888,10 +1120,12 @@ const CTA = () => {
 };
 
 const Footer = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <footer className="relative bg-brand-ink text-white overflow-hidden" aria-label="Site footer">
+    <footer ref={sectionRef} className="relative bg-brand-ink text-white overflow-hidden" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="footer" />
+        <SectionAccent preset="footer" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
@@ -929,6 +1163,7 @@ const Footer = () => {
 };
 
 const Projects = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const placeholders = [
     {id: 1, size: 'md:col-span-7', ratio: 'aspect-[16/9]'},
     {id: 2, size: 'md:col-span-5', ratio: 'aspect-[4/5]'},
@@ -937,9 +1172,9 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="work" />
+    <section id="work" ref={sectionRef} aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
+      <motion.div className="pointer-events-none absolute inset-0" aria-hidden>
+        <SectionAccent preset="work" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -957,8 +1192,9 @@ const Projects = () => {
               <div key={tile.id} className={`group ${tile.size}`}>
                 <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-fg/14 bg-gradient-to-br from-brand-surface via-brand-elevated to-brand-accent/[0.18]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
-                    <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/35" />
-                    <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/35" />
+                    <div className="absolute top-0 left-0 h-14 w-[2px] bg-brand-accent/65 section-accent-line-glow" />
+                    <div className="absolute top-0 left-0 h-[2px] w-14 bg-brand-accent/65 section-accent-line-glow" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/12 via-transparent to-transparent" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm bg-brand-elevated/92 border border-brand-fg/14 px-5 py-3 text-sm font-medium text-brand-fg/68 backdrop-blur-md shadow-sm shadow-black/25">
@@ -985,6 +1221,9 @@ const Projects = () => {
 };
 
 const Pricing = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [pricingMode, setPricingMode] = useState<PricingMode>('ongoing');
   const plans: Array<{
     name: string;
     price: string;
@@ -1036,9 +1275,14 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section
+      id="pricing"
+      ref={sectionRef}
+      aria-labelledby="pricing-heading"
+      className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden"
+    >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="pricing" />
+        <SectionAccent preset="pricing" containerRef={sectionRef} />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
@@ -1047,17 +1291,62 @@ const Pricing = () => {
             <h2 id="pricing-heading" className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-fg">
               Transparent investment.
             </h2>
+            <motion.div
+              className="mt-8 inline-flex rounded-lg border border-brand-fg/16 bg-brand-elevated/90 p-1"
+              role="group"
+              aria-label="Pricing model"
+            >
+              {(
+                [
+                  {mode: 'project' as const, label: 'Per project'},
+                  {mode: 'ongoing' as const, label: 'Ongoing'},
+                ] as const
+              ).map(({mode, label}) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setPricingMode(mode)}
+                  className={`relative rounded-md px-4 py-2 text-sm font-semibold transition-colors ${
+                    pricingMode === mode ? 'text-brand-fg' : 'text-brand-fg/55 hover:text-brand-fg/80'
+                  }`}
+                >
+                  {pricingMode === mode && (
+                    <motion.span
+                      layoutId="pricing-mode-pill"
+                      className="absolute inset-0 rounded-md bg-brand-accent/22 border border-brand-accent/35"
+                      transition={{type: 'spring', stiffness: 380, damping: 32}}
+                    />
+                  )}
+                  <span className="relative z-10">{label}</span>
+                </button>
+              ))}
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {plans.map((plan, idx) => {
-            const featured = idx === 1;
+            const isOngoingPlan = idx === 1;
+            const isProjectPlan = idx === 0 || idx === 2;
+            const featured = pricingMode === 'ongoing' ? isOngoingPlan : isProjectPlan;
             return (
               <motion.div
-                key={idx}
-                whileHover={{ y: -5 }}
-                className={`relative p-8 flex flex-col justify-between border border-brand-fg/16 bg-brand-surface/95 backdrop-blur-sm shadow-[0_20px_64px_rgba(0,0,0,0.38)] ${
-                  featured ? 'rounded-lg rounded-tl-2xl' : 'rounded-md'
+                key={`${idx}-${pricingMode}`}
+                layout
+                animate={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        opacity: featured ? 1 : 0.5,
+                        scale: featured ? 1 : 0.98,
+                        y: featured ? 0 : 6,
+                      }
+                }
+                transition={{duration: 0.38, ease: [0.22, 1, 0.36, 1]}}
+                whileHover={{y: featured ? -6 : -3}}
+                className={`relative p-8 flex flex-col justify-between border bg-brand-surface/95 backdrop-blur-sm shadow-[0_20px_64px_rgba(0,0,0,0.38)] transition-colors ${
+                  featured
+                    ? 'border-brand-accent/40 rounded-lg rounded-tl-2xl'
+                    : 'border-brand-fg/16 rounded-md'
                 }`}
               >
                 {featured && (
@@ -1065,8 +1354,15 @@ const Pricing = () => {
                     className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
                     aria-hidden
                   >
-                    <div className="absolute top-0 left-0 right-0 h-px bg-brand-accent/30" />
-                    <div className="absolute top-0 right-0 h-12 w-px bg-brand-accent/25" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/16 via-brand-accent/5 to-transparent" />
+                    <motion.div
+                      initial={reduceMotion ? false : {opacity: 0.35}}
+                      whileInView={reduceMotion ? undefined : {opacity: [0.35, 1, 0.65]}}
+                      viewport={{once: true, amount: 0.5}}
+                      transition={{duration: 1.15, times: [0, 0.4, 1]}}
+                      className="absolute top-0 left-0 right-0 h-[2px] bg-brand-accent/65 section-accent-line-glow"
+                    />
+                    <div className="absolute top-0 right-0 h-16 w-[2px] bg-brand-accent/55 section-accent-line-glow" />
                   </div>
                 )}
                 <div className="relative">
@@ -1074,7 +1370,7 @@ const Pricing = () => {
                     <h3 className="text-2xl font-bold font-display text-brand-fg">{plan.name}</h3>
                     {featured && (
                       <span className="text-[11px] font-semibold tracking-widest uppercase rounded-sm bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
-                        Most popular
+                        {pricingMode === 'ongoing' ? 'Most popular' : 'Best fit'}
                       </span>
                     )}
                   </div>
@@ -1120,6 +1416,7 @@ const Pricing = () => {
       </div>
     </section>
   );
+
 };
 
 export default function App() {
