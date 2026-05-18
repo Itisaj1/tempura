@@ -29,7 +29,7 @@ PNG_WIDTHS = [256, 512, 1024, 2048]
 FAVICON_CANVAS = 32
 FAVICON_LETTER_HEIGHT = 18
 FAVICON_DOT = (21.5, 9.5, 2.25)  # cx, cy, r — matches live favicon
-FAVICON_PNG_SIZES = [16, 32, 48, 64, 128, 256, 512]
+FAVICON_PNG_SIZES = [16, 32, 48, 64, 128, 256, 512, 1024, 2048]
 
 
 def build_svgs(font_bold: TTFont | None = None) -> tuple[int, int]:

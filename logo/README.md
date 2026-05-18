@@ -45,8 +45,9 @@ dimensions for sorting in Drive.
 
 ### Favicon rasters — `png/favicon-*.png`
 
-Each variant exported at seven square sizes: **16, 32, 48, 64, 128, 256, 512** px
-(e.g. `favicon-on-ink-32x32.png` for browser tabs, `512x512` for app icons).
+Each variant exported at nine square sizes: **16, 32, 48, 64, 128, 256, 512, 1024, 2048** px.
+Use `32x32`–`512x512` for UI and app icons; **`1024x1024`** and **`2048x2048`** for sticker
+and print (vector source stays sharp at any scale).
 
 `*-transparent-*.png` files have a true alpha channel (no white
 matte) so they composite cleanly over any background.
