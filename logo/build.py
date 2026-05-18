@@ -1,15 +1,15 @@
-"""Build Panko Studio wordmark SVGs (text outlined as paths) and PNG renders.
+"""Build Panko Studio wordmark and favicon SVGs (outlined paths) and PNG renders.
 
-Outputs three SVG variants and a matrix of PNGs at common sizes.
+Outputs three SVG variants each for the wordmark and favicon, plus PNG matrices.
 Run from the project root:  python3 logo/build.py
 """
 
 from __future__ import annotations
 
-import os
 import subprocess
 from pathlib import Path
 
+from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
@@ -26,11 +26,15 @@ ACCENT = "#0081A7"
 WHITE = "#FFFFFF"
 
 PNG_WIDTHS = [256, 512, 1024, 2048]
+FAVICON_CANVAS = 32
+FAVICON_LETTER_HEIGHT = 18
+FAVICON_DOT = (21.5, 9.5, 2.25)  # cx, cy, r — matches live favicon
+FAVICON_PNG_SIZES = [16, 32, 48, 64, 128, 256, 512]
 
 
-def build_svgs() -> tuple[int, int]:
-    font = TTFont(str(FONT_PATH))
-    font_bold = instantiateVariableFont(font, {"wght": 700})
+def build_svgs(font_bold: TTFont | None = None) -> tuple[int, int]:
+    if font_bold is None:
+        font_bold = _load_bold_font()
 
     cmap = font_bold.getBestCmap()
     glyph_set = font_bold.getGlyphSet()
@@ -105,33 +109,112 @@ def build_svgs() -> tuple[int, int]:
     return canvas_w, canvas_h
 
 
-def build_pngs(canvas_w: int, canvas_h: int) -> None:
+def _load_bold_font() -> TTFont:
+    font = TTFont(str(FONT_PATH))
+    return instantiateVariableFont(font, {"wght": 700})
+
+
+def build_favicon_svgs(font_bold: TTFont) -> None:
+    cmap = font_bold.getBestCmap()
+    glyph_set = font_bold.getGlyphSet()
+    glyph_name = cmap.get(ord("p"))
+    if glyph_name is None:
+        raise SystemExit('font is missing glyph "p"')
+
+    glyph = glyph_set[glyph_name]
+    bounds_pen = BoundsPen(glyph_set)
+    glyph.draw(bounds_pen)
+    x_min, y_min, x_max, y_max = bounds_pen.bounds
+
+    path_pen = SVGPathPen(glyph_set)
+    glyph.draw(path_pen)
+    path = path_pen.getCommands()
+
+    glyph_w = x_max - x_min
+    glyph_h = y_max - y_min
+    scale = FAVICON_LETTER_HEIGHT / glyph_h
+    mid_y = (y_min + y_max) / 2
+
+    tx = (FAVICON_CANVAS - glyph_w * scale) / 2 - x_min * scale
+    ty = FAVICON_CANVAS / 2 + mid_y * scale
+    dot_cx, dot_cy, dot_r = FAVICON_DOT
+
+    def render(bg: str | None, text_color: str) -> str:
+        bg_layer = ""
+        if bg is not None:
+            bg_layer = f'  <rect width="{FAVICON_CANVAS}" height="{FAVICON_CANVAS}" fill="{bg}"/>\n'
+        return (
+            f'<svg xmlns="http://www.w3.org/2000/svg" '
+            f'viewBox="0 0 {FAVICON_CANVAS} {FAVICON_CANVAS}" '
+            f'role="img" aria-label="Panko Studio">\n'
+            f"{bg_layer}"
+            f'  <g transform="translate({tx:.4f}, {ty:.4f}) scale({scale:.6f}, {-scale:.6f})">\n'
+            f'    <path fill="{text_color}" d="{path}"/>\n'
+            f"  </g>\n"
+            f'  <circle cx="{dot_cx}" cy="{dot_cy}" r="{dot_r}" fill="{ACCENT}"/>\n'
+            f"</svg>\n"
+        )
+
+    SVG_DIR.mkdir(parents=True, exist_ok=True)
+    (SVG_DIR / "favicon-transparent.svg").write_text(render(None, INK))
+    (SVG_DIR / "favicon-on-white.svg").write_text(render(WHITE, INK))
+    (SVG_DIR / "favicon-on-ink.svg").write_text(render(INK, CREAM))
+
+
+def _render_png(svg: Path, out: Path, size: str) -> None:
+    cmd = [
+        "magick",
+        "-background",
+        "none",
+        "-density",
+        "600",
+        str(svg),
+        "-resize",
+        size,
+        str(out),
+    ]
+    subprocess.run(cmd, check=True)
+
+
+def build_wordmark_pngs(canvas_w: int, canvas_h: int) -> None:
     PNG_DIR.mkdir(parents=True, exist_ok=True)
     aspect = canvas_h / canvas_w
-    for svg in sorted(SVG_DIR.glob("*.svg")):
+    for svg in sorted(SVG_DIR.glob("panko-studio-*.svg")):
         stem = svg.stem
         for w in PNG_WIDTHS:
             h = round(w * aspect)
             out = PNG_DIR / f"{stem}-{w}x{h}.png"
-            cmd = [
-                "magick",
-                "-background", "none",
-                "-density", "600",
-                str(svg),
-                "-resize", f"{w}x{h}",
-                str(out),
-            ]
-            subprocess.run(cmd, check=True)
+            _render_png(svg, out, f"{w}x{h}")
+            print(f"  ✓ {out.name}")
+
+
+def build_favicon_pngs() -> None:
+    PNG_DIR.mkdir(parents=True, exist_ok=True)
+    for svg in sorted(SVG_DIR.glob("favicon-*.svg")):
+        stem = svg.stem
+        for size in FAVICON_PNG_SIZES:
+            out = PNG_DIR / f"{stem}-{size}x{size}.png"
+            _render_png(svg, out, f"{size}x{size}")
             print(f"  ✓ {out.name}")
 
 
 def main() -> None:
     if not FONT_PATH.exists():
         raise SystemExit(f"missing font: {FONT_PATH}")
-    canvas_w, canvas_h = build_svgs()
-    print(f"SVG canvas: {canvas_w} × {canvas_h}  (aspect {canvas_w/canvas_h:.2f}:1)")
-    print("Rendering PNGs…")
-    build_pngs(canvas_w, canvas_h)
+
+    font_bold = _load_bold_font()
+
+    canvas_w, canvas_h = build_svgs(font_bold)
+    print(f"Wordmark SVG canvas: {canvas_w} × {canvas_h}  (aspect {canvas_w / canvas_h:.2f}:1)")
+
+    build_favicon_svgs(font_bold)
+    print("Favicon SVGs: 32 × 32")
+
+    print("Rendering wordmark PNGs…")
+    build_wordmark_pngs(canvas_w, canvas_h)
+
+    print("Rendering favicon PNGs…")
+    build_favicon_pngs()
     print("Done.")
 
 
