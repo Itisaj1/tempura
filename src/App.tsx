@@ -995,7 +995,14 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="mt-10 text-sm text-brand-cream/65 border-t border-brand-cream/18 pt-8">© 2026 Panko Studio</div>
+          <div className="mt-10 flex flex-col gap-4 border-t border-brand-cream/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-cream/75">
+              <a href="/privacy" className="transition-colors hover:text-brand-cream">Privacy</a>
+              <a href="/terms" className="transition-colors hover:text-brand-cream">Terms</a>
+              <a href="/cookies" className="transition-colors hover:text-brand-cream">Cookies</a>
+            </nav>
+            <p className="text-sm text-brand-cream/65">© {new Date().getFullYear()} Panko Studio</p>
+          </div>
       </div>
     </footer>
   );
@@ -1210,7 +1217,7 @@ const Pricing = () => {
   );
 };
 
-export default function App() {
+function MarketingSite() {
   const heroRef = useRef<HTMLElement | null>(null);
   const {scrollYProgress: dockProgress} = useScroll({
     target: heroRef,
@@ -1297,4 +1304,14 @@ export default function App() {
       </motion.div>
     </div>
   );
+}
+
+import {getLegalPage} from './legal/router';
+
+export default function App() {
+  const LegalPage = getLegalPage(window.location.pathname);
+  if (LegalPage) {
+    return <LegalPage />;
+  }
+  return <MarketingSite />;
 }
