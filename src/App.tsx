@@ -36,158 +36,46 @@ const useWindowWidth = () => {
   return width;
 };
 
-const LOADER_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const LOADER_HOLD_MS = 850;
-const LOADER_DURATION_S = 2.15;
-const LOADER_DOT_SIZE = 10;
-/** Progress breakpoints: dot alone → Panko + dot on o → Panko Studio + dot on i */
-const LOADER_PH_DOT_ONLY = 0.28;
-const LOADER_PH_PANKO = 0.62;
-const LOADER_TOTAL_MS = LOADER_HOLD_MS + LOADER_DURATION_S * 1000 + 350;
-
-type LoaderMetrics = {
-  pankoReveal: number;
-  centerX: number;
-  centerY: number;
-  oX: number;
-  oY: number;
-  iX: number;
-  iY: number;
-};
-
-const defaultLoaderMetrics = (): LoaderMetrics => ({
-  pankoReveal: 0.52,
-  centerX: 0,
-  centerY: 0,
-  oX: 0,
-  oY: 0,
-  iX: 0,
-  iY: 0,
-});
-
-const measureLoaderMetrics = (
-  container: HTMLDivElement,
-  text: HTMLSpanElement,
-  oEl: HTMLSpanElement,
-  iEl: HTMLSpanElement,
-  studioEl: HTMLSpanElement,
-): LoaderMetrics => {
-  const containerRect = container.getBoundingClientRect();
-  const dotHalf = LOADER_DOT_SIZE / 2;
-  const accentAt = (el: HTMLElement) => {
-    const r = el.getBoundingClientRect();
-    return {
-      x: r.right - containerRect.left + 2 - dotHalf,
-      y: r.top - containerRect.top - 6 - dotHalf,
-    };
-  };
-  const o = accentAt(oEl);
-  const i = accentAt(iEl);
-  const fullWidth = text.offsetWidth;
-  const pankoWidth = studioEl.offsetLeft;
-
-  return {
-    pankoReveal: fullWidth > 0 ? pankoWidth / fullWidth : 0.52,
-    centerX: container.offsetWidth / 2 - dotHalf,
-    centerY: container.offsetHeight / 2 - dotHalf,
-    oX: o.x,
-    oY: o.y,
-    iX: i.x,
-    iY: i.y,
-  };
-};
-
-const loaderRevealAt = (p: number, pankoReveal: number) => {
-  if (p <= LOADER_PH_DOT_ONLY) return 0;
-  if (p <= LOADER_PH_PANKO) {
-    const t = (p - LOADER_PH_DOT_ONLY) / (LOADER_PH_PANKO - LOADER_PH_DOT_ONLY);
-    return t * pankoReveal;
-  }
-  const t = (p - LOADER_PH_PANKO) / (1 - LOADER_PH_PANKO);
-  return pankoReveal + t * (1 - pankoReveal);
-};
-
-const loaderDotAt = (p: number, m: LoaderMetrics) => {
-  if (p <= LOADER_PH_DOT_ONLY) return {x: m.centerX, y: m.centerY};
-  if (p <= LOADER_PH_PANKO) {
-    const t = (p - LOADER_PH_DOT_ONLY) / (LOADER_PH_PANKO - LOADER_PH_DOT_ONLY);
-    return {x: m.centerX + (m.oX - m.centerX) * t, y: m.centerY + (m.oY - m.centerY) * t};
-  }
-  const t = (p - LOADER_PH_PANKO) / (1 - LOADER_PH_PANKO);
-  return {x: m.oX + (m.iX - m.oX) * t, y: m.oY + (m.iY - m.oY) * t};
-};
+const LOADER_REVEAL_DURATION = 0.95;
+const LOADER_REVEAL_DELAY_MS = 1000;
+const LOADER_DOT_DIAMETER = 10;
 
 const LoadingLogo = () => {
-  const reduceMotion = useReducedMotion();
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLSpanElement | null>(null);
-  const oRef = useRef<HTMLSpanElement | null>(null);
-  const iRef = useRef<HTMLSpanElement | null>(null);
-  const studioRef = useRef<HTMLSpanElement | null>(null);
-  const [metrics, setMetrics] = useState(defaultLoaderMetrics);
-  const metricsRef = useRef(metrics);
-  metricsRef.current = metrics;
-  const [ready, setReady] = useState(false);
+  const [textWidth, setTextWidth] = useState(0);
 
-  const progress = useMotionValue(reduceMotion ? 1 : 0);
-  const clipPath = useTransform(progress, (p) => {
-    const reveal = loaderRevealAt(p, metricsRef.current.pankoReveal);
-    return `inset(0 ${(1 - reveal) * 100}% 0 0)`;
-  });
-  const dotX = useTransform(progress, (p) => loaderDotAt(p, metricsRef.current).x);
-  const dotY = useTransform(progress, (p) => loaderDotAt(p, metricsRef.current).y);
-
-  const measure = () => {
-    if (!containerRef.current || !textRef.current || !oRef.current || !iRef.current || !studioRef.current) {
-      return;
-    }
-    setMetrics(
-      measureLoaderMetrics(
-        containerRef.current,
-        textRef.current,
-        oRef.current,
-        iRef.current,
-        studioRef.current,
-      ),
-    );
-    setReady(true);
-  };
+  const progress = useMotionValue(0);
+  const clipPath = useTransform(progress, (p) => `inset(0 ${(1 - p) * 100}% 0 0)`);
+  const dotX = useTransform(progress, (p) => textWidth * p - LOADER_DOT_DIAMETER / 2);
 
   useLayoutEffect(() => {
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    if (textRef.current) {
+      setTextWidth(textRef.current.offsetWidth);
+    }
   }, []);
 
   useEffect(() => {
-    if (reduceMotion || !ready) return;
-    progress.set(0);
+    if (textWidth <= 0) return;
     const start = window.setTimeout(() => {
-      animate(progress, 1, {duration: LOADER_DURATION_S, ease: LOADER_EASE});
-    }, LOADER_HOLD_MS);
+      animate(progress, 1, {
+        duration: LOADER_REVEAL_DURATION,
+        ease: [0.22, 1, 0.36, 1],
+      });
+    }, LOADER_REVEAL_DELAY_MS);
     return () => window.clearTimeout(start);
-  }, [ready, progress, reduceMotion]);
+  }, [textWidth, progress]);
 
   return (
-    <motion.div
-      ref={containerRef}
-      className={`relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-cream ${ready ? '' : 'invisible'}`}
-    >
+    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-cream">
       <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
-        <span ref={textRef}>
-          Pank<span ref={oRef}>o</span>
-          <span ref={studioRef}>
-            {' '}
-            Stud<span ref={iRef}>i</span>o
-          </span>
-        </span>
+        <span ref={textRef}>panko studio</span>
       </motion.span>
       <motion.span
         aria-hidden
-        style={{x: dotX, y: dotY, width: LOADER_DOT_SIZE, height: LOADER_DOT_SIZE}}
-        className="absolute left-0 top-0 rounded-full bg-brand-accent"
+        style={{x: dotX, y: '-50%'}}
+        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent"
       />
-    </motion.div>
+    </div>
   );
 };
 
@@ -1372,7 +1260,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), LOADER_TOTAL_MS);
+    const timeout = window.setTimeout(() => setShowLoader(false), 2600);
     return () => window.clearTimeout(timeout);
   }, []);
 
