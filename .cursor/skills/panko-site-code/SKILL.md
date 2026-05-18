@@ -74,7 +74,7 @@ Use: `className={\`group ${CTA_BUTTON_BASE}\`}` on `motion.a` / links. Dark cont
 - **Smooth follow**: `useSpring(rawMotionValue, { stiffness, damping, mass })` on dock progress — current Navbar uses `{ stiffness: 80, damping: 26, mass: 0.55 }`.
 - **Micro-interactions**: `whileHover={{ y: -1 }}`, `whileTap={{ scale: 0.98 }}` on CTAs; slightly larger `y` on hero primary if needed.
 - **Enter viewport**: `motion.*` with `initial` / `whileInView` / `viewport={{ once: true }}` for section reveals.
-- **Loader**: single `useMotionValue` drives **both** `clipPath` on text and `x` on the dot — do not split into two animations or they desync.
+- **Loader**: single `progress` value drives **clipPath** (text reveal) and dot **x/y** — three beats: centered dot alone → **Panko** with dot on **o** → **Panko Studio** with dot on **i**. Letter refs (`oRef`, `iRef`, `studioRef`) supply measured accent positions; `LOADER_TOTAL_MS` gates when the overlay dismisses.
 
 ## Navbar island
 
