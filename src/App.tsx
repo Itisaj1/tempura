@@ -357,6 +357,8 @@ const SectionReveal = ({
   );
 };
 
+const COUNT_UP_DURATION_MS = 1400;
+
 const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   const [displayValue, setDisplayValue] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -368,7 +370,7 @@ const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
       ([entry]) => {
         if (!entry.isIntersecting) return;
         setHasAnimated(true);
-        const duration = 650;
+        const duration = COUNT_UP_DURATION_MS;
         const start = performance.now();
         const tick = (now: number) => {
           const progress = Math.min((now - start) / duration, 1);
