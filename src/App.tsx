@@ -528,11 +528,8 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       >
         <SectionAccent preset="hero" />
       </motion.div>
-      <motion.div
-        style={{opacity, y}}
-        className="relative z-10 max-w-5xl mx-auto w-full"
-      >
-        <motion.div className="relative">
+      <div className="relative z-10 mx-auto w-full max-w-[1840px]">
+        <motion.div style={{opacity, y}} className="max-w-5xl text-left">
           <motion.h1
             id="hero-heading"
             variants={reduceMotion ? undefined : HERO_HEADLINE_CONTAINER}
@@ -596,7 +593,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             </motion.a>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
