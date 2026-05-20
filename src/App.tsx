@@ -1098,22 +1098,6 @@ const Pricing = () => {
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
-    {
-      name: 'Custom',
-      price: 'Per project',
-      period: '',
-      desc: 'Work with us on a specific project.',
-      features: [
-        'Landing Page Designs',
-        'Landing Page Webflow Builds',
-        'UX Diagrams',
-        'Wireframes',
-        'Marketing Collateral',
-        'Low/High-Fidelity Prototypes',
-      ],
-      buttonLabel: 'Enquire',
-      buttonHref: '#contact',
-    },
   ];
 
   return (
@@ -1130,7 +1114,7 @@ const Pricing = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
           {plans.map((plan, idx) => {
             const featured = idx === 1;
             return (
