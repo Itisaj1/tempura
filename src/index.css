@@ -5,20 +5,19 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
 
-  /* Dark canvas + cream foreground */
-  --color-brand-bg: #0b1018;
-  --color-brand-fg: #ebe6de;
+  --color-brand-bg: #f7f4ef;
+  --color-brand-fg: #0f172a;
   --color-brand-cream: #f7f4ef;
   --color-brand-ink: #0f172a;
-  --color-brand-surface: #161e2c;
-  --color-brand-elevated: #1f2a3c;
-  --color-brand-accent: #2eb8dc;
+  --color-brand-surface: #ffffff;
+  --color-brand-elevated: #ffffff;
+  --color-brand-accent: #0081a7;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -43,8 +42,8 @@
     z-index: 200;
     padding: 0.625rem 1rem;
     border-radius: 0.375rem;
-    background-color: var(--color-brand-fg);
-    color: var(--color-brand-bg);
+    background-color: var(--color-brand-ink);
+    color: #fff;
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
@@ -57,15 +56,12 @@
   }
 
   body {
-    @apply bg-brand-bg text-brand-fg font-sans antialiased;
-    background-color: var(--color-brand-bg);
-    background-image: linear-gradient(
-      180deg,
-      rgba(11, 16, 24, 0.35) 0%,
-      transparent 28%,
-      transparent 72%,
-      rgba(11, 16, 24, 0.45) 100%
-    );
+    @apply bg-brand-bg text-brand-ink font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(0, 129, 167, 0.14), transparent 52%),
+      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(0, 129, 167, 0.09), transparent 50%),
+      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(15, 23, 42, 0.1), transparent 48%);
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
@@ -140,27 +136,27 @@
   }
 
   .legal-prose {
-    @apply text-brand-cream/88 leading-relaxed;
+    @apply text-brand-ink/88 leading-relaxed;
   }
 
   .legal-prose .legal-eyebrow {
-    @apply mb-3 text-xs font-bold uppercase tracking-widest text-brand-cream/60;
+    @apply mb-3 text-xs font-bold uppercase tracking-widest text-brand-ink/60;
   }
 
   .legal-prose .legal-updated {
-    @apply mb-10 text-sm text-brand-cream/55;
+    @apply mb-10 text-sm text-brand-ink/55;
   }
 
   .legal-prose h1 {
-    @apply mb-4 font-display text-4xl font-bold tracking-tight text-brand-cream md:text-5xl;
+    @apply mb-4 font-display text-4xl font-bold tracking-tight text-brand-ink md:text-5xl;
   }
 
   .legal-prose h2 {
-    @apply mt-10 mb-4 font-display text-2xl font-bold tracking-tight text-brand-cream;
+    @apply mt-10 mb-4 font-display text-2xl font-bold tracking-tight text-brand-ink;
   }
 
   .legal-prose h3 {
-    @apply mt-6 mb-2 text-lg font-semibold text-brand-cream;
+    @apply mt-6 mb-2 text-lg font-semibold text-brand-ink;
   }
 
   .legal-prose p {
@@ -172,7 +168,7 @@
   }
 
   .legal-prose li {
-    @apply text-brand-cream/85;
+    @apply text-brand-ink/85;
   }
 
   .legal-prose a {
@@ -180,6 +176,6 @@
   }
 
   .legal-prose strong {
-    @apply font-semibold text-brand-cream;
+    @apply font-semibold text-brand-ink;
   }
 }

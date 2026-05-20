@@ -66,7 +66,7 @@ const LoadingLogo = () => {
   }, [textWidth, progress]);
 
   return (
-    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-cream">
+    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
       <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
         <span ref={textRef}>panko studio</span>
       </motion.span>
@@ -118,7 +118,7 @@ const SectionAccent = ({preset}: {preset: AccentPreset}) => {
 };
 
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-cream/30 bg-brand-cream/[0.08] px-6 py-3 font-semibold text-brand-cream transition-colors hover:bg-brand-cream hover:text-brand-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -275,7 +275,7 @@ const HOW_WE_WORK_TILES: Array<{
 
 const ServiceDotMark = ({pattern, tone}: {pattern: ServiceDotPattern; tone: 'ink' | 'cream'}) => {
   const active = new Set(SERVICE_DOT_CELLS[pattern].map(([r, c]) => `${r}-${c}`));
-  const dotClass = tone === 'ink' ? 'bg-brand-fg' : 'bg-brand-cream';
+  const dotClass = tone === 'ink' ? 'bg-brand-cream' : 'bg-brand-ink';
 
   return (
     <div className="grid grid-cols-3 gap-[5px] w-fit" aria-hidden>
@@ -301,14 +301,14 @@ const ServiceFlipTile = ({
   pattern,
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-accent/22 border border-brand-accent/50 text-brand-cream',
-    light: 'bg-brand-surface border border-brand-cream/22 text-brand-cream',
-    ink: 'bg-brand-elevated border border-brand-cream/26 text-brand-cream',
+    accent: 'bg-brand-accent/22 border border-brand-accent/50 text-brand-ink',
+    light: 'bg-brand-surface border border-brand-ink/22 text-brand-ink',
+    ink: 'bg-brand-elevated border border-brand-ink/26 text-brand-ink',
   };
   const backStyles: Record<ServiceTileVariant, string> = {
     accent: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
     light: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
-    ink: 'bg-brand-surface text-brand-cream border border-brand-cream/22',
+    ink: 'bg-brand-elevated text-brand-ink border border-brand-ink/18',
   };
   const dotTone = variant === 'ink' ? 'cream' : 'ink';
 
@@ -386,7 +386,7 @@ const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   }, [hasAnimated, value]);
 
   return (
-    <div ref={ref} className="text-3xl md:text-4xl font-bold font-display mb-1 text-brand-cream">
+    <div ref={ref} className="text-3xl md:text-4xl font-bold font-display mb-1 text-brand-ink">
       {displayValue}
       {suffix}
     </div>
@@ -418,17 +418,17 @@ const Navbar = ({
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(0,0,0,0.2)', '0px 12px 32px rgba(0,0,0,0.28)'],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(15,23,42,0.08)', '0px 12px 32px rgba(15,23,42,0.12)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(11, 16, 24, 0)', 'rgba(11, 16, 24, 0.55)', 'rgba(11, 16, 24, 0.82)', 'rgba(11, 16, 24, 0.94)'],
+    ['rgba(247, 244, 239, 0)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.94)'],
   );
   const shellBorder = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(247, 244, 239, 0)', 'rgba(247, 244, 239, 0.1)', 'rgba(247, 244, 239, 0.16)', 'rgba(247, 244, 239, 0.22)'],
+    ['rgba(15, 23, 42, 0)', 'rgba(15, 23, 42, 0.06)', 'rgba(15, 23, 42, 0.1)', 'rgba(15, 23, 42, 0.14)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
@@ -455,25 +455,25 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-cream/22"
+      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/12"
     >
       <a
         href="#home"
-        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-cream"
+        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-ink"
         aria-current={activeSection === 'home' ? 'page' : undefined}
       >
         panko studio
         <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
       </a>
 
-      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-cream/92 list-none p-0 m-0">
+      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-ink/92 list-none p-0 m-0">
         {navItems.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
               aria-current={activeSection === item.id ? 'page' : undefined}
               className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
-                activeSection === item.id ? 'translate-x-1 text-brand-cream' : 'translate-x-0 hover:bg-brand-cream/10'
+                activeSection === item.id ? 'translate-x-1 text-brand-ink' : 'translate-x-0 hover:bg-brand-ink/[0.06]'
               }`}
             >
               <span
@@ -536,11 +536,11 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             initial={reduceMotion ? false : 'hidden'}
             whileInView={reduceMotion ? undefined : 'visible'}
             viewport={{once: true, amount: 0.25}}
-            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-cream"
+            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-ink"
           >
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               Design for startups
-              <span className="text-brand-cream/58"> and</span>
+              <span className="text-brand-ink/58"> and</span>
             </motion.span>
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               scale-ups
@@ -565,7 +565,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-cream/88 max-w-2xl leading-relaxed"
+            className="mt-6 text-xl md:text-2xl text-brand-ink/88 max-w-2xl leading-relaxed"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
@@ -578,7 +578,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${CTA_BUTTON_BASE}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-cream/50 group-hover:text-brand-bg/90 transition-colors" aria-hidden>
+              <span className="ml-1 text-brand-ink/50 group-hover:text-white transition-colors" aria-hidden>
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
@@ -586,7 +586,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-cream/78 hover:text-brand-cream transition-colors"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/78 hover:text-brand-ink transition-colors"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
@@ -607,16 +607,16 @@ const About = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72">About</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/72">About</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
               <h2 id="about-heading" className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
-                <span className="text-brand-cream/62">Product management and design</span>{' '}
-                <span className="text-brand-cream">for</span> AI x B2B teams.
+                <span className="text-brand-ink/62">Product management and design</span>{' '}
+                <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-cream/88 leading-relaxed mb-10">
+              <p className="text-lg md:text-xl text-brand-ink/88 leading-relaxed mb-10">
                 Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
                 that need clear decisions, honest handoffs, and design that ships.
               </p>
@@ -636,11 +636,11 @@ const About = () => {
                 <div key={idx}
                   role="group"
                   aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
-                  className="flex items-start gap-5 pb-6 border-b border-brand-cream/24 last:border-0 last:pb-0">
-                  <div className="mt-2 text-brand-cream/75" aria-hidden>{stat.icon}</div>
+                  className="flex items-start gap-5 pb-6 border-b border-brand-ink/24 last:border-0 last:pb-0">
+                  <div className="mt-2 text-brand-ink/75" aria-hidden>{stat.icon}</div>
                   <div>
                     <CountUp value={stat.label} suffix={stat.suffix} />
-                    <div className="text-brand-cream/82">{stat.sub}</div>
+                    <div className="text-brand-ink/82">{stat.sub}</div>
                   </div>
                 </div>
               ))}
@@ -1021,10 +1021,10 @@ const Projects = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72 mb-3 block">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/72 mb-3 block">
               Selected Work
             </p>
-            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-cream">
+            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
               Crafting digital excellence.
             </h2>
           </div>
@@ -1032,23 +1032,23 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-cream/22 bg-gradient-to-br from-brand-surface via-brand-elevated to-brand-cream/[0.06]`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/14 bg-gradient-to-br from-white via-brand-bg to-brand-accent/[0.06]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
                     <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/55" />
                     <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/55" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm bg-brand-elevated/92 border border-brand-cream/22 px-5 py-3 text-sm font-medium text-brand-cream/82 shadow-sm shadow-black/20">
+                    <div className="rounded-sm border border-brand-ink/14 bg-white/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(15,23,42,0.08)]">
                       Case study placeholder
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 flex items-center justify-between px-2">
                   <div>
-                    <h3 className="text-xl font-bold font-display text-brand-cream">Project</h3>
-                    <p className="text-sm font-medium text-brand-cream/75">Coming soon</p>
+                    <h3 className="text-xl font-bold font-display text-brand-ink">Project</h3>
+                    <p className="text-sm font-medium text-brand-ink/75">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-cream/20 bg-brand-cream/10 text-brand-cream/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/18 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/14 bg-white text-brand-ink/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -1098,100 +1098,108 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" aria-labelledby="pricing-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section
+      id="pricing"
+      aria-labelledby="pricing-heading"
+      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-bg px-4 py-16 md:px-10 md:py-20"
+    >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="pricing" />
       </div>
-      <div className="relative z-10 max-w-[1840px] mx-auto">
+      <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
-          <div className="mb-12">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-cream/72 mb-4 block">Pricing</p>
-            <h2 id="pricing-heading" className="text-4xl md:text-5xl font-display font-bold tracking-tight text-brand-cream">
+          <div className="mb-10 md:mb-12">
+            <p className="mb-4 block text-xs font-bold uppercase tracking-widest text-brand-ink/60">
+              Pricing
+            </p>
+            <h2
+              id="pricing-heading"
+              className="text-4xl font-display font-bold tracking-tight text-brand-ink md:text-5xl"
+            >
               Transparent investment.
             </h2>
           </div>
 
-          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-          {plans.map((plan, idx) => {
-            const featured = idx === 1;
-            return (
-              <motion.div
-                key={idx}
-                whileHover={{y: featured ? -6 : -3}}
-                className={`relative p-8 flex flex-col justify-between border bg-brand-surface/95 shadow-[0_8px_28px_rgba(0,0,0,0.22)] transition-colors ${
-                  featured
-                    ? 'border-brand-accent/55 rounded-lg rounded-tl-2xl'
-                    : 'border-brand-cream/24 rounded-md'
-                }`}
-              >
-                {featured && (
-                  <div
-                    className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
-                    aria-hidden
-                  >
-                    <motion.div
-                      initial={reduceMotion ? false : {scaleX: 0}}
-                      whileInView={{scaleX: 1}}
-                      viewport={{once: true, amount: 0.5}}
-                      transition={{duration: 0.65, ease: SECTION_REVEAL_EASE}}
-                      className="absolute top-0 left-0 right-0 h-px origin-left bg-brand-accent"
-                    />
-                    <motion.div
-                      initial={reduceMotion ? false : {scaleY: 0}}
-                      whileInView={{scaleY: 1}}
-                      viewport={{once: true, amount: 0.5}}
-                      transition={{delay: 0.08, duration: 0.4, ease: SECTION_REVEAL_EASE}}
-                      className="absolute top-0 right-0 h-14 w-px origin-top bg-brand-accent/70"
-                    />
-                  </div>
-                )}
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-2xl font-bold font-display text-brand-cream">{plan.name}</h3>
-                    {featured && (
-                      <span className="text-[11px] font-semibold tracking-widest uppercase rounded-sm bg-brand-accent/15 px-2.5 py-1 text-brand-accent">
-                        Most popular
-                      </span>
+          <div className="grid w-full grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
+            {plans.map((plan, idx) => {
+              const featured = idx === 1;
+              return (
+                <motion.div
+                  key={idx}
+                  whileHover={{y: featured ? -5 : -3}}
+                  className={`relative flex h-full min-h-[22rem] flex-col border bg-white/90 p-6 shadow-[0_20px_64px_rgba(15,23,42,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                    featured
+                      ? 'rounded-lg rounded-tl-2xl border-brand-accent/45'
+                      : 'rounded-md border-brand-ink/16'
+                  }`}
+                >
+                  {featured && (
+                    <div
+                      className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
+                      aria-hidden
+                    >
+                      <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.18),transparent_58%)] blur-3xl" />
+                      <motion.div
+                        initial={reduceMotion ? false : {scaleX: 0}}
+                        whileInView={{scaleX: 1}}
+                        viewport={{once: true, amount: 0.5}}
+                        transition={{duration: 0.65, ease: SECTION_REVEAL_EASE}}
+                        className="absolute left-0 right-0 top-0 h-px origin-left bg-brand-accent"
+                      />
+                      <motion.div
+                        initial={reduceMotion ? false : {scaleY: 0}}
+                        whileInView={{scaleY: 1}}
+                        viewport={{once: true, amount: 0.5}}
+                        transition={{delay: 0.08, duration: 0.4, ease: SECTION_REVEAL_EASE}}
+                        className="absolute right-0 top-0 h-14 w-px origin-top bg-brand-accent/70"
+                      />
+                    </div>
+                  )}
+                  <div className="relative flex flex-1 flex-col">
+                    <div className="mb-2 flex items-start justify-between gap-4">
+                      <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
+                      {featured && (
+                        <span className="shrink-0 rounded-sm bg-brand-accent/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-accent">
+                          Most popular
+                        </span>
+                      )}
+                    </div>
+                    <div className="mb-5 flex items-baseline gap-1">
+                      <span className="text-3xl font-bold font-display md:text-4xl">{plan.price}</span>
+                      <span className="font-medium text-brand-ink/50">{plan.period}</span>
+                    </div>
+                    <p className="mb-5 font-semibold leading-relaxed text-brand-ink/90">{plan.desc}</p>
+                    {plan.features.length > 0 && (
+                      <ul className="mb-5 space-y-2.5">
+                        {plan.features.map((f, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center gap-3 text-sm font-medium text-brand-ink/85"
+                          >
+                            <div className="h-1.5 w-1.5 shrink-0 rounded-[1px] bg-brand-ink/80" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {plan.extra && (
+                      <p className="text-sm leading-relaxed text-brand-ink/68">{plan.extra}</p>
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-4xl font-bold font-display">{plan.price}</span>
-                    <span className="font-medium text-brand-cream/70">{plan.period}</span>
-                  </div>
-                  <p className="mb-6 font-semibold leading-relaxed text-brand-cream/92">{plan.desc}</p>
-                  {plan.features.length > 0 && (
-                    <ul className="space-y-3 mb-6">
-                      {plan.features.map((f, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-3 text-sm font-medium text-brand-cream/88"
-                        >
-                          <div className="w-1.5 h-1.5 shrink-0 rounded-[1px] bg-brand-cream" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {plan.extra && (
-                    <p className="mb-8 text-sm leading-relaxed text-brand-cream/82">
-                      {plan.extra}
-                    </p>
-                  )}
-                </div>
-                <a
-                  href={plan.buttonHref}
-                  className={
-                    featured
-                      ? 'relative w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-cream transition-colors hover:bg-brand-cream hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
-                      : `w-full text-center ${CTA_BUTTON_BASE}`
-                  }
-                >
-                  {plan.buttonLabel}
-                </a>
-              </motion.div>
-            );
-          })}
-        </div>
+                  <a
+                    href={plan.buttonHref}
+                    className={
+                      featured
+                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                        : `mt-8 w-full text-center ${CTA_BUTTON_BASE}`
+                    }
+                  >
+                    {plan.buttonLabel}
+                  </a>
+                </motion.div>
+              );
+            })}
+          </div>
         </SectionReveal>
       </div>
     </section>
@@ -1255,7 +1263,7 @@ function MarketingSite() {
   }, []);
 
   return (
-    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-bg">
+    <div className="min-h-screen selection:bg-brand-accent selection:text-white">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
