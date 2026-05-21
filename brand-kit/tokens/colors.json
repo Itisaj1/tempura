@@ -1,21 +1,74 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Panko Studio marketing site color tokens (matches src/index.css @theme)",
+  "description": "Panko Studio warm tempura palette (matches src/index.css :root + @theme)",
   "colors": {
-    "brand-bg": {
-      "hex": "#f7f4ef",
-      "usage": "Default canvas — page background, cream field, email/slide base"
+    "bg-page": {
+      "hex": "#F5E6C8",
+      "token": "--color-bg-page",
+      "usage": "Page canvas — pale batter"
     },
-    "brand-ink": {
-      "hex": "#0f172a",
-      "usage": "Primary text, headlines, dark sections (e.g. contact), favicon field"
+    "bg-card": {
+      "hex": "#FFF8F0",
+      "token": "--color-bg-card",
+      "usage": "Cards, elevated surfaces — rice paper"
     },
-    "brand-accent": {
-      "hex": "#0081a7",
-      "usage": "Accent period, dots, primary filled CTAs, links — use sparingly"
+    "bg-dark": {
+      "hex": "#3A2410",
+      "token": "--color-bg-dark",
+      "usage": "Contact, footer, nav CTA — espresso"
+    },
+    "accent": {
+      "hex": "#C97C2E",
+      "token": "--color-accent",
+      "usage": "CTAs, links, accent spans — deep fry"
+    },
+    "accent-light": {
+      "hex": "#E8C47A",
+      "token": "--color-accent-light",
+      "usage": "Featured cards, badges — golden crust"
+    },
+    "accent-pop": {
+      "hex": "#F47B5A",
+      "token": "--color-accent-pop",
+      "usage": "Small pops only — shrimp blush"
+    },
+    "text-primary": {
+      "hex": "#2C1A08",
+      "token": "--color-text-primary",
+      "usage": "Headlines and body — warm dark"
+    },
+    "text-muted": {
+      "hex": "#8B4513",
+      "token": "--color-text-muted",
+      "usage": "Eyebrows, secondary copy — soy dip"
+    },
+    "text-inverse": {
+      "hex": "#F5E6C8",
+      "token": "--color-text-inverse",
+      "usage": "Text on dark backgrounds"
+    },
+    "secondary": {
+      "hex": "#4A7C59",
+      "token": "--color-secondary",
+      "usage": "Secondary accent — shiso leaf (max 2 per page)"
+    },
+    "secondary-bg": {
+      "hex": "#D9E8DC",
+      "token": "--color-secondary-bg",
+      "usage": "Soft secondary surfaces — daikon mist"
     }
   },
   "tailwindV4": {
-    "classes": ["bg-brand-bg", "text-brand-ink", "bg-brand-ink", "text-brand-accent", "bg-brand-accent"]
+    "classes": [
+      "bg-brand-bg",
+      "bg-brand-card",
+      "bg-brand-dark",
+      "text-brand-ink",
+      "text-brand-muted",
+      "text-brand-inverse",
+      "bg-brand-accent",
+      "bg-brand-accent-light",
+      "text-brand-accent"
+    ]
   }
 }

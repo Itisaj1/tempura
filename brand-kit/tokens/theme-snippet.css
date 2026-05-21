@@ -1,12 +1,19 @@
 /**
- * Panko Studio — design tokens (subset)
- * Source of truth in repo: src/index.css @theme
- * Paste into design docs or sync to Figma variables.
+ * Panko Studio — warm tempura palette
+ * Source of truth in repo: src/index.css (:root + @theme)
  */
 :root {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
-  --color-brand-bg: #f7f4ef;
-  --color-brand-accent: #0081a7;
-  --color-brand-ink: #0f172a;
+  --color-bg-page: #f5e6c8;
+  --color-bg-card: #fff8f0;
+  --color-bg-dark: #3a2410;
+  --color-accent: #c97c2e;
+  --color-accent-light: #e8c47a;
+  --color-accent-pop: #f47b5a;
+  --color-text-primary: #2c1a08;
+  --color-text-muted: #8b4513;
+  --color-text-inverse: #f5e6c8;
+  --color-secondary: #4a7c59;
+  --color-secondary-bg: #d9e8dc;
 }

@@ -24,7 +24,7 @@ export const LegalLayout = ({
   }, [title]);
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-ink selection:bg-brand-accent selection:text-white">
+    <div className="min-h-screen bg-brand-bg text-brand-ink selection:bg-brand-accent selection:text-brand-card">
       <a href="/" className="skip-link">
         Skip to home
       </a>

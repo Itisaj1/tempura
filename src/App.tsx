@@ -107,7 +107,7 @@ const SectionAccent = ({preset}: {preset: AccentPreset}) => {
       {preset === 'contact' && (
         <>
           <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
-          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-cream/12`} aria-hidden />
+          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-inverse/12`} aria-hidden />
         </>
       )}
       {preset === 'footer' && (
@@ -118,7 +118,10 @@ const SectionAccent = ({preset}: {preset: AccentPreset}) => {
 };
 
 const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/10 bg-brand-card px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+
+const NAV_CTA_BUTTON =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-dark px-5 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent hover:text-brand-card focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -159,7 +162,7 @@ const ConversationalInput = ({
           setFocused(false);
           onBlur?.(e);
         }}
-        className={`w-full border-b border-brand-cream/35 bg-transparent px-1 py-1 text-brand-cream placeholder:text-brand-cream/45 focus:outline-none disabled:opacity-60 ${inputClassName ?? ''}`}
+        className={`w-full border-b border-brand-inverse/20 bg-transparent px-1 py-1 text-brand-inverse placeholder:text-brand-inverse/45 focus:outline-none disabled:opacity-60 ${inputClassName ?? ''}`}
       />
       <motion.span
         aria-hidden
@@ -275,7 +278,7 @@ const HOW_WE_WORK_TILES: Array<{
 
 const ServiceDotMark = ({pattern, tone}: {pattern: ServiceDotPattern; tone: 'ink' | 'cream'}) => {
   const active = new Set(SERVICE_DOT_CELLS[pattern].map(([r, c]) => `${r}-${c}`));
-  const dotClass = tone === 'ink' ? 'bg-brand-cream' : 'bg-brand-ink';
+  const dotClass = tone === 'ink' ? 'bg-brand-inverse' : 'bg-brand-ink';
 
   return (
     <div className="grid grid-cols-3 gap-[5px] w-fit" aria-hidden>
@@ -301,14 +304,14 @@ const ServiceFlipTile = ({
   pattern,
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-accent/22 border border-brand-accent/50 text-brand-ink',
-    light: 'bg-brand-surface border border-brand-ink/22 text-brand-ink',
-    ink: 'bg-brand-elevated border border-brand-ink/26 text-brand-ink',
+    accent: 'bg-brand-accent-light border border-brand-ink/10 text-brand-dark',
+    light: 'bg-brand-card border border-brand-ink/10 text-brand-ink',
+    ink: 'bg-brand-card border border-brand-ink/10 text-brand-ink',
   };
   const backStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
-    light: 'bg-brand-ink text-brand-cream border border-brand-cream/18',
-    ink: 'bg-brand-elevated text-brand-ink border border-brand-ink/18',
+    accent: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
+    light: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
+    ink: 'bg-brand-card text-brand-ink border border-brand-ink/10',
   };
   const dotTone = variant === 'ink' ? 'cream' : 'ink';
 
@@ -418,17 +421,17 @@ const Navbar = ({
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(15,23,42,0.08)', '0px 12px 32px rgba(15,23,42,0.12)'],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(58,36,16,0.08)', '0px 12px 32px rgba(58,36,16,0.12)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(247, 244, 239, 0)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.94)'],
+    ['rgba(245, 230, 200, 0)', 'rgba(255, 248, 240, 0.55)', 'rgba(255, 248, 240, 0.82)', 'rgba(255, 248, 240, 0.94)'],
   );
   const shellBorder = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(15, 23, 42, 0)', 'rgba(15, 23, 42, 0.06)', 'rgba(15, 23, 42, 0.1)', 'rgba(15, 23, 42, 0.14)'],
+    ['rgba(44, 26, 8, 0)', 'rgba(44, 26, 8, 0.06)', 'rgba(44, 26, 8, 0.1)', 'rgba(44, 26, 8, 0.14)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
@@ -492,7 +495,7 @@ const Navbar = ({
         whileHover={{y: -1}}
         whileTap={{scale: 0.98}}
         href="#contact"
-        className={`ml-3 md:ml-4 text-sm ${CTA_BUTTON_BASE} !py-2 !px-5`}
+        className={`ml-3 md:ml-4 text-sm ${NAV_CTA_BUTTON}`}
       >
         Book call
       </motion.a>
@@ -540,7 +543,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           >
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               Design for startups
-              <span className="text-brand-ink/58"> and</span>
+              <span className="text-brand-muted/80"> and</span>
             </motion.span>
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               scale-ups
@@ -565,7 +568,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-ink/88 max-w-2xl leading-relaxed"
+            className="mt-6 text-xl md:text-2xl text-brand-ink/75 max-w-2xl leading-relaxed"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
@@ -578,7 +581,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${CTA_BUTTON_BASE}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-ink/50 group-hover:text-white transition-colors" aria-hidden>
+              <span className="ml-1 text-brand-ink/50 group-hover:text-brand-inverse transition-colors" aria-hidden>
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
@@ -607,7 +610,7 @@ const About = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/72">About</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-muted">About</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
@@ -747,7 +750,7 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-ink text-brand-cream min-h-[85vh] flex items-center"
+      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-dark text-brand-inverse min-h-[85vh] flex items-center"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="contact" />
@@ -755,7 +758,7 @@ const CTA = () => {
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-cream/70 mb-5 flex items-center gap-3">
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-inverse/70 mb-5 flex items-center gap-3">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
               Contact
             </div>
@@ -780,13 +783,13 @@ const CTA = () => {
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
-                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-cream">
+                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-inverse">
                   Thank you, {submittedName}
                   <span className="text-brand-accent">.</span>
                 </h2>
-                <p className="text-lg md:text-xl text-brand-cream/85 max-w-xl leading-relaxed">
+                <p className="text-lg md:text-xl text-brand-inverse/85 max-w-xl leading-relaxed">
                   We&apos;ve got your note and a confirmation on the way to{' '}
-                  <span className="text-brand-cream">{email.trim()}</span>. We&apos;ll be in touch
+                  <span className="text-brand-inverse">{email.trim()}</span>. We&apos;ll be in touch
                   shortly.
                 </p>
               </motion.div>
@@ -802,17 +805,17 @@ const CTA = () => {
               >
                 <h2
                   id="contact-heading"
-                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-cream"
+                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-inverse"
                 >
                   Let&apos;s collaborate
                   <span className="text-brand-accent">.</span>
                 </h2>
 
-                <div className="space-y-6 text-base md:text-lg text-brand-cream/90 leading-relaxed">
+                <div className="space-y-6 text-base md:text-lg text-brand-inverse/90 leading-relaxed">
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-fullName"
-                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
+                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
                     >
                       My name is
                     </label>
@@ -834,7 +837,7 @@ const CTA = () => {
                     />
                     <label
                       htmlFor="contact-company"
-                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
+                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
                     >
                       from
                     </label>
@@ -857,7 +860,7 @@ const CTA = () => {
                   </div>
 
                   <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="text-brand-cream/85 mr-1 inline">
+                    <legend className="text-brand-inverse/85 mr-1 inline">
                       I want to chat about designs for my (pick at least one)
                     </legend>
                     {topics.map((t) => {
@@ -872,8 +875,8 @@ const CTA = () => {
                           disabled={formStatus === 'loading'}
                           className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
-                              ? 'border-brand-accent bg-brand-accent/22 text-brand-cream'
-                              : 'border-brand-cream/25 bg-brand-cream/[0.06] text-brand-cream/78 hover:border-brand-cream/40 hover:bg-brand-cream/12'
+                              ? 'border-brand-accent bg-brand-accent/22 text-brand-inverse'
+                              : 'border-brand-inverse/25 bg-brand-inverse/[0.06] text-brand-inverse/78 hover:border-brand-inverse/40 hover:bg-brand-inverse/12'
                           }`}
                         >
                           {t}
@@ -885,7 +888,7 @@ const CTA = () => {
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-email"
-                      className="text-brand-cream/85 transition-colors duration-200 group-focus-within/field:text-brand-cream"
+                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
                     >
                       You can reach me at
                     </label>
@@ -931,7 +934,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-cream/25 bg-brand-cream px-6 py-3 font-semibold text-brand-ink transition-colors hover:border-transparent hover:bg-brand-accent hover:text-brand-cream focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-cream disabled:hover:text-brand-ink"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-inverse/25 bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:border-transparent hover:bg-brand-accent-light hover:text-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent disabled:hover:text-brand-card"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -941,10 +944,10 @@ const CTA = () => {
                       aria-hidden
                       animate={{rotate: 360}}
                       transition={{duration: 0.9, repeat: Infinity, ease: 'linear'}}
-                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-cream/35 border-t-brand-ink"
+                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-card/35 border-t-brand-card"
                     />
                   ) : (
-                    <ArrowRight className="ml-1 h-4 w-4 text-brand-ink/40 transition-colors group-hover:text-brand-cream/90" />
+                    <ArrowRight className="ml-1 h-4 w-4 text-brand-card/70 transition-colors group-hover:text-brand-card" />
                   )}
                 </motion.button>
               </motion.form>
@@ -959,26 +962,26 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-ink text-brand-cream overflow-hidden" aria-label="Site footer">
+    <footer className="relative bg-brand-dark text-brand-inverse overflow-hidden" aria-label="Site footer">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <SectionAccent preset="footer" />
       </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-cream">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
               panko studio
             </div>
-            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-cream/88">
-              <a href="#about" className="hover:text-brand-cream transition-colors">
+            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-inverse/88">
+              <a href="#about" className="transition-colors hover:text-brand-accent-light">
                 About
               </a>
-              <a href="#work" className="hover:text-brand-cream transition-colors">
+              <a href="#work" className="transition-colors hover:text-brand-accent-light">
                 Work
               </a>
-              <a href="#pricing" className="hover:text-brand-cream transition-colors">
+              <a href="#pricing" className="transition-colors hover:text-brand-accent-light">
                 Pricing
               </a>
-              <a href="#contact" className="hover:text-brand-cream transition-colors">
+              <a href="#contact" className="transition-colors hover:text-brand-accent-light">
                 Contact
               </a>
               <a
@@ -986,19 +989,19 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn (opens in new tab)"
-                className="hover:text-brand-cream transition-colors"
+                className="transition-colors hover:text-brand-accent-light"
               >
                 LinkedIn
               </a>
             </div>
           </div>
-          <div className="mt-10 flex flex-col gap-4 border-t border-brand-cream/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-cream/75">
-              <a href="/privacy" className="transition-colors hover:text-brand-cream">Privacy</a>
-              <a href="/terms" className="transition-colors hover:text-brand-cream">Terms</a>
-              <a href="/cookies" className="transition-colors hover:text-brand-cream">Cookies</a>
+          <div className="mt-10 flex flex-col gap-4 border-t border-brand-inverse/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-inverse/60">
+              <a href="/privacy" className="transition-colors hover:text-brand-accent-light">Privacy</a>
+              <a href="/terms" className="transition-colors hover:text-brand-accent-light">Terms</a>
+              <a href="/cookies" className="transition-colors hover:text-brand-accent-light">Cookies</a>
             </nav>
-            <p className="text-sm text-brand-cream/65">© {new Date().getFullYear()} Panko Studio</p>
+            <p className="text-sm text-brand-inverse/60">© {new Date().getFullYear()} Panko Studio</p>
           </div>
       </div>
     </footer>
@@ -1021,7 +1024,7 @@ const Projects = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/72 mb-3 block">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-muted mb-3 block">
               Selected Work
             </p>
             <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
@@ -1032,13 +1035,13 @@ const Projects = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/14 bg-gradient-to-br from-white via-brand-bg to-brand-accent/[0.06]`}>
+                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 bg-gradient-to-br from-brand-card via-brand-bg to-brand-accent/[0.08]`}>
                   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
                     <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/55" />
                     <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/55" />
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm border border-brand-ink/14 bg-white/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(15,23,42,0.08)]">
+                    <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(44,26,8,0.08)]">
                       Case study placeholder
                     </div>
                   </div>
@@ -1046,9 +1049,9 @@ const Projects = () => {
                 <div className="mt-5 flex items-center justify-between px-2">
                   <div>
                     <h3 className="text-xl font-bold font-display text-brand-ink">Project</h3>
-                    <p className="text-sm font-medium text-brand-ink/75">Coming soon</p>
+                    <p className="text-sm font-medium text-brand-shiso">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/14 bg-white text-brand-ink/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
                     <ArrowRight className="h-5 w-5" />
                   </div>
                 </div>
@@ -1109,7 +1112,7 @@ const Pricing = () => {
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
           <div className="mb-10 md:mb-12">
-            <p className="mb-4 block text-xs font-bold uppercase tracking-widest text-brand-ink/60">
+            <p className="mb-4 block text-xs font-bold uppercase tracking-widest text-brand-muted">
               Pricing
             </p>
             <h2
@@ -1127,10 +1130,10 @@ const Pricing = () => {
                 <motion.div
                   key={idx}
                   whileHover={{y: featured ? -5 : -3}}
-                  className={`relative flex h-full min-h-[22rem] flex-col border bg-white/90 p-6 shadow-[0_20px_64px_rgba(15,23,42,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                  className={`relative flex h-full min-h-[22rem] flex-col border bg-brand-card/95 p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
                     featured
-                      ? 'rounded-lg rounded-tl-2xl border-brand-accent/45'
-                      : 'rounded-md border-brand-ink/16'
+                      ? 'rounded-lg rounded-tl-2xl border-brand-accent'
+                      : 'rounded-md border-brand-ink/10'
                   }`}
                 >
                   {featured && (
@@ -1138,7 +1141,7 @@ const Pricing = () => {
                       className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
                       aria-hidden
                     >
-                      <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(0,129,167,0.18),transparent_58%)] blur-3xl" />
+                      <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(201,124,46,0.18),transparent_58%)] blur-3xl" />
                       <motion.div
                         initial={reduceMotion ? false : {scaleX: 0}}
                         whileInView={{scaleX: 1}}
@@ -1159,14 +1162,14 @@ const Pricing = () => {
                     <div className="mb-2 flex items-start justify-between gap-4">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
                       {featured && (
-                        <span className="shrink-0 rounded-sm bg-brand-accent/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-accent">
+                        <span className="shrink-0 rounded-sm bg-brand-accent-light px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-dark">
                           Most popular
                         </span>
                       )}
                     </div>
                     <div className="mb-5 flex items-baseline gap-1">
                       <span className="text-3xl font-bold font-display md:text-4xl">{plan.price}</span>
-                      <span className="font-medium text-brand-ink/50">{plan.period}</span>
+                      <span className="font-medium text-brand-muted">{plan.period}</span>
                     </div>
                     <p className="mb-5 font-semibold leading-relaxed text-brand-ink/90">{plan.desc}</p>
                     {plan.features.length > 0 && (
@@ -1190,7 +1193,7 @@ const Pricing = () => {
                     href={plan.buttonHref}
                     className={
                       featured
-                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
                         : `mt-8 w-full text-center ${CTA_BUTTON_BASE}`
                     }
                   >
@@ -1263,7 +1266,7 @@ function MarketingSite() {
   }, []);
 
   return (
-    <div className="min-h-screen selection:bg-brand-accent selection:text-white">
+    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-card">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
