@@ -79,44 +79,6 @@ const LoadingLogo = () => {
   );
 };
 
-type AccentPreset = 'hero' | 'about' | 'work' | 'pricing' | 'contact' | 'footer';
-
-/** Section atmosphere — sparse accent hairlines only. */
-const SectionAccent = ({preset}: {preset: AccentPreset}) => {
-  const onInk = preset === 'contact' || preset === 'footer';
-  const lineClass = onInk ? 'bg-brand-accent/35' : 'bg-brand-accent/22';
-  const line = `absolute ${lineClass}`;
-
-  return (
-    <>
-      {preset === 'hero' && (
-        <>
-          <div className={`${line} top-0 right-[10%] h-[min(38vh,300px)] w-px`} aria-hidden />
-          <div className={`${line} top-[16%] right-[10%] h-px w-[min(26vw,220px)]`} aria-hidden />
-        </>
-      )}
-      {preset === 'about' && (
-        <div className={`${line} top-[12%] left-0 h-px w-[min(42vw,360px)]`} aria-hidden />
-      )}
-      {preset === 'work' && (
-        <div className={`${line} top-[8%] right-0 h-px w-[min(48vw,420px)]`} aria-hidden />
-      )}
-      {preset === 'pricing' && (
-        <div className={`${line} bottom-[14%] left-[6%] h-px w-[min(40vw,340px)]`} aria-hidden />
-      )}
-      {preset === 'contact' && (
-        <>
-          <div className={`${line} top-0 left-[12%] h-[min(32vh,260px)] w-px`} aria-hidden />
-          <div className={`absolute top-0 right-0 h-px w-[min(55vw,480px)] bg-brand-inverse/12`} aria-hidden />
-        </>
-      )}
-      {preset === 'footer' && (
-        <div className={`${line} bottom-[28%] right-[14%] h-px w-[min(36vw,320px)]`} aria-hidden />
-      )}
-    </>
-  );
-};
-
 const CTA_BUTTON_BASE =
   'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/10 bg-brand-card px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
@@ -521,16 +483,6 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       aria-labelledby="hero-heading"
       className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center"
     >
-      <motion.div
-        initial={{opacity: 0}}
-        whileInView={{opacity: 1}}
-        viewport={{once: true, amount: 0.2}}
-        transition={{duration: 1.35, ease: 'easeOut'}}
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-        aria-hidden
-      >
-        <SectionAccent preset="hero" />
-      </motion.div>
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
         <motion.div style={{opacity, y}} className="max-w-5xl text-left">
           <motion.h1
@@ -604,9 +556,6 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 const About = () => {
   return (
     <section id="about" aria-labelledby="about-heading" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="about" />
-      </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
@@ -752,9 +701,6 @@ const CTA = () => {
       aria-labelledby="contact-heading"
       className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-dark text-brand-inverse min-h-[85vh] flex items-center"
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="contact" />
-      </div>
       <div className="relative z-10 max-w-3xl mx-auto w-full">
         <div className="px-1 md:px-0 py-4 md:py-6">
           <SectionReveal>
@@ -963,9 +909,6 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="relative bg-brand-dark text-brand-inverse overflow-hidden" aria-label="Site footer">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="footer" />
-      </div>
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
@@ -1018,9 +961,6 @@ const Projects = () => {
 
   return (
     <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="work" />
-      </div>
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
@@ -1036,10 +976,6 @@ const Projects = () => {
             {placeholders.map((tile) => (
               <div key={tile.id} className={`group ${tile.size}`}>
                 <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 bg-gradient-to-br from-brand-card via-brand-bg to-brand-accent/[0.08]`}>
-                  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-md rounded-br-xl" aria-hidden>
-                    <div className="absolute top-0 left-0 h-9 w-px bg-brand-accent/55" />
-                    <div className="absolute top-0 left-0 h-px w-9 bg-brand-accent/55" />
-                  </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(44,26,8,0.08)]">
                       Case study placeholder
@@ -1065,7 +1001,6 @@ const Projects = () => {
 };
 
 const Pricing = () => {
-  const reduceMotion = useReducedMotion();
   const plans: Array<{
     name: string;
     price: string;
@@ -1106,9 +1041,6 @@ const Pricing = () => {
       aria-labelledby="pricing-heading"
       className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-bg px-4 py-16 md:px-10 md:py-20"
     >
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <SectionAccent preset="pricing" />
-      </div>
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
           <div className="mb-10 md:mb-12">
@@ -1136,28 +1068,6 @@ const Pricing = () => {
                       : 'rounded-md border-brand-ink/10'
                   }`}
                 >
-                  {featured && (
-                    <div
-                      className="pointer-events-none absolute inset-0 overflow-hidden rounded-lg rounded-tl-2xl"
-                      aria-hidden
-                    >
-                      <div className="absolute -right-[35%] -top-[45%] h-[130%] w-[90%] rounded-full bg-[radial-gradient(circle_at_32%_32%,rgba(201,124,46,0.18),transparent_58%)] blur-3xl" />
-                      <motion.div
-                        initial={reduceMotion ? false : {scaleX: 0}}
-                        whileInView={{scaleX: 1}}
-                        viewport={{once: true, amount: 0.5}}
-                        transition={{duration: 0.65, ease: SECTION_REVEAL_EASE}}
-                        className="absolute left-0 right-0 top-0 h-px origin-left bg-brand-accent"
-                      />
-                      <motion.div
-                        initial={reduceMotion ? false : {scaleY: 0}}
-                        whileInView={{scaleY: 1}}
-                        viewport={{once: true, amount: 0.5}}
-                        transition={{delay: 0.08, duration: 0.4, ease: SECTION_REVEAL_EASE}}
-                        className="absolute right-0 top-0 h-14 w-px origin-top bg-brand-accent/70"
-                      />
-                    </div>
-                  )}
                   <div className="relative flex flex-1 flex-col">
                     <div className="mb-2 flex items-start justify-between gap-4">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
