@@ -6,6 +6,7 @@ Run from the project root:  python3 logo/build.py
 
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -20,10 +21,12 @@ SVG_DIR = ROOT / "svg"
 PNG_DIR = ROOT / "png"
 
 TEXT = "panko studio."
-INK = "#0F172A"
-CREAM = "#F7F4EF"
-ACCENT = "#0081A7"
-WHITE = "#FFFFFF"
+# Warm tempura palette (matches src/index.css :root)
+TEXT_PRIMARY = "#2C1A08"
+PAGE = "#F5E6C8"
+CARD = "#FFF8F0"
+DARK = "#3A2410"
+ACCENT = "#C97C2E"
 
 PNG_WIDTHS = [256, 512, 1024, 2048]
 FAVICON_CANVAS = 32
@@ -97,13 +100,13 @@ def build_svgs(font_bold: TTFont | None = None) -> tuple[int, int]:
 
     SVG_DIR.mkdir(parents=True, exist_ok=True)
     (SVG_DIR / "panko-studio-transparent.svg").write_text(
-        render(None, INK, ACCENT)
+        render(None, TEXT_PRIMARY, ACCENT)
     )
     (SVG_DIR / "panko-studio-on-white.svg").write_text(
-        render(WHITE, INK, ACCENT)
+        render(CARD, TEXT_PRIMARY, ACCENT)
     )
     (SVG_DIR / "panko-studio-on-ink.svg").write_text(
-        render(INK, CREAM, ACCENT)
+        render(DARK, PAGE, ACCENT)
     )
 
     return canvas_w, canvas_h
@@ -156,9 +159,9 @@ def build_favicon_svgs(font_bold: TTFont) -> None:
         )
 
     SVG_DIR.mkdir(parents=True, exist_ok=True)
-    (SVG_DIR / "favicon-transparent.svg").write_text(render(None, INK))
-    (SVG_DIR / "favicon-on-white.svg").write_text(render(WHITE, INK))
-    (SVG_DIR / "favicon-on-ink.svg").write_text(render(INK, CREAM))
+    (SVG_DIR / "favicon-transparent.svg").write_text(render(None, TEXT_PRIMARY))
+    (SVG_DIR / "favicon-on-white.svg").write_text(render(CARD, TEXT_PRIMARY))
+    (SVG_DIR / "favicon-on-ink.svg").write_text(render(DARK, PAGE))
 
 
 def _render_png(svg: Path, out: Path, size: str) -> None:
@@ -198,6 +201,32 @@ def build_favicon_pngs() -> None:
             print(f"  ✓ {out.name}")
 
 
+def sync_brand_kit() -> None:
+    """Copy generated assets into brand-kit and the live site favicon."""
+    repo = ROOT.parent
+    kit_svg = repo / "brand-kit" / "logos" / "svg"
+    kit_png = repo / "brand-kit" / "logos" / "png"
+    kit_site = repo / "brand-kit" / "site"
+    public_favicon = repo / "public" / "favicon.svg"
+
+    kit_svg.mkdir(parents=True, exist_ok=True)
+    kit_png.mkdir(parents=True, exist_ok=True)
+    kit_site.mkdir(parents=True, exist_ok=True)
+
+    for svg in sorted(SVG_DIR.glob("*.svg")):
+        shutil.copy2(svg, kit_svg / svg.name)
+        print(f"  → brand-kit/logos/svg/{svg.name}")
+
+    for png in sorted(PNG_DIR.glob("*.png")):
+        shutil.copy2(png, kit_png / png.name)
+
+    favicon_live = SVG_DIR / "favicon-on-ink.svg"
+    shutil.copy2(favicon_live, kit_site / "favicon.svg")
+    shutil.copy2(favicon_live, public_favicon)
+    print(f"  → brand-kit/site/favicon.svg")
+    print(f"  → public/favicon.svg")
+
+
 def main() -> None:
     if not FONT_PATH.exists():
         raise SystemExit(f"missing font: {FONT_PATH}")
@@ -215,6 +244,9 @@ def main() -> None:
 
     print("Rendering favicon PNGs…")
     build_favicon_pngs()
+
+    print("Syncing brand-kit + public favicon…")
+    sync_brand_kit()
     print("Done.")
 
 

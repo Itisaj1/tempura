@@ -5,15 +5,17 @@ SVG paths from **Outfit Bold** (700), so the files are font-independent
 and render identically on any device or in any tool (Figma, Adobe,
 Keynote, Google Slides, browsers).
 
+Colors use the **warm tempura palette** (pale batter, rice paper, espresso, deep fry).
+
 ## Files
 
 ### Wordmark vectors — `svg/panko-studio-*.svg`
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#0F172A` ink | `#0081A7` accent |
-| `panko-studio-on-white.svg` | `#FFFFFF` | `#0F172A` ink | `#0081A7` accent |
-| `panko-studio-on-ink.svg` | `#0F172A` brand ink | `#F7F4EF` cream | `#0081A7` accent |
+| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `panko-studio-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `panko-studio-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` deep fry |
 
 Canvas is 6602 × 2180 user units (~3:1 aspect). The wordmark is
 padded with generous breathing room so it can drop into a slide /
@@ -25,9 +27,9 @@ Square **p** mark with accent dot (matches the live site favicon).
 
 | File | Background | Letter | Dot |
 |------|------------|--------|-----|
-| `favicon-transparent.svg` | none | `#0F172A` ink | `#0081A7` accent |
-| `favicon-on-white.svg` | `#FFFFFF` | `#0F172A` ink | `#0081A7` accent |
-| `favicon-on-ink.svg` | `#0F172A` brand ink | `#F7F4EF` cream | `#0081A7` accent |
+| `favicon-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `favicon-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `favicon-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` deep fry |
 
 Canvas is 32 × 32 user units.
 
@@ -60,6 +62,8 @@ the repo root:
 ```bash
 python3 logo/build.py
 ```
+
+This also copies SVGs/PNGs into `brand-kit/logos/` and updates `public/favicon.svg` + `brand-kit/site/favicon.svg`.
 
 Dependencies (one-time):
 

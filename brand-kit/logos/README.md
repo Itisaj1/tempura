@@ -8,15 +8,15 @@ Vector and raster wordmark exports. Wordmark text (`panko studio.`) is outlined 
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#0F172A` ink | `#0081A7` accent |
-| `panko-studio-on-white.svg` | `#FFFFFF` | `#0F172A` ink | `#0081A7` accent |
-| `panko-studio-on-ink.svg` | `#0F172A` brand ink | `#F7F4EF` cream | `#0081A7` accent |
+| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `panko-studio-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` warm dark | `#C97C2E` deep fry |
+| `panko-studio-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` deep fry |
 
 Canvas is ~6602 × 2180 user units (~3:1). Generous padding for headers and decks.
 
 ### Rasters — `png/`
 
-Each variant at **256, 512, 1024, 2048** px width. Filenames include dimensions.
+Each variant at **256, 512, 1024, 2048** px width. Favicons also at **16–2048** px square. Filenames include dimensions.
 
 | Width | Typical use |
 |-------|-------------|
@@ -25,14 +25,14 @@ Each variant at **256, 512, 1024, 2048** px width. Filenames include dimensions.
 | 1024 px | Deck mark, header banner |
 | 2048 px | Print, retina, large display |
 
-`*-transparent-*` PNGs use a **true alpha** channel (no white matte).
+`*-transparent-*` PNGs use a **true alpha** channel (no matte).
 
 ## Re-generating (source of truth in repo)
 
-From the **repository root** (not this folder alone):
+From the **repository root**:
 
 ```bash
 python3 logo/build.py
 ```
 
-Dependencies: `fontTools`, ImageMagick — see `logo/README.md` in the repo root.
+Copies outputs here automatically. Dependencies: `fontTools`, ImageMagick — see `logo/README.md`.

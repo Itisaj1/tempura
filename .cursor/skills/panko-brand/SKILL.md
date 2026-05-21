@@ -33,26 +33,31 @@ follow the patterns already in `src/App.tsx` and `src/index.css`.
 | Sign-off | The Panko Studio team |
 
 **Wordmark rhythm.** When the wordmark or a headline ends in a period,
-that period is rendered in the brand accent blue (`#0081A7`). This is the
+that period is rendered in **deep fry** (`#C97C2E`). This is the
 signature visual mark — repeat it wherever a headline ends:
 
-> panko studio<span style="color:#0081A7;">.</span>
-> Let's collaborate<span style="color:#0081A7;">.</span>
-> Transparent investment<span style="color:#0081A7;">.</span>
+> panko studio<span style="color:#C97C2E;">.</span>
+> Let's collaborate<span style="color:#C97C2E;">.</span>
+> Transparent investment<span style="color:#C97C2E;">.</span>
 
 ## Colors
 
 | Token | Hex | Use |
 |------|-----|-----|
-| Brand cream | `#F7F4EF` | Default canvas. Page, email, slide, one-pager background. |
-| Brand ink | `#0F172A` | Body type, headlines, dramatic dark cards/sections. |
-| Brand accent | `#0081A7` | Single-point accents: the brand period, eyebrow dots, primary CTA fill, link color. |
+| Pale batter | `#F5E6C8` | Default canvas. Page, email, slide background. Inverse text on dark. |
+| Rice paper | `#FFF8F0` | Cards and inset panels on batter. Button text on accent. |
+| Espresso | `#3A2410` | Dark sections (contact, footer), nav CTA, wordmark on-dark field. |
+| Warm dark | `#2C1A08` | Body type, headlines, outlined wordmark on light. |
+| Soy dip | `#8B4513` | Muted eyebrows and secondary labels. |
+| Deep fry | `#C97C2E` | Accent period, dots, primary CTA fill, links. |
+| Golden crust | `#E8C47A` | Featured tiles, badges, footer link hover. |
 
 **Rules**
-- Accent is restrained. One or two focal points per surface, not a fill across large areas. The CTA pill is the one big-area exception.
-- Default canvas is cream — not white. White is reserved for content cards layered over cream.
-- Use ink (`#0F172A`) as a card or section background when you want dramatic contrast (the contact section on the site, the studio-notification email).
-- For "muted" text on cream: `#0F172A` at 60–75% opacity. On ink: white at 65–85%.
+- Deep fry is restrained — one or two focal points per surface; primary CTA is the main filled exception.
+- Default canvas is pale batter — not pure white. Rice paper is for cards on batter.
+- Use espresso (`#3A2410`) for dramatic dark sections (contact, footer).
+- Body copy on batter: warm dark (`#2C1A08`), not deep fry. Muted: soy dip or warm dark at 60–75% opacity. On dark: pale batter at 65–90%.
+- Never use `#000000` / `#FFFFFF` as brand colors in materials.
 
 ## Typography
 

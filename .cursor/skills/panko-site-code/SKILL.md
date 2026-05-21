@@ -46,9 +46,11 @@ Parked / not bundled: `src/Testimonials.tsx` (not imported).
 
 Defined in `src/index.css` `@theme`:
 
-- `brand-bg` `#f7f4ef`
-- `brand-accent` `#0081a7`
-- `brand-ink` `#0f172a`
+- `brand-bg` `#f5e6c8` (pale batter)
+- `brand-card` `#fff8f0` (rice paper)
+- `brand-dark` `#3a2410` (espresso)
+- `brand-ink` `#2c1a08` (warm dark)
+- `brand-accent` `#c97c2e` (deep fry)
 - `font-sans` → Inter, `font-display` → Outfit
 
 Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-accent`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
