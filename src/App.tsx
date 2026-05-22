@@ -1012,17 +1012,6 @@ const Pricing = () => {
     buttonHref: string;
   }> = [
     {
-      name: 'Essential',
-      price: '$18,000',
-      period: ' / project',
-      desc: 'Design your core product from scratch in 6-8 weeks.',
-      features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
-      extra:
-        "A designer's final product is only as good as the inputs provided. We'll provide templates for quality moodboards, requirements documents, UX flow diagrams & wireframes with workshops included.",
-      buttonLabel: 'Enquire',
-      buttonHref: '#contact',
-    },
-    {
       name: 'Subscribe',
       price: '$7,500',
       period: ' / month',
@@ -1030,6 +1019,17 @@ const Pricing = () => {
       features: [],
       extra:
         'Share your requirements on a Notion card, & senior designers will deliver high-quality designs, one by one. This could be a product design, graphics for marketing, email banners, or wireframes — anything goes so long as you can explain it in a card.',
+      buttonLabel: 'Enquire',
+      buttonHref: '#contact',
+    },
+    {
+      name: 'Fixed',
+      price: '$18,000',
+      period: ' / project',
+      desc: 'Design your core product from scratch in 6-8 weeks.',
+      features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
+      extra:
+        "A designer's final product is only as good as the inputs provided. We'll provide templates for quality moodboards, requirements documents, UX flow diagrams & wireframes with workshops included.",
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
