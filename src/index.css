@@ -24,6 +24,7 @@
   html {
     scroll-behavior: smooth;
     color-scheme: light;
+    overflow-x: clip;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -62,7 +63,7 @@
   }
 
   body {
-    @apply bg-brand-page text-brand-ink font-sans antialiased;
+    @apply bg-brand-page text-brand-ink font-sans antialiased overflow-x-clip;
     background-image:
       radial-gradient(ellipse 120% 85% at 100% -5%, rgba(212, 83, 126, 0.1), transparent 52%),
       radial-gradient(ellipse 90% 70% at -5% 100%, rgba(242, 196, 206, 0.18), transparent 50%),

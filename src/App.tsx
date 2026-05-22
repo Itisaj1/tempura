@@ -80,13 +80,13 @@ const LoadingLogo = () => {
 };
 
 const PRIMARY_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
+  'inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
 
 const OUTLINE_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-shrimp bg-transparent px-6 py-3 font-semibold text-brand-shrimp transition-colors hover:bg-brand-shrimp/[0.04] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
+  'inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-brand-shrimp bg-transparent px-6 py-3 font-semibold text-brand-shrimp transition-colors hover:bg-brand-shrimp/[0.04] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
 
 const NAV_CTA_BUTTON =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-5 py-2 font-semibold text-brand-page transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
+  'inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-3 py-1.5 text-xs font-semibold text-brand-page transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45 sm:px-5 sm:py-2 sm:text-sm';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -300,7 +300,7 @@ const ServiceFlipTile = ({
       <div className="flip-card-inner h-full w-full">
         <div className={`flip-card-face ${frontStyles[variant]}`}>
           <ServiceDotMark pattern={pattern} tone={dotTone} />
-          <h4 className="font-display font-semibold text-xl md:text-2xl tracking-tight leading-snug pr-2">
+          <h4 className="font-display font-semibold text-lg tracking-tight leading-snug pr-2 sm:text-xl md:text-2xl">
             {title}
           </h4>
         </div>
@@ -442,18 +442,18 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex items-center px-4 md:px-7 py-2 border border-brand-ink/12"
+      className="fixed z-50 flex w-full max-w-[100vw] flex-nowrap items-center gap-2 px-3 py-2 border border-brand-ink/12 sm:gap-3 sm:px-4 md:px-7 md:py-2.5"
     >
       <a
         href="#home"
-        className="flex items-center gap-2 rounded-md text-lg md:text-xl font-bold font-display tracking-tight text-brand-ink"
+        className="flex min-w-0 shrink items-center gap-1.5 rounded-md text-base font-bold font-display tracking-tight text-brand-ink sm:gap-2 sm:text-lg md:text-xl"
         aria-current={activeSection === 'home' ? 'page' : undefined}
       >
-        panko studio
-        <span className="h-1.5 w-1.5 rounded-full bg-brand-shrimp" aria-hidden />
+        <span className="truncate">panko studio</span>
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-shrimp" aria-hidden />
       </a>
 
-      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto list-none p-0 m-0">
+      <ul className="hidden min-[720px]:flex flex-1 items-center justify-end gap-x-4 gap-y-1 text-sm font-medium list-none p-0 m-0 xl:gap-x-6">
         {navItems.map((item) => (
           <li key={item.id}>
             <a
@@ -471,7 +471,7 @@ const Navbar = ({
         whileHover={{y: -1}}
         whileTap={{scale: 0.98}}
         href="#contact"
-        className={`ml-3 md:ml-4 text-sm ${NAV_CTA_BUTTON}`}
+        className={`ml-auto ${NAV_CTA_BUTTON}`}
       >
         Let&apos;s chat
       </motion.a>
@@ -495,7 +495,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       id="home"
       ref={targetRef}
       aria-labelledby="hero-heading"
-      className="relative pt-24 pb-20 px-4 md:px-10 overflow-hidden"
+      className="relative pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-16 px-4 sm:pb-20 sm:pt-24 md:px-10 lg:pb-24 xl:px-12 2xl:px-16 overflow-hidden"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
         <motion.div style={{opacity, y}} className="max-w-5xl text-left">
@@ -505,7 +505,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             initial={reduceMotion ? false : 'hidden'}
             whileInView={reduceMotion ? undefined : 'visible'}
             viewport={{once: true, amount: 0.25}}
-            className="mt-6 text-6xl md:text-8xl font-display font-bold leading-[0.92] tracking-tighter text-brand-ink"
+            className="mt-4 text-[clamp(2.5rem,10.5vw,5rem)] font-display font-bold leading-[0.92] tracking-tighter text-balance text-brand-ink sm:mt-6 sm:text-6xl md:text-7xl lg:text-8xl"
           >
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               Design for startups
@@ -534,12 +534,12 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-ink/65 max-w-2xl leading-relaxed"
+            className="mt-5 text-lg text-brand-ink/65 max-w-2xl leading-relaxed sm:mt-6 sm:text-xl md:text-2xl"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="mt-8 flex w-full max-w-xl flex-col gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">
             <motion.a
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
@@ -555,7 +555,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 rounded-lg border border-brand-shrimp px-4 py-2.5 text-sm font-semibold text-brand-shrimp bg-transparent transition-colors hover:bg-brand-shrimp/[0.04]"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-brand-shrimp px-4 py-2.5 text-sm font-semibold text-brand-shrimp bg-transparent transition-colors hover:bg-brand-shrimp/[0.04]"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
@@ -569,7 +569,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-20 md:pb-28 lg:pb-32 px-4 md:px-10 bg-brand-page overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-16 px-4 sm:pb-20 md:px-10 md:pb-28 lg:pb-32 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
@@ -580,7 +580,7 @@ const About = () => {
             <div>
               <h2
                 id="about-heading"
-                className="about-heading text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-5"
+                className="about-heading text-[clamp(2rem,7vw,3.75rem)] font-display font-bold leading-tight tracking-tighter text-balance mb-5 md:text-6xl"
               >
                 <span className="text-brand-ink/62">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
@@ -615,7 +615,7 @@ const About = () => {
                   <CountUp
                     value={stat.label}
                     suffix={stat.suffix}
-                    className="mb-1 text-[32px] font-semibold leading-none text-brand-ink"
+                    className="mb-1 text-3xl font-semibold leading-none text-brand-ink sm:text-[32px]"
                   />
                   <p className="text-[13px] text-brand-ink/60">{stat.sub}</p>
                 </div>
@@ -624,7 +624,7 @@ const About = () => {
           </div>
 
           <div className="mt-16 md:mt-24 lg:mt-28">
-            <div className="grid grid-cols-1 items-stretch sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
               {HOW_WE_WORK_TILES.map((tile) => (
                 <ServiceFlipTile key={tile.title} {...tile} />
               ))}
@@ -723,7 +723,7 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="collaborate-section relative flex min-h-[85vh] items-center overflow-hidden px-4 py-20 text-brand-ink md:px-10"
+      className="collaborate-section relative flex min-h-0 items-center overflow-hidden px-4 py-16 text-brand-ink sm:py-20 md:min-h-[85vh] md:px-10 md:py-24 xl:px-12 2xl:px-16"
     >
       <div className="relative z-10 mx-auto w-full max-w-3xl">
         <div className="px-1 py-4 md:px-0 md:py-6">
@@ -748,7 +748,7 @@ const CTA = () => {
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
-                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-ink">
+                <h2 className="text-3xl font-display font-bold tracking-tight text-balance mb-4 text-brand-ink sm:text-4xl md:text-6xl">
                   Thank you, {submittedName}
                   <span className="text-brand-shrimp">.</span>
                 </h2>
@@ -770,7 +770,7 @@ const CTA = () => {
               >
                 <h2
                   id="contact-heading"
-                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-ink"
+                  className="text-3xl font-display font-bold tracking-tight text-balance mb-8 text-brand-ink sm:mb-10 sm:text-4xl md:text-6xl"
                 >
                   Let&apos;s collaborate
                   <span className="text-brand-shrimp">.</span>
@@ -799,7 +799,7 @@ const CTA = () => {
                       }}
                       placeholder="first & last name"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[12rem]"
+                      className="min-w-0 w-full max-w-full flex-1 sm:min-w-[12rem] sm:w-auto sm:max-w-none"
                     />
                     <label
                       htmlFor="contact-company"
@@ -822,12 +822,12 @@ const CTA = () => {
                       }}
                       placeholder="company name"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[10rem]"
+                      className="min-w-0 w-full max-w-full flex-1 sm:min-w-[10rem] sm:w-auto sm:max-w-none"
                     />
                   </div>
 
-                  <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="mr-1 inline text-brand-ink/85">
+                  <fieldset className="flex w-full flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
+                    <legend className="mb-1 w-full text-brand-ink/85 sm:mb-0 sm:mr-1 sm:w-auto sm:inline">
                       I want to chat about designs for my (pick at least one)
                     </legend>
                     {topics.map((t) => {
@@ -874,7 +874,7 @@ const CTA = () => {
                       }}
                       placeholder="email address"
                       disabled={formStatus === 'loading'}
-                      className="min-w-[14rem]"
+                      className="min-w-0 w-full max-w-full flex-1 sm:min-w-[14rem] sm:w-auto sm:max-w-none"
                     />
                   </div>
                 </div>
@@ -931,12 +931,12 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
-      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
+      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
+          <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card">
               panko studio
             </div>
-            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-page/88">
+            <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-page/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
               <a href="#about" className="transition-colors hover:text-brand-card">
                 About
               </a>
@@ -977,11 +977,11 @@ const Projects = () => {
   const placeholders = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-page overflow-hidden">
+    <section id="work" aria-labelledby="work-heading" className="relative py-14 px-4 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
+            <h2 id="work-heading" className="text-3xl font-display font-bold tracking-tight text-brand-ink sm:text-4xl md:text-5xl">
               Selected work.
             </h2>
           </div>
@@ -1056,7 +1056,7 @@ const Pricing = () => {
     <section
       id="pricing"
       aria-labelledby="pricing-heading"
-      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-page px-4 py-16 md:px-10 md:py-20"
+      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-page px-4 py-14 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16"
     >
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
@@ -1064,7 +1064,7 @@ const Pricing = () => {
             <p className="section-label">Pricing</p>
             <h2
               id="pricing-heading"
-              className="text-4xl font-display font-bold tracking-tight text-brand-ink md:text-5xl"
+              className="text-3xl font-display font-bold tracking-tight text-brand-ink sm:text-4xl md:text-5xl"
             >
               Transparent investment.
             </h2>
@@ -1077,15 +1077,15 @@ const Pricing = () => {
                 <motion.div
                   key={idx}
                   whileHover={isSubscribe ? {y: -3} : undefined}
-                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md bg-brand-card p-6 shadow-[0_20px_64px_rgba(26,26,26,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                  className={`relative flex h-full min-h-0 flex-col rounded-md bg-brand-card p-5 shadow-[0_20px_64px_rgba(26,26,26,0.14)] backdrop-blur-sm transition-colors sm:min-h-[20rem] sm:p-6 md:min-h-[22rem] md:p-8 ${
                     isSubscribe
                       ? 'border-2 border-brand-shrimp'
                       : 'border-[0.5px] border-brand-blush'
                   }`}
                 >
                   <div className="relative flex flex-1 flex-col">
-                    <div className="mb-2 flex items-start justify-between gap-3">
-                      <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
+                    <div className="mb-2 flex flex-wrap items-start justify-between gap-2 gap-y-3 sm:gap-3">
+                      <h3 className="text-xl font-bold font-display text-brand-ink sm:text-2xl">{plan.name}</h3>
                       {isSubscribe && (
                         <span className="shrink-0 rounded-full bg-brand-blush px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-shrimp">
                           Most popular
@@ -1118,8 +1118,8 @@ const Pricing = () => {
                     href={plan.buttonHref}
                     className={
                       isSubscribe
-                        ? `relative mt-8 w-full text-center ${PRIMARY_CTA}`
-                        : `mt-8 w-full text-center ${OUTLINE_CTA}`
+                        ? `relative mt-8 w-full max-w-none text-center ${PRIMARY_CTA} !w-full`
+                        : `mt-8 w-full max-w-none text-center ${OUTLINE_CTA} !w-full`
                     }
                   >
                     {plan.buttonLabel}
@@ -1191,7 +1191,7 @@ function MarketingSite() {
   }, []);
 
   return (
-    <div className="min-h-screen selection:bg-brand-shrimp selection:text-brand-card">
+    <div className="min-h-screen overflow-x-clip selection:bg-brand-shrimp selection:text-brand-card">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

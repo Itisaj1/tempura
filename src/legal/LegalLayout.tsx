@@ -24,7 +24,7 @@ export const LegalLayout = ({
   }, [title]);
 
   return (
-    <div className="min-h-screen bg-brand-page text-brand-ink selection:bg-brand-shrimp selection:text-brand-card">
+    <div className="min-h-screen overflow-x-clip bg-brand-page text-brand-ink selection:bg-brand-shrimp selection:text-brand-card">
       <a href="/" className="skip-link">
         Skip to home
       </a>
@@ -32,7 +32,7 @@ export const LegalLayout = ({
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-6">
           <a
             href="/"
-            className="font-display text-xl font-bold tracking-tight text-brand-ink hover:text-brand-ink/90"
+            className="min-w-0 truncate font-display text-lg font-bold tracking-tight text-brand-ink hover:text-brand-ink/90 sm:text-xl"
           >
             panko studio
           </a>
