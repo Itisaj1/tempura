@@ -223,8 +223,13 @@ def sync_brand_kit() -> None:
     favicon_live = SVG_DIR / "favicon-on-ink.svg"
     shutil.copy2(favicon_live, kit_site / "favicon.svg")
     shutil.copy2(favicon_live, public_favicon)
-    print(f"  → brand-kit/site/favicon.svg")
-    print(f"  → public/favicon.svg")
+    public_dir = repo / "public"
+    shutil.copy2(PNG_DIR / "favicon-on-ink-32x32.png", public_dir / "favicon-32x32.png")
+    shutil.copy2(PNG_DIR / "favicon-on-ink-512x512.png", public_dir / "apple-touch-icon.png")
+    print("  → brand-kit/site/favicon.svg")
+    print("  → public/favicon.svg")
+    print("  → public/favicon-32x32.png")
+    print("  → public/apple-touch-icon.png")
 
 
 def main() -> None:
