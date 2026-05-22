@@ -470,7 +470,7 @@ const Navbar = ({
         href="#contact"
         className={`ml-3 md:ml-4 text-sm ${NAV_CTA_BUTTON}`}
       >
-        Book call
+        Let&apos;s chat
       </motion.a>
     </motion.nav>
   );
@@ -592,7 +592,7 @@ const About = () => {
                 href="#contact"
                 className={`about-cta group mt-0 ${CTA_BUTTON_BASE}`}
               >
-                Book a call
+                Let&apos;s chat
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </motion.a>
             </div>
@@ -601,7 +601,7 @@ const About = () => {
               {[
                 { label: 12, sub: 'happy teams across the globe', suffix: '' },
                 { label: 7, sub: 'years of combined expertise', suffix: '' },
-                { label: 4, sub: 'week cycles from brief to reviewable UI', suffix: '' },
+                { label: 4, sub: 'week cycles from brief to first build', suffix: '' },
               ].map((stat, idx) => (
                 <div
                   key={idx}
@@ -979,7 +979,7 @@ const Projects = () => {
         <SectionReveal>
           <div className="mb-10">
             <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
-              Crafting digital excellence.
+              Selected work.
             </h2>
           </div>
 
