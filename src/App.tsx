@@ -12,7 +12,7 @@ import {
   type MotionValue,
   type Variants,
 } from 'motion/react';
-import {ArrowRight, CheckCircle2, ChevronRight, Globe, Layers, Users} from 'lucide-react';
+import {ArrowRight, CheckCircle2, ChevronRight} from 'lucide-react';
 import {
   useEffect,
   useLayoutEffect,
@@ -267,9 +267,15 @@ const ServiceFlipTile = ({
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
     accent: 'bg-brand-accent-light border border-brand-ink/10 text-brand-dark',
-    light: 'bg-brand-card border border-brand-ink/10 text-brand-ink',
-    ink: 'bg-brand-card border border-brand-ink/10 text-brand-ink',
+    light:
+      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
+    ink:
+      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
   };
+  const interactiveCard =
+    variant !== 'accent'
+      ? 'cursor-pointer transition-transform duration-150 ease-out hover:-translate-y-0.5'
+      : '';
   const backStyles: Record<ServiceTileVariant, string> = {
     accent: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
     light: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
@@ -280,7 +286,7 @@ const ServiceFlipTile = ({
   return (
     <article
       tabIndex={0}
-      className="flip-card aspect-[5/2] min-h-[88px] rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+      className={`flip-card h-full min-h-[140px] w-full rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg ${interactiveCard}`}
       aria-label={`${title}. ${description}`}
     >
       <div className="flip-card-inner h-full w-full">
@@ -324,7 +330,15 @@ const SectionReveal = ({
 
 const COUNT_UP_DURATION_MS = 1400;
 
-const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
+const CountUp = ({
+  value,
+  suffix = '',
+  className = 'text-3xl md:text-4xl font-bold font-display mb-1 text-brand-ink',
+}: {
+  value: number;
+  suffix?: string;
+  className?: string;
+}) => {
   const [displayValue, setDisplayValue] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -351,7 +365,7 @@ const CountUp = ({value, suffix = ''}: {value: number; suffix?: string}) => {
   }, [hasAnimated, value]);
 
   return (
-    <div ref={ref} className="text-3xl md:text-4xl font-bold font-display mb-1 text-brand-ink">
+    <div ref={ref} className={className}>
       {displayValue}
       {suffix}
     </div>
@@ -481,7 +495,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       id="home"
       ref={targetRef}
       aria-labelledby="hero-heading"
-      className="relative pt-24 pb-14 px-4 md:px-10 overflow-hidden min-h-screen flex flex-col justify-center"
+      className="relative pt-24 pb-20 px-4 md:px-10 overflow-hidden"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
         <motion.div style={{opacity, y}} className="max-w-5xl text-left">
@@ -555,7 +569,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative py-20 md:py-28 lg:py-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-20 md:pb-28 lg:pb-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
@@ -579,28 +593,31 @@ const About = () => {
               </motion.a>
             </div>
 
-            <div className="space-y-8 lg:space-y-10 lg:pt-2">
+            <div className="space-y-0 lg:pt-2">
               {[
-                { label: 12, sub: 'happy teams across the globe', icon: <Globe className="w-5 h-5" />, suffix: '' },
-                { label: 7, sub: 'years of combined expertise', icon: <Users className="w-5 h-5" />, suffix: '' },
-                { label: 4, sub: 'week cycles from brief to reviewable UI', icon: <Layers className="w-5 h-5" />, suffix: '' },
+                { label: 12, sub: 'happy teams across the globe', suffix: '' },
+                { label: 7, sub: 'years of combined expertise', suffix: '' },
+                { label: 4, sub: 'week cycles from brief to reviewable UI', suffix: '' },
               ].map((stat, idx) => (
-                <div key={idx}
+                <div
+                  key={idx}
                   role="group"
                   aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
-                  className="flex items-start gap-5 pb-6 border-b border-brand-ink/24 last:border-0 last:pb-0">
-                  <div className="mt-2 text-brand-ink/75" aria-hidden>{stat.icon}</div>
-                  <div>
-                    <CountUp value={stat.label} suffix={stat.suffix} />
-                    <div className="text-brand-ink/82">{stat.sub}</div>
-                  </div>
+                  className="mb-6 border-l-2 border-brand-accent pl-4 last:mb-0"
+                >
+                  <CountUp
+                    value={stat.label}
+                    suffix={stat.suffix}
+                    className="mb-1 text-[32px] font-semibold leading-none text-brand-ink"
+                  />
+                  <p className="text-[13px] text-brand-muted">{stat.sub}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="mt-16 md:mt-24 lg:mt-28">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            <div className="grid grid-cols-1 items-stretch sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
               {HOW_WE_WORK_TILES.map((tile) => (
                 <ServiceFlipTile key={tile.title} {...tile} />
               ))}
@@ -974,8 +991,13 @@ const Projects = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
             {placeholders.map((tile) => (
-              <div key={tile.id} className={`group ${tile.size}`}>
-                <div className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 bg-gradient-to-br from-brand-card via-brand-bg to-brand-accent/[0.08]`}>
+              <div
+                key={tile.id}
+                className={`group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5 ${tile.size}`}
+              >
+                <div
+                  className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 bg-gradient-to-br from-brand-card via-brand-bg to-brand-accent/[0.08] transition-colors duration-150 ease-out group-hover:bg-brand-accent/[0.06]`}
+                >
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(44,26,8,0.08)]">
                       Case study placeholder
@@ -988,7 +1010,7 @@ const Projects = () => {
                     <p className="text-sm font-medium text-brand-shiso">Coming soon</p>
                   </div>
                   <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="arrow-icon h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-[3px]" />
                   </div>
                 </div>
               </div>
@@ -1056,15 +1078,26 @@ const Pricing = () => {
           </div>
 
           <div className="grid w-full grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
-            {plans.map((plan, idx) => (
+            {plans.map((plan, idx) => {
+              const isSubscribe = plan.name === 'Subscribe';
+              return (
                 <motion.div
                   key={idx}
-                  whileHover={{y: -3}}
-                  className="relative flex h-full min-h-[22rem] flex-col rounded-md border border-brand-ink/10 bg-brand-card/95 p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8"
+                  whileHover={isSubscribe ? {y: -3} : undefined}
+                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                    isSubscribe
+                      ? 'border-2 border-brand-accent bg-brand-card'
+                      : 'border border-brand-ink/10 bg-brand-card/95'
+                  }`}
                 >
                   <div className="relative flex flex-1 flex-col">
-                    <div className="mb-2">
+                    <div className="mb-2 flex items-start justify-between gap-3">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
+                      {isSubscribe && (
+                        <span className="shrink-0 rounded-full bg-brand-accent-light px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-dark">
+                          Most popular
+                        </span>
+                      )}
                     </div>
                     <div className="mb-5 flex items-baseline gap-1">
                       <span className="text-3xl font-bold font-display md:text-4xl">{plan.price}</span>
@@ -1090,12 +1123,17 @@ const Pricing = () => {
                   </div>
                   <a
                     href={plan.buttonHref}
-                    className={`mt-8 w-full text-center ${CTA_BUTTON_BASE}`}
+                    className={
+                      isSubscribe
+                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
+                        : `mt-8 w-full text-center ${CTA_BUTTON_BASE}`
+                    }
                   >
                     {plan.buttonLabel}
                   </a>
                 </motion.div>
-            ))}
+              );
+            })}
           </div>
         </SectionReveal>
       </div>
