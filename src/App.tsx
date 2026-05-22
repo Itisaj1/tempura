@@ -105,10 +105,11 @@ const HERO_HEADLINE_LINE: Variants = {
 
 const ConversationalInput = ({
   className: inputClassName = '',
+  tone = 'dark',
   onFocus,
   onBlur,
   ...inputProps
-}: InputHTMLAttributes<HTMLInputElement>) => {
+}: InputHTMLAttributes<HTMLInputElement> & {tone?: 'dark' | 'light'}) => {
   const reduceMotion = useReducedMotion();
   const [focused, setFocused] = useState(false);
 
@@ -124,7 +125,11 @@ const ConversationalInput = ({
           setFocused(false);
           onBlur?.(e);
         }}
-        className={`w-full border-b border-brand-inverse/20 bg-transparent px-1 py-1 text-brand-inverse placeholder:text-brand-inverse/45 focus:outline-none disabled:opacity-60 ${inputClassName ?? ''}`}
+        className={`w-full border-b bg-transparent px-1 py-1 focus:outline-none disabled:opacity-60 ${
+          tone === 'light'
+            ? 'border-brand-ink/20 text-brand-ink placeholder:text-brand-ink/45'
+            : 'border-brand-inverse/20 text-brand-inverse placeholder:text-brand-inverse/45'
+        } ${inputClassName ?? ''}`}
       />
       <motion.span
         aria-hidden
@@ -445,22 +450,14 @@ const Navbar = ({
         <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
       </a>
 
-      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto text-brand-ink/92 list-none p-0 m-0">
+      <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto list-none p-0 m-0">
         {navItems.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
               aria-current={activeSection === item.id ? 'page' : undefined}
-              className={`inline-flex items-center gap-2 rounded-md px-1 py-0.5 transition-all ${
-                activeSection === item.id ? 'translate-x-1 text-brand-ink' : 'translate-x-0 hover:bg-brand-ink/[0.06]'
-              }`}
+              className={`nav-link inline-block px-1 py-0.5 ${activeSection === item.id ? 'active' : ''}`}
             >
-              <span
-                aria-hidden
-                className={`h-1.5 w-1.5 rounded-full transition-all ${
-                  activeSection === item.id ? 'opacity-100 bg-brand-accent scale-100' : 'opacity-0 scale-0'
-                }`}
-              />
               {item.label}
             </a>
           </li>
@@ -573,21 +570,28 @@ const About = () => {
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-muted">About</p>
+            <p className="section-label">About</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
             <div>
-              <h2 id="about-heading" className="text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-6 md:mb-8">
+              <h2
+                id="about-heading"
+                className="about-heading text-5xl md:text-6xl font-display font-bold leading-tight tracking-tighter mb-5"
+              >
                 <span className="text-brand-ink/62">Product management and design</span>{' '}
                 <span className="text-brand-ink">for</span> AI x B2B teams.
               </h2>
-              <p className="text-lg md:text-xl text-brand-ink/88 leading-relaxed mb-10">
+              <p className="about-body text-lg md:text-xl text-brand-ink leading-[1.7] mb-7">
                 Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
                 that need clear decisions, honest handoffs, and design that ships.
               </p>
 
-              <motion.a whileHover={{y: -1}} href="#contact" className={`group ${CTA_BUTTON_BASE}`}>
+              <motion.a
+                whileHover={{y: -1}}
+                href="#contact"
+                className={`about-cta group mt-0 ${CTA_BUTTON_BASE}`}
+              >
                 Book a call
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </motion.a>
@@ -716,16 +720,11 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative py-28 md:py-44 px-4 md:px-10 overflow-hidden bg-brand-dark text-brand-inverse min-h-[85vh] flex items-center"
+      className="collaborate-section relative flex min-h-[85vh] items-center overflow-hidden bg-brand-collaborate px-4 py-20 text-brand-ink md:px-10"
     >
-      <div className="relative z-10 max-w-3xl mx-auto w-full">
-        <div className="px-1 md:px-0 py-4 md:py-6">
+      <div className="relative z-10 mx-auto w-full max-w-3xl">
+        <div className="px-1 py-4 md:px-0 md:py-6">
           <SectionReveal>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-brand-inverse/70 mb-5 flex items-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
-              Contact
-            </div>
-
             <AnimatePresence mode="wait" initial={false}>
             {formStatus === 'success' ? (
               <motion.div
@@ -746,13 +745,13 @@ const CTA = () => {
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
-                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-inverse">
+                <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-ink">
                   Thank you, {submittedName}
                   <span className="text-brand-accent">.</span>
                 </h2>
-                <p className="text-lg md:text-xl text-brand-inverse/85 max-w-xl leading-relaxed">
+                <p className="text-lg md:text-xl text-brand-ink/85 max-w-xl leading-relaxed">
                   We&apos;ve got your note and a confirmation on the way to{' '}
-                  <span className="text-brand-inverse">{email.trim()}</span>. We&apos;ll be in touch
+                  <span className="text-brand-ink">{email.trim()}</span>. We&apos;ll be in touch
                   shortly.
                 </p>
               </motion.div>
@@ -768,17 +767,17 @@ const CTA = () => {
               >
                 <h2
                   id="contact-heading"
-                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-inverse"
+                  className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-ink"
                 >
                   Let&apos;s collaborate
                   <span className="text-brand-accent">.</span>
                 </h2>
 
-                <div className="space-y-6 text-base md:text-lg text-brand-inverse/90 leading-relaxed">
+                <div className="space-y-6 text-base md:text-lg text-brand-ink/90 leading-relaxed">
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-fullName"
-                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
+                      className="text-brand-ink/85 transition-colors duration-200 group-focus-within/field:text-brand-ink"
                     >
                       My name is
                     </label>
@@ -786,6 +785,7 @@ const CTA = () => {
                       id="contact-fullName"
                       name="fullName"
                       type="text"
+                      tone="light"
                       autoComplete="name"
                       required
                       aria-required="true"
@@ -800,7 +800,7 @@ const CTA = () => {
                     />
                     <label
                       htmlFor="contact-company"
-                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
+                      className="text-brand-ink/85 transition-colors duration-200 group-focus-within/field:text-brand-ink"
                     >
                       from
                     </label>
@@ -808,6 +808,7 @@ const CTA = () => {
                       id="contact-company"
                       name="company"
                       type="text"
+                      tone="light"
                       autoComplete="organization"
                       required
                       aria-required="true"
@@ -823,7 +824,7 @@ const CTA = () => {
                   </div>
 
                   <fieldset className="flex flex-wrap items-center gap-x-2 gap-y-2 border-0 p-0">
-                    <legend className="text-brand-inverse/85 mr-1 inline">
+                    <legend className="mr-1 inline text-brand-ink/85">
                       I want to chat about designs for my (pick at least one)
                     </legend>
                     {topics.map((t) => {
@@ -838,8 +839,8 @@ const CTA = () => {
                           disabled={formStatus === 'loading'}
                           className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
-                              ? 'border-brand-accent bg-brand-accent/22 text-brand-inverse'
-                              : 'border-brand-inverse/25 bg-brand-inverse/[0.06] text-brand-inverse/78 hover:border-brand-inverse/40 hover:bg-brand-inverse/12'
+                              ? 'border-brand-accent bg-brand-accent/22 text-brand-ink'
+                              : 'border-brand-ink/20 bg-brand-ink/[0.06] text-brand-ink/78 hover:border-brand-ink/30 hover:bg-brand-ink/10'
                           }`}
                         >
                           {t}
@@ -851,7 +852,7 @@ const CTA = () => {
                   <div className="group/field flex flex-wrap items-end gap-x-2 gap-y-3">
                     <label
                       htmlFor="contact-email"
-                      className="text-brand-inverse/85 transition-colors duration-200 group-focus-within/field:text-brand-inverse"
+                      className="text-brand-ink/85 transition-colors duration-200 group-focus-within/field:text-brand-ink"
                     >
                       You can reach me at
                     </label>
@@ -859,6 +860,7 @@ const CTA = () => {
                       id="contact-email"
                       name="email"
                       type="email"
+                      tone="light"
                       autoComplete="email"
                       required
                       aria-required="true"
@@ -897,7 +899,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-inverse/25 bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:border-transparent hover:bg-brand-accent-light hover:text-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent disabled:hover:text-brand-card"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:border-transparent hover:bg-brand-accent-light hover:text-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent disabled:hover:text-brand-card"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -925,7 +927,7 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative bg-brand-dark text-brand-inverse overflow-hidden" aria-label="Site footer">
+    <footer className="relative overflow-hidden border-t-[3px] border-brand-accent bg-brand-dark text-brand-inverse" aria-label="Site footer">
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
@@ -969,35 +971,25 @@ const Footer = () => {
 };
 
 const Projects = () => {
-  const placeholders = [
-    {id: 1, size: 'md:col-span-7', ratio: 'aspect-[16/9]'},
-    {id: 2, size: 'md:col-span-5', ratio: 'aspect-[4/5]'},
-    {id: 3, size: 'md:col-span-4', ratio: 'aspect-[4/5]'},
-    {id: 4, size: 'md:col-span-8', ratio: 'aspect-[16/8.5]'},
-  ];
+  const placeholders = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
 
   return (
     <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-muted mb-3 block">
-              Selected Work
-            </p>
             <h2 id="work-heading" className="text-3xl md:text-5xl font-display font-bold tracking-tight text-brand-ink">
               Crafting digital excellence.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-7">
+          <div className="work-grid grid grid-cols-1 items-start gap-4 md:grid-cols-2">
             {placeholders.map((tile) => (
               <div
                 key={tile.id}
-                className={`group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5 ${tile.size}`}
+                className="group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5"
               >
-                <div
-                  className={`relative ${tile.ratio} overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 bg-gradient-to-br from-brand-card via-brand-bg to-brand-accent/[0.08] transition-colors duration-150 ease-out group-hover:bg-brand-accent/[0.06]`}
-                >
+                <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-accent/[0.06]">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(44,26,8,0.08)]">
                       Case study placeholder

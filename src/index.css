@@ -13,6 +13,7 @@
   --color-text-inverse: #f5e6c8;
   --color-secondary: #4a7c59;
   --color-secondary-bg: #d9e8dc;
+  --color-bg-collaborate: #edd9a3;
 }
 
 @theme {
@@ -34,6 +35,7 @@
   --color-brand-pop: var(--color-accent-pop);
   --color-brand-shiso: var(--color-secondary);
   --color-brand-shiso-bg: var(--color-secondary-bg);
+  --color-brand-collaborate: var(--color-bg-collaborate);
 }
 
 @layer base {
@@ -155,6 +157,58 @@
 
   .flip-card-back {
     transform: rotateY(180deg);
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--color-accent);
+    transition: width 150ms ease;
+  }
+
+  .nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  .nav-link.active {
+    color: var(--color-accent);
+  }
+
+  .section-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .work-card-placeholder {
+    background-color: var(--color-bg-page);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      rgba(201, 124, 46, 0.07) 8px,
+      rgba(201, 124, 46, 0.07) 9px
+    );
   }
 
   .legal-prose {
