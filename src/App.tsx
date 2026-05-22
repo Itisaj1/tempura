@@ -442,18 +442,18 @@ const Navbar = ({
         backdropFilter: shellBackdrop,
         WebkitBackdropFilter: shellBackdrop,
       }}
-      className="fixed z-50 flex w-full max-w-[100vw] flex-nowrap items-center gap-2 px-3 py-2 border border-brand-ink/12 sm:gap-3 sm:px-4 md:px-7 md:py-2.5"
+      className="fixed z-50 flex flex-nowrap items-center gap-2 px-3 py-2 border border-brand-ink/12 sm:gap-3 sm:px-4 md:px-7 md:py-2.5"
     >
       <a
         href="#home"
-        className="flex min-w-0 shrink items-center gap-1.5 rounded-md text-base font-bold font-display tracking-tight text-brand-ink sm:gap-2 sm:text-lg md:text-xl"
+        className="flex min-w-0 shrink-0 items-center gap-1.5 rounded-md text-base font-bold font-display tracking-tight text-brand-ink sm:gap-2 sm:text-lg md:text-xl"
         aria-current={activeSection === 'home' ? 'page' : undefined}
       >
         <span className="truncate">panko studio</span>
         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-shrimp" aria-hidden />
       </a>
 
-      <ul className="hidden min-[720px]:flex flex-1 items-center justify-end gap-x-4 gap-y-1 text-sm font-medium list-none p-0 m-0 xl:gap-x-6">
+      <ul className="hidden min-[720px]:flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs font-medium list-none p-0 m-0 ml-auto sm:gap-x-6 sm:text-sm xl:gap-x-6">
         {navItems.map((item) => (
           <li key={item.id}>
             <a
@@ -471,7 +471,7 @@ const Navbar = ({
         whileHover={{y: -1}}
         whileTap={{scale: 0.98}}
         href="#contact"
-        className={`ml-auto ${NAV_CTA_BUTTON}`}
+        className={`shrink-0 ml-auto min-[720px]:ml-3 md:ml-4 ${NAV_CTA_BUTTON}`}
       >
         Let&apos;s chat
       </motion.a>
