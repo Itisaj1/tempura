@@ -1056,26 +1056,15 @@ const Pricing = () => {
           </div>
 
           <div className="grid w-full grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
-            {plans.map((plan, idx) => {
-              const featured = idx === 1;
-              return (
+            {plans.map((plan, idx) => (
                 <motion.div
                   key={idx}
-                  whileHover={{y: featured ? -5 : -3}}
-                  className={`relative flex h-full min-h-[22rem] flex-col border bg-brand-card/95 p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
-                    featured
-                      ? 'rounded-lg rounded-tl-2xl border-brand-accent'
-                      : 'rounded-md border-brand-ink/10'
-                  }`}
+                  whileHover={{y: -3}}
+                  className="relative flex h-full min-h-[22rem] flex-col rounded-md border border-brand-ink/10 bg-brand-card/95 p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8"
                 >
                   <div className="relative flex flex-1 flex-col">
-                    <div className="mb-2 flex items-start justify-between gap-4">
+                    <div className="mb-2">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
-                      {featured && (
-                        <span className="shrink-0 rounded-sm bg-brand-accent-light px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-dark">
-                          Most popular
-                        </span>
-                      )}
                     </div>
                     <div className="mb-5 flex items-baseline gap-1">
                       <span className="text-3xl font-bold font-display md:text-4xl">{plan.price}</span>
@@ -1101,17 +1090,12 @@ const Pricing = () => {
                   </div>
                   <a
                     href={plan.buttonHref}
-                    className={
-                      featured
-                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
-                        : `mt-8 w-full text-center ${CTA_BUTTON_BASE}`
-                    }
+                    className={`mt-8 w-full text-center ${CTA_BUTTON_BASE}`}
                   >
                     {plan.buttonLabel}
                   </a>
                 </motion.div>
-              );
-            })}
+            ))}
           </div>
         </SectionReveal>
       </div>
