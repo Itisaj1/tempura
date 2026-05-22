@@ -1,36 +1,41 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Panko Studio warm tempura palette (matches src/index.css :root + @theme)",
+  "description": "Panko Studio pink-forward palette (matches src/index.css :root + @theme)",
   "colors": {
     "bg-page": {
-      "hex": "#F5E6C8",
+      "hex": "#FAF0F2",
       "token": "--color-bg-page",
-      "usage": "Page canvas — pale batter"
+      "usage": "Page canvas — raw shrimp"
     },
     "bg-card": {
-      "hex": "#FFF8F0",
+      "hex": "#FFFFFF",
       "token": "--color-bg-card",
-      "usage": "Cards, elevated surfaces — rice paper"
+      "usage": "Cards and elevated surfaces"
     },
     "bg-dark": {
-      "hex": "#3A2410",
+      "hex": "#3A1A20",
       "token": "--color-bg-dark",
-      "usage": "Contact, footer, nav CTA — espresso"
+      "usage": "Footer, nav CTA contrast — dark plum"
     },
     "accent": {
-      "hex": "#C97C2E",
+      "hex": "#E8899A",
       "token": "--color-accent",
-      "usage": "CTAs, links, accent spans — deep fry"
+      "usage": "Primary accent — pink flesh"
     },
     "accent-light": {
-      "hex": "#E8C47A",
+      "hex": "#F2C4CE",
       "token": "--color-accent-light",
-      "usage": "Featured cards, badges — golden crust"
+      "usage": "Badges, borders, footer link hover — brine blush"
     },
-    "accent-pop": {
-      "hex": "#F47B5A",
-      "token": "--color-accent-pop",
-      "usage": "Small pops only — shrimp blush"
+    "accent-dark": {
+      "hex": "#B5384F",
+      "token": "--color-accent-dark",
+      "usage": "CTA buttons only — deep coral"
+    },
+    "amber-card": {
+      "hex": "#E8C47A",
+      "token": "--color-amber-card",
+      "usage": "AI features service card only — golden crust"
     },
     "text-primary": {
       "hex": "#2C1A08",
@@ -38,24 +43,24 @@
       "usage": "Headlines and body — warm dark"
     },
     "text-muted": {
-      "hex": "#8B4513",
+      "hex": "#6B2D3A",
       "token": "--color-text-muted",
-      "usage": "Eyebrows, secondary copy — soy dip"
+      "usage": "Eyebrows, secondary copy — plum muted"
     },
     "text-inverse": {
-      "hex": "#F5E6C8",
+      "hex": "#FAF0F2",
       "token": "--color-text-inverse",
-      "usage": "Text on dark backgrounds"
+      "usage": "Text on dark backgrounds and CTAs"
     },
     "secondary": {
       "hex": "#4A7C59",
       "token": "--color-secondary",
-      "usage": "Secondary accent — shiso leaf (max 2 per page)"
+      "usage": "Shiso leaf — max 2 per page"
     },
     "secondary-bg": {
       "hex": "#D9E8DC",
       "token": "--color-secondary-bg",
-      "usage": "Soft secondary surfaces — daikon mist"
+      "usage": "Daikon mist surfaces"
     }
   },
   "tailwindV4": {
@@ -63,12 +68,13 @@
       "bg-brand-bg",
       "bg-brand-card",
       "bg-brand-dark",
-      "text-brand-ink",
-      "text-brand-muted",
-      "text-brand-inverse",
       "bg-brand-accent",
       "bg-brand-accent-light",
-      "text-brand-accent"
+      "bg-brand-accent-dark",
+      "bg-brand-amber-card",
+      "text-brand-ink",
+      "text-brand-muted",
+      "text-brand-inverse"
     ]
   }
 }

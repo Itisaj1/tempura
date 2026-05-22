@@ -46,11 +46,13 @@ Parked / not bundled: `src/Testimonials.tsx` (not imported).
 
 Defined in `src/index.css` `@theme`:
 
-- `brand-bg` `#f5e6c8` (pale batter)
-- `brand-card` `#fff8f0` (rice paper)
-- `brand-dark` `#3a2410` (espresso)
+- `brand-bg` `#faf0f2` (raw shrimp)
+- `brand-card` `#ffffff` (white card)
+- `brand-dark` `#3a1a20` (dark plum)
 - `brand-ink` `#2c1a08` (warm dark)
-- `brand-accent` `#c97c2e` (deep fry)
+- `brand-accent` `#e8899a` (pink flesh)
+- `brand-accent-dark` `#b5384f` (deep coral — CTAs only)
+- `brand-amber-card` `#e8c47a` (golden crust — AI features card only)
 - `font-sans` → Inter, `font-display` → Outfit
 
 Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-accent`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
@@ -61,14 +63,20 @@ Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-acc
 - **Content max width**: `max-w-[1840px] mx-auto` for full-width sections; Hero text block `max-w-5xl`; contact inner `max-w-3xl`.
 - **Section IDs** (must stay in sync with nav + scroll spy): `home`, `about`, `work`, `pricing`, `contact`. Navbar `navItems` and `App` `sectionIds` must match.
 
-## Primary CTA (reuse, do not duplicate)
+## CTAs (reuse constants in `App.tsx`, do not duplicate)
 
 ```tsx
-const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+const PRIMARY_CTA =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent-dark bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent-dark/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+
+const OUTLINE_CTA =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent bg-transparent px-6 py-3 font-semibold text-brand-accent-dark transition-colors hover:bg-brand-accent/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+
+const NAV_CTA_BUTTON =
+  'inline-flex items-center justify-center rounded-lg border border-brand-accent-dark bg-brand-accent-dark px-4 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent-dark/90';
 ```
 
-Use: `className={\`group ${CTA_BUTTON_BASE}\`}` on `motion.a` / links. Dark contact submit is a **variant** (white pill → accent hover) — keep that contrast for ink backgrounds only.
+Collaborate submit uses `PRIMARY_CTA`. Footer is dark plum with raw shrimp text; link hover `text-brand-accent-light`. AI features card alone uses `bg-brand-amber-card`.
 
 ## Motion conventions
 

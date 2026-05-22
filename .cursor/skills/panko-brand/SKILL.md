@@ -33,31 +33,33 @@ follow the patterns already in `src/App.tsx` and `src/index.css`.
 | Sign-off | The Panko Studio team |
 
 **Wordmark rhythm.** When the wordmark or a headline ends in a period,
-that period is rendered in **deep fry** (`#C97C2E`). This is the
+that period is rendered in **pink flesh** (`#E8899A`). This is the
 signature visual mark — repeat it wherever a headline ends:
 
-> panko studio<span style="color:#C97C2E;">.</span>
-> Let's collaborate<span style="color:#C97C2E;">.</span>
-> Transparent investment<span style="color:#C97C2E;">.</span>
+> panko studio<span style="color:#E8899A;">.</span>
+> Let's collaborate<span style="color:#E8899A;">.</span>
+> Transparent investment<span style="color:#E8899A;">.</span>
 
 ## Colors
 
 | Token | Hex | Use |
 |------|-----|-----|
-| Pale batter | `#F5E6C8` | Default canvas. Page, email, slide background. Inverse text on dark. |
-| Rice paper | `#FFF8F0` | Cards and inset panels on batter. Button text on accent. |
-| Espresso | `#3A2410` | Dark sections (contact, footer), nav CTA, wordmark on-dark field. |
+| Raw shrimp | `#FAF0F2` | Default canvas. Page background. Inverse text on dark. |
+| White card | `#FFFFFF` | Cards and inset panels. |
+| Dark plum | `#3A1A20` | Footer, wordmark on-dark field. |
 | Warm dark | `#2C1A08` | Body type, headlines, outlined wordmark on light. |
-| Soy dip | `#8B4513` | Muted eyebrows and secondary labels. |
-| Deep fry | `#C97C2E` | Accent period, dots, primary CTA fill, links. |
-| Golden crust | `#E8C47A` | Featured tiles, badges, footer link hover. |
+| Plum muted | `#6B2D3A` | Muted eyebrows and secondary labels. |
+| Pink flesh | `#E8899A` | Accent period, dots, links, underlines. |
+| Brine blush | `#F2C4CE` | Badges, card borders, footer link hover. |
+| Deep coral | `#B5384F` | CTA buttons only — never large fills or body text. |
+| Golden crust | `#E8C47A` | **AI features card only** — do not use elsewhere. |
 
 **Rules**
-- Deep fry is restrained — one or two focal points per surface; primary CTA is the main filled exception.
-- Default canvas is pale batter — not pure white. Rice paper is for cards on batter.
-- Use espresso (`#3A2410`) for dramatic dark sections (contact, footer).
-- Body copy on batter: warm dark (`#2C1A08`), not deep fry. Muted: soy dip or warm dark at 60–75% opacity. On dark: pale batter at 65–90%.
-- Never use `#000000` / `#FFFFFF` as brand colors in materials.
+- Pink flesh is restrained — one or two focal points per surface; deep coral CTAs are the main filled exception.
+- Default canvas is raw shrimp. White is for cards.
+- Use dark plum (`#3A1A20`) for the footer.
+- Body copy: warm dark (`#2C1A08`), not pink accent. Muted: plum (`#6B2D3A`). On dark: raw shrimp at 65–90%.
+- Golden crust appears exactly once (AI features service card).
 
 ## Typography
 

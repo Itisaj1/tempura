@@ -34,7 +34,7 @@ const Testimonials = () => {
             <motion.div
               key={i}
               whileHover={{ y: -4 }}
-              className="min-h-[360px] min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-md rounded-tr-xl border border-brand-ink/10 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.07)] flex flex-col"
+              className="min-h-[360px] min-w-[320px] max-w-[360px] snap-start flex-shrink-0 rounded-md rounded-tr-xl border border-brand-ink/10 bg-brand-card p-6 shadow-[0_18px_50px_rgba(44,26,8,0.07)] flex flex-col"
             >
               <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center gap-2">

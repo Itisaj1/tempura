@@ -2,18 +2,18 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg-page: #f5e6c8;
-  --color-bg-card: #fff8f0;
-  --color-bg-dark: #3a2410;
-  --color-accent: #c97c2e;
-  --color-accent-light: #e8c47a;
-  --color-accent-pop: #f47b5a;
+  --color-bg-page: #faf0f2;
+  --color-bg-card: #ffffff;
+  --color-bg-dark: #3a1a20;
+  --color-accent: #e8899a;
+  --color-accent-light: #f2c4ce;
+  --color-accent-dark: #b5384f;
+  --color-amber-card: #e8c47a;
   --color-text-primary: #2c1a08;
-  --color-text-muted: #8b4513;
-  --color-text-inverse: #f5e6c8;
+  --color-text-muted: #6b2d3a;
+  --color-text-inverse: #faf0f2;
   --color-secondary: #4a7c59;
   --color-secondary-bg: #d9e8dc;
-  --color-bg-collaborate: #edd9a3;
 }
 
 @theme {
@@ -32,10 +32,10 @@
   --color-brand-elevated: var(--color-bg-card);
   --color-brand-accent: var(--color-accent);
   --color-brand-accent-light: var(--color-accent-light);
-  --color-brand-pop: var(--color-accent-pop);
+  --color-brand-accent-dark: var(--color-accent-dark);
+  --color-brand-amber-card: var(--color-amber-card);
   --color-brand-shiso: var(--color-secondary);
   --color-brand-shiso-bg: var(--color-secondary-bg);
-  --color-brand-collaborate: var(--color-bg-collaborate);
 }
 
 @layer base {
@@ -82,9 +82,9 @@
   body {
     @apply bg-brand-bg text-brand-ink font-sans antialiased;
     background-image:
-      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(201, 124, 46, 0.14), transparent 52%),
-      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(232, 196, 122, 0.12), transparent 50%),
-      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(44, 26, 8, 0.08), transparent 48%);
+      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(232, 137, 154, 0.14), transparent 52%),
+      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(242, 196, 206, 0.12), transparent 50%),
+      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(58, 26, 32, 0.06), transparent 48%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -200,14 +200,18 @@
     color: var(--color-accent);
   }
 
+  .collaborate-section {
+    background-color: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg-page));
+  }
+
   .work-card-placeholder {
     background-color: var(--color-bg-page);
     background-image: repeating-linear-gradient(
       -45deg,
       transparent,
       transparent 8px,
-      rgba(201, 124, 46, 0.07) 8px,
-      rgba(201, 124, 46, 0.07) 9px
+      rgba(232, 137, 154, 0.07) 8px,
+      rgba(232, 137, 154, 0.07) 9px
     );
   }
 

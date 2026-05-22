@@ -11,11 +11,11 @@ This document describes **visual identity**, **color and type usage**, and **UI 
 | **Name** | **panko studio** — always lowercase in wordmark and most marketing UI. |
 | **Positioning** | Senior **product management and design** for ambitious **AI × B2B** teams — wireframe to release, alongside engineers. |
 | **Personality** | Calm, senior, direct. Understated confidence — not hype-agency energy. |
-| **Signature mark** | Headlines and the wordmark end with a **period in brand accent** (`#C97C2E`) — the “brand-accent period” rhythm. |
-| **Canvas** | Default surface is **pale batter** (`#F5E6C8`), not pure white. **Rice paper** (`#FFF8F0`) is for cards and inset panels on batter. |
-| **Contrast** | **Warm dark** (`#2C1A08`) for primary type. **Espresso** (`#3A2410`) for full-bleed dark sections (contact, footer, nav CTA). |
+| **Signature mark** | Headlines and the wordmark end with a **period in brand accent** (`#E8899A`) — the “brand-accent period” rhythm. |
+| **Canvas** | Default surface is **raw shrimp** (`#FAF0F2`). **White card** (`#FFFFFF`) is for cards and inset panels. |
+| **Contrast** | **Warm dark** (`#2C1A08`) for primary type. **Dark plum** (`#3A1A20`) for full-bleed dark sections (footer). **Deep coral** (`#B5384F`) for CTA buttons only. |
 
-The palette is derived from **shrimp tempura batter** — creamy, golden, and warm — so “panko” reads intentional, not generic SaaS neutral.
+The palette is **pink-forward** with a single **golden crust** accent reserved for the AI features service card.
 
 ---
 
@@ -25,39 +25,40 @@ The palette is derived from **shrimp tempura batter** — creamy, golden, and wa
 
 | Name | Hex | CSS variable | Role |
 |------|-----|--------------|------|
-| **Pale batter** | `#F5E6C8` | `--color-bg-page` | Page background, inverse text on dark |
-| **Rice paper** | `#FFF8F0` | `--color-bg-card` | Cards, elevated surfaces, button text on accent |
-| **Espresso** | `#3A2410` | `--color-bg-dark` | Dark sections, nav “Book call”, wordmark on-dark field |
+| **Raw shrimp** | `#FAF0F2` | `--color-bg-page` | Page background, inverse text on dark |
+| **White card** | `#FFFFFF` | `--color-bg-card` | Cards, elevated surfaces |
+| **Dark plum** | `#3A1A20` | `--color-bg-dark` | Footer, wordmark on-dark field |
 | **Warm dark** | `#2C1A08` | `--color-text-primary` | Headlines, body, outlined wordmark on light |
-| **Soy dip** | `#8B4513` | `--color-text-muted` | Eyebrows, secondary labels, muted hierarchy |
-| **Deep fry** | `#C97C2E` | `--color-accent` | Accent period, dots, primary CTAs, focus rings, links |
-| **Golden crust** | `#E8C47A` | `--color-accent-light` | Featured tiles, “Most popular” badges, footer link hover |
-| **Shrimp blush** | `#F47B5A` | `--color-accent-pop` | Small pops only (icons, micro-badges) — not large fills |
+| **Plum muted** | `#6B2D3A` | `--color-text-muted` | Eyebrows, secondary labels, muted hierarchy |
+| **Pink flesh** | `#E8899A` | `--color-accent` | Accent period, dots, links, underlines, focus rings |
+| **Brine blush** | `#F2C4CE` | `--color-accent-light` | Badges, card borders, footer link hover |
+| **Deep coral** | `#B5384F` | `--color-accent-dark` | CTA buttons only — never large fills or body text |
+| **Golden crust** | `#E8C47A` | `--color-amber-card` | **AI features service card only** |
 | **Shiso leaf** | `#4A7C59` | `--color-secondary` | Secondary accent — max **two** uses per page |
 | **Daikon mist** | `#D9E8DC` | `--color-secondary-bg` | Soft secondary surfaces |
 
 ### Tailwind (marketing site)
 
-Mapped in `src/index.css` `@theme`: `brand-bg`, `brand-card`, `brand-dark`, `brand-ink`, `brand-muted`, `brand-inverse`, `brand-accent`, `brand-accent-light`, `brand-pop`, `brand-shiso`, `brand-shiso-bg`.
+Mapped in `src/index.css` `@theme`: `brand-bg`, `brand-card`, `brand-dark`, `brand-ink`, `brand-muted`, `brand-inverse`, `brand-accent`, `brand-accent-light`, `brand-accent-dark`, `brand-amber-card`, `brand-shiso`, `brand-shiso-bg`.
 
 ### Rules
 
-1. **Never use `#000000` or `#FFFFFF` as brand colors.** Pure black/white break the warm system (SVG export uses rice paper / espresso instead).
-2. **Deep fry is for interactive/accent only** — CTAs, links, active states, accent periods. Not large background fields.
-3. **Shiso leaf** — tags, one secondary cue per section; max two instances per page.
-4. **Shrimp blush** — small pops only; do not pair with shiso in the same section.
-5. **Body copy on batter** — use warm dark (`#2C1A08`), not deep fry (contrast fails at small sizes).
-6. **Muted copy** — soy dip (`#8B4513`) or warm dark at reduced opacity (`text-brand-ink/75`).
+1. **Never use `#000000` or `#FFFFFF` as arbitrary brand colors** — white is the card token; warm dark is the darkest text.
+2. **Pink flesh** — accents, links, section labels, borders. Not body copy on page background.
+3. **Deep coral** — filled CTAs only (hero, nav, pricing Subscribe, collaborate submit).
+4. **Golden crust** — exactly one use: AI features service card background.
+5. **Shiso leaf** — tags, one secondary cue per section; max two instances per page.
+6. **Body copy** — warm dark (`#2C1A08`). Muted: plum (`#6B2D3A`) or warm dark at reduced opacity.
 
 ### Accessibility (target pairs)
 
 | Text | Background | Notes |
 |------|------------|-------|
-| `#2C1A08` | `#F5E6C8` | Body on page — passes AA |
-| `#2C1A08` | `#FFF8F0` | Body on card — passes AA |
-| `#F5E6C8` | `#3A2410` | Inverse on dark — passes AA |
-| `#FFF8F0` | `#C97C2E` | Button on accent — passes AA |
-| `#3A2410` | `#E8C47A` | Dark on golden featured tile — passes AA |
+| `#2C1A08` | `#FAF0F2` | Body on page — passes AA |
+| `#FAF0F2` | `#B5384F` | Button on CTA — passes AA |
+| `#FAF0F2` | `#3A1A20` | Inverse on footer — passes AA |
+| `#B5384F` | `#F2C4CE` | Badge on light pink — passes AA |
+| `#3A1A20` | `#E8C47A` | Dark on amber AI card — passes AA |
 
 ### Machine-readable tokens
 
@@ -86,12 +87,12 @@ See [`tokens/colors.json`](./tokens/colors.json) and [`tokens/theme-snippet.css`
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
-| `panko-studio-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` | `#C97C2E` |
-| `panko-studio-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` |
+| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
+| `panko-studio-on-white.svg` | `#FFFFFF` white card | `#2C1A08` | `#E8899A` |
+| `panko-studio-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` |
 
 - **Rasters:** `logos/png/` — same three variants at 256–2048 px width.
-- **Favicon:** `site/favicon.svg` — outlined **p** on **espresso** field, **pale batter** letter, **deep fry** dot (mirrors `public/favicon.svg`).
+- **Favicon:** `site/favicon.svg` — outlined **p** on **dark plum** field, **raw shrimp** letter, **pink flesh** dot (mirrors `public/favicon.svg`).
 
 Regeneration: `python3 logo/build.py` (syncs `brand-kit/logos/` and `public/favicon.svg`). See `logos/README.md`.
 
@@ -110,22 +111,29 @@ These mirror the live **Vite + React + Tailwind v4** implementation (`src/App.ts
 
 - **Primary buttons / CTAs:** `rounded-lg`.
 - **Cards / tiles:** `rounded-md` with occasional one-corner softening (e.g. featured pricing `rounded-tl-2xl`).
-- **Navbar (docked):** ~`12px` radius; frosted rice-paper shell.
+- **Navbar (docked):** ~`12px` radius; frosted card shell.
 
 ### Primary CTA (light surfaces)
 
-- Rice paper fill, warm dark text, subtle border.
-- Hover: espresso fill, pale batter text.
-- Focus visible: deep fry ring.
+- Deep coral fill (`#B5384F`), raw shrimp text.
+- Focus visible: pink flesh ring.
 
-### Dark section (contact + footer)
+### Outline CTA
 
-- Background: **espresso**; copy **pale batter** / reduced opacity for labels.
-- Submit: deep fry fill, rice paper text.
+- Border pink flesh; text deep coral or warm dark per context.
+
+### Dark section (footer)
+
+- Background: **dark plum**; copy **raw shrimp** / 60% opacity for labels.
+- Top accent rule: 3px pink flesh.
+
+### Collaborate section
+
+- Subtle pink tint over page background; submit uses deep coral.
 
 ### Atmosphere
 
-- Soft **warm radial gradients** on the page body (accent + warm dark mist).
+- Soft **pink radial gradients** on the page body.
 - No decorative hairline accents on sections or cards.
 
 ### Section IDs (nav / scroll spy)
@@ -150,4 +158,4 @@ Panko sounds like a **senior PM/designer**: clear, warm, never breathless. Short
 
 ---
 
-*Last aligned with repo: warm tempura palette + marketing site. Regenerate logos from `logo/build.py` after any wordmark or color change.*
+*Last aligned with repo: pink-forward palette + marketing site. Regenerate logos from `logo/build.py` after any wordmark or color change.*

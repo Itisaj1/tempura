@@ -5,7 +5,7 @@ SVG paths from **Outfit Bold** (700), so the files are font-independent
 and render identically on any device or in any tool (Figma, Adobe,
 Keynote, Google Slides, browsers).
 
-Colors use the **warm tempura palette** (pale batter, rice paper, espresso, deep fry).
+Colors use the **pink-forward palette** (raw shrimp, white card, dark plum, pink flesh, deep coral).
 
 ## Files
 
@@ -13,9 +13,9 @@ Colors use the **warm tempura palette** (pale batter, rice paper, espresso, deep
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
-| `panko-studio-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` warm dark | `#C97C2E` deep fry |
-| `panko-studio-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` deep fry |
+| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
+| `panko-studio-on-white.svg` | `#FFFFFF` white card | `#2C1A08` warm dark | `#E8899A` pink flesh |
+| `panko-studio-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` pink flesh |
 
 Canvas is 6602 × 2180 user units (~3:1 aspect). The wordmark is
 padded with generous breathing room so it can drop into a slide /
@@ -27,9 +27,9 @@ Square **p** mark with accent dot (matches the live site favicon).
 
 | File | Background | Letter | Dot |
 |------|------------|--------|-----|
-| `favicon-transparent.svg` | none | `#2C1A08` warm dark | `#C97C2E` deep fry |
-| `favicon-on-white.svg` | `#FFF8F0` rice paper | `#2C1A08` warm dark | `#C97C2E` deep fry |
-| `favicon-on-ink.svg` | `#3A2410` espresso | `#F5E6C8` pale batter | `#C97C2E` deep fry |
+| `favicon-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
+| `favicon-on-white.svg` | `#FFFFFF` white card | `#2C1A08` warm dark | `#E8899A` pink flesh |
+| `favicon-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` pink flesh |
 
 Canvas is 32 × 32 user units.
 

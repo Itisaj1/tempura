@@ -79,11 +79,14 @@ const LoadingLogo = () => {
   );
 };
 
-const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/10 bg-brand-card px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+const PRIMARY_CTA =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+
+const OUTLINE_CTA =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent bg-brand-card px-6 py-3 font-semibold text-brand-accent-dark transition-colors hover:bg-brand-accent/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const NAV_CTA_BUTTON =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-dark px-5 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent hover:text-brand-card focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-5 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -127,7 +130,7 @@ const ConversationalInput = ({
         }}
         className={`w-full border-b bg-transparent px-1 py-1 focus:outline-none disabled:opacity-60 ${
           tone === 'light'
-            ? 'border-brand-ink/20 text-brand-ink placeholder:text-brand-ink/45'
+            ? 'border-brand-accent-dark/20 text-brand-ink placeholder:text-brand-ink/45'
             : 'border-brand-inverse/20 text-brand-inverse placeholder:text-brand-inverse/45'
         } ${inputClassName ?? ''}`}
       />
@@ -271,11 +274,11 @@ const ServiceFlipTile = ({
   pattern,
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-accent-light border border-brand-ink/10 text-brand-dark',
+    accent: 'bg-brand-amber-card border border-brand-amber-card text-brand-dark',
     light:
-      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
+      'bg-brand-card border-[0.5px] border-brand-accent-light text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
     ink:
-      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
+      'bg-brand-card border-[0.5px] border-brand-accent-light text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
   };
   const interactiveCard =
     variant !== 'accent'
@@ -402,17 +405,17 @@ const Navbar = ({
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(58,36,16,0.08)', '0px 12px 32px rgba(58,36,16,0.12)'],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(58,26,32,0.08)', '0px 12px 32px rgba(58,26,32,0.12)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(245, 230, 200, 0)', 'rgba(255, 248, 240, 0.55)', 'rgba(255, 248, 240, 0.82)', 'rgba(255, 248, 240, 0.94)'],
+    ['rgba(250, 240, 242, 0)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.94)'],
   );
   const shellBorder = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(44, 26, 8, 0)', 'rgba(44, 26, 8, 0.06)', 'rgba(44, 26, 8, 0.1)', 'rgba(44, 26, 8, 0.14)'],
+    ['rgba(58, 26, 32, 0)', 'rgba(58, 26, 32, 0.06)', 'rgba(58, 26, 32, 0.1)', 'rgba(58, 26, 32, 0.14)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
@@ -531,7 +534,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-ink/75 max-w-2xl leading-relaxed"
+            className="mt-6 text-xl md:text-2xl text-brand-muted max-w-2xl leading-relaxed"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
@@ -541,10 +544,10 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               whileHover={{y: -2}}
               whileTap={{scale: 0.98}}
               href="#contact"
-              className={`group ${CTA_BUTTON_BASE}`}
+              className={`group ${PRIMARY_CTA}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-ink/50 group-hover:text-brand-inverse transition-colors" aria-hidden>
+              <span className="ml-1 text-brand-inverse/70 group-hover:text-brand-inverse transition-colors" aria-hidden>
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
@@ -552,7 +555,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/78 hover:text-brand-ink transition-colors"
+              className="group inline-flex items-center gap-2 rounded-lg border border-brand-accent px-4 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand-accent/10"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
@@ -590,7 +593,7 @@ const About = () => {
               <motion.a
                 whileHover={{y: -1}}
                 href="#contact"
-                className={`about-cta group mt-0 ${CTA_BUTTON_BASE}`}
+                className={`about-cta group mt-0 ${PRIMARY_CTA}`}
               >
                 Let&apos;s chat
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -720,7 +723,7 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="collaborate-section relative flex min-h-[85vh] items-center overflow-hidden bg-brand-collaborate px-4 py-20 text-brand-ink md:px-10"
+      className="collaborate-section relative flex min-h-[85vh] items-center overflow-hidden px-4 py-20 text-brand-ink md:px-10"
     >
       <div className="relative z-10 mx-auto w-full max-w-3xl">
         <div className="px-1 py-4 md:px-0 md:py-6">
@@ -899,7 +902,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-ink/20 bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:border-transparent hover:bg-brand-accent-light hover:text-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent disabled:hover:text-brand-card"
+                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent-dark disabled:hover:text-brand-inverse"
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -909,10 +912,10 @@ const CTA = () => {
                       aria-hidden
                       animate={{rotate: 360}}
                       transition={{duration: 0.9, repeat: Infinity, ease: 'linear'}}
-                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-card/35 border-t-brand-card"
+                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-inverse/35 border-t-brand-inverse"
                     />
                   ) : (
-                    <ArrowRight className="ml-1 h-4 w-4 text-brand-card/70 transition-colors group-hover:text-brand-card" />
+                    <ArrowRight className="ml-1 h-4 w-4 text-brand-inverse/70 transition-colors group-hover:text-brand-inverse" />
                   )}
                 </motion.button>
               </motion.form>
@@ -930,7 +933,7 @@ const Footer = () => {
     <footer className="relative overflow-hidden border-t-[3px] border-brand-accent bg-brand-dark text-brand-inverse" aria-label="Site footer">
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-inverse">
               panko studio
             </div>
             <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-inverse/88">
@@ -1058,9 +1061,7 @@ const Pricing = () => {
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
           <div className="mb-10 md:mb-12">
-            <p className="mb-4 block text-xs font-bold uppercase tracking-widest text-brand-muted">
-              Pricing
-            </p>
+            <p className="section-label">Pricing</p>
             <h2
               id="pricing-heading"
               className="text-4xl font-display font-bold tracking-tight text-brand-ink md:text-5xl"
@@ -1076,17 +1077,17 @@ const Pricing = () => {
                 <motion.div
                   key={idx}
                   whileHover={isSubscribe ? {y: -3} : undefined}
-                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md p-6 shadow-[0_20px_64px_rgba(44,26,8,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md bg-brand-card p-6 shadow-[0_20px_64px_rgba(58,26,32,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
                     isSubscribe
-                      ? 'border-2 border-brand-accent bg-brand-card'
-                      : 'border border-brand-ink/10 bg-brand-card/95'
+                      ? 'border-2 border-brand-accent'
+                      : 'border border-black/[0.08]'
                   }`}
                 >
                   <div className="relative flex flex-1 flex-col">
                     <div className="mb-2 flex items-start justify-between gap-3">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
                       {isSubscribe && (
-                        <span className="shrink-0 rounded-full bg-brand-accent-light px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-dark">
+                        <span className="shrink-0 rounded-full bg-brand-accent-light px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-accent-dark">
                           Most popular
                         </span>
                       )}
@@ -1117,8 +1118,8 @@ const Pricing = () => {
                     href={plan.buttonHref}
                     className={
                       isSubscribe
-                        ? 'relative mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45'
-                        : `mt-8 w-full text-center ${CTA_BUTTON_BASE}`
+                        ? `relative mt-8 w-full text-center ${PRIMARY_CTA}`
+                        : `mt-8 w-full text-center ${OUTLINE_CTA}`
                     }
                   >
                     {plan.buttonLabel}
@@ -1190,7 +1191,7 @@ function MarketingSite() {
   }, []);
 
   return (
-    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-card">
+    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-inverse">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

@@ -9,7 +9,7 @@ Single place for **logos**, **fonts**, **site tokens**, **favicon**, and the **b
 | `logos/svg/` | Wordmark SVGs (path-outlined, font-independent) |
 | `logos/png/` | Raster exports (256–2048 px widths) |
 | `logos/README.md` | File matrix and re-export instructions |
-| `site/favicon.svg` | Tab icon: espresso field, pale batter “p”, deep fry dot (copy of `public/favicon.svg`) |
+| `site/favicon.svg` | Tab icon: dark plum field, raw shrimp “p”, pink flesh dot (copy of `public/favicon.svg`) |
 | `tokens/colors.json` | Hex tokens for tooling / Figma |
 
 Canonical **voice**, **templates**, and **copy patterns** remain in [`.cursor/skills/panko-brand/`](../.cursor/skills/panko-brand/) (Cursor skill). Site implementation patterns: [`.cursor/skills/panko-site-code/`](../.cursor/skills/panko-site-code/).
