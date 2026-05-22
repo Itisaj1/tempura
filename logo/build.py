@@ -21,12 +21,12 @@ SVG_DIR = ROOT / "svg"
 PNG_DIR = ROOT / "png"
 
 TEXT = "panko studio."
-# Pink-forward palette (matches src/index.css :root)
-TEXT_PRIMARY = "#2C1A08"
-PAGE = "#FAF0F2"
+# Simplified five-color palette (matches src/index.css :root)
+TEXT_PRIMARY = "#1A1A1A"
+PAGE = "#FDF0F3"
 CARD = "#FFFFFF"
-DARK = "#3A1A20"
-ACCENT = "#E8899A"
+DARK = "#1A1A1A"
+ACCENT = "#D4537E"
 
 PNG_WIDTHS = [256, 512, 1024, 2048]
 FAVICON_CANVAS = 32

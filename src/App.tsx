@@ -73,20 +73,20 @@ const LoadingLogo = () => {
       <motion.span
         aria-hidden
         style={{x: dotX, y: '-50%'}}
-        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-accent"
+        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-shrimp"
       />
     </div>
   );
 };
 
 const PRIMARY_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-6 py-3 font-semibold text-brand-card transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
 
 const OUTLINE_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent bg-brand-card px-6 py-3 font-semibold text-brand-accent-dark transition-colors hover:bg-brand-accent/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-shrimp bg-transparent px-6 py-3 font-semibold text-brand-shrimp transition-colors hover:bg-brand-shrimp/[0.04] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
 
 const NAV_CTA_BUTTON =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-5 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark hover:text-brand-inverse focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-shrimp px-5 py-2 font-semibold text-brand-page transition-colors hover:bg-brand-shrimp/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45';
 
 const SECTION_REVEAL_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -130,13 +130,13 @@ const ConversationalInput = ({
         }}
         className={`w-full border-b bg-transparent px-1 py-1 focus:outline-none disabled:opacity-60 ${
           tone === 'light'
-            ? 'border-brand-accent-dark/20 text-brand-ink placeholder:text-brand-ink/45'
-            : 'border-brand-inverse/20 text-brand-inverse placeholder:text-brand-inverse/45'
+            ? 'border-brand-shrimp/25 text-brand-ink placeholder:text-brand-ink/45'
+            : 'border-brand-page/25 text-brand-page placeholder:text-brand-page/45'
         } ${inputClassName ?? ''}`}
       />
       <motion.span
         aria-hidden
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-0.5 origin-left bg-brand-accent"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-0.5 origin-left bg-brand-shrimp"
         initial={false}
         animate={{scaleX: focused ? 1 : 0, opacity: focused ? 1 : 0}}
         transition={{duration: reduceMotion ? 0 : 0.28, ease: 'easeOut'}}
@@ -248,7 +248,7 @@ const HOW_WE_WORK_TILES: Array<{
 
 const ServiceDotMark = ({pattern, tone}: {pattern: ServiceDotPattern; tone: 'ink' | 'cream'}) => {
   const active = new Set(SERVICE_DOT_CELLS[pattern].map(([r, c]) => `${r}-${c}`));
-  const dotClass = tone === 'ink' ? 'bg-brand-inverse' : 'bg-brand-ink';
+  const dotClass = tone === 'ink' ? 'bg-brand-page' : 'bg-brand-ink';
 
   return (
     <div className="grid grid-cols-3 gap-[5px] w-fit" aria-hidden>
@@ -274,19 +274,19 @@ const ServiceFlipTile = ({
   pattern,
 }: (typeof HOW_WE_WORK_TILES)[number]) => {
   const frontStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-amber-card border border-brand-amber-card text-brand-dark',
+    accent: 'bg-brand-blush border border-brand-blush text-brand-shrimp',
     light:
-      'bg-brand-card border-[0.5px] border-brand-accent-light text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
+      'bg-brand-card border-[0.5px] border-brand-blush text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp hover:bg-brand-shrimp/[0.04]',
     ink:
-      'bg-brand-card border-[0.5px] border-brand-accent-light text-brand-ink transition-colors duration-150 ease-out hover:bg-brand-accent/[0.06]',
+      'bg-brand-card border-[0.5px] border-brand-blush text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp hover:bg-brand-shrimp/[0.04]',
   };
   const interactiveCard =
     variant !== 'accent'
       ? 'cursor-pointer transition-transform duration-150 ease-out hover:-translate-y-0.5'
       : '';
   const backStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
-    light: 'bg-brand-dark text-brand-inverse border border-brand-inverse/18',
+    accent: 'bg-brand-ink text-brand-page border border-brand-page/20',
+    light: 'bg-brand-ink text-brand-page border border-brand-page/20',
     ink: 'bg-brand-card text-brand-ink border border-brand-ink/10',
   };
   const dotTone = variant === 'ink' ? 'cream' : 'ink';
@@ -294,7 +294,7 @@ const ServiceFlipTile = ({
   return (
     <article
       tabIndex={0}
-      className={`flip-card h-full min-h-[140px] w-full rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg ${interactiveCard}`}
+      className={`flip-card h-full min-h-[140px] w-full rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand-shrimp/45 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-page ${interactiveCard}`}
       aria-label={`${title}. ${description}`}
     >
       <div className="flip-card-inner h-full w-full">
@@ -405,17 +405,17 @@ const Navbar = ({
   const shellShadow = useTransform(
     smoothDockProgress,
     [0, 0.6, 1],
-    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(58,26,32,0.08)', '0px 12px 32px rgba(58,26,32,0.12)'],
+    ['0px 0px 0px rgba(0,0,0,0)', '0px 8px 24px rgba(26,26,26,0.08)', '0px 12px 32px rgba(26,26,26,0.12)'],
   );
   const shellBg = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(250, 240, 242, 0)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.94)'],
+    ['rgba(253, 240, 243, 0)', 'rgba(255, 255, 255, 0.55)', 'rgba(255, 255, 255, 0.82)', 'rgba(255, 255, 255, 0.94)'],
   );
   const shellBorder = useTransform(
     smoothDockProgress,
     [0, 0.25, 0.7, 1],
-    ['rgba(58, 26, 32, 0)', 'rgba(58, 26, 32, 0.06)', 'rgba(58, 26, 32, 0.1)', 'rgba(58, 26, 32, 0.14)'],
+    ['rgba(26, 26, 26, 0)', 'rgba(26, 26, 26, 0.06)', 'rgba(26, 26, 26, 0.1)', 'rgba(26, 26, 26, 0.14)'],
   );
   const shellBackdrop = useTransform(
     smoothDockProgress,
@@ -450,7 +450,7 @@ const Navbar = ({
         aria-current={activeSection === 'home' ? 'page' : undefined}
       >
         panko studio
-        <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" aria-hidden />
+        <span className="h-1.5 w-1.5 rounded-full bg-brand-shrimp" aria-hidden />
       </a>
 
       <ul className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-6 text-xs sm:text-sm font-medium ml-auto list-none p-0 m-0">
@@ -509,12 +509,12 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
           >
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               Design for startups
-              <span className="text-brand-muted/80"> and</span>
+              <span className="text-brand-ink/65"> and</span>
             </motion.span>
             <motion.span variants={reduceMotion ? undefined : HERO_HEADLINE_LINE} className="block">
               scale-ups
               <motion.span
-                className="text-brand-accent inline-block"
+                className="text-brand-shrimp inline-block"
                 initial={false}
                 animate={reduceMotion ? {scale: 1} : {scale: [1, 1.18, 1]}}
                 transition={
@@ -534,7 +534,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             transition={
               reduceMotion ? {duration: 0} : {delay: 0.28, duration: 0.48, ease: SECTION_REVEAL_EASE}
             }
-            className="mt-6 text-xl md:text-2xl text-brand-muted max-w-2xl leading-relaxed"
+            className="mt-6 text-xl md:text-2xl text-brand-ink/65 max-w-2xl leading-relaxed"
           >
             Product management and design for ambitious AI x B2B teams.
           </motion.p>
@@ -547,7 +547,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${PRIMARY_CTA}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-inverse/70 group-hover:text-brand-inverse transition-colors" aria-hidden>
+              <span className="ml-1 text-brand-card/70 group-hover:text-brand-card transition-colors" aria-hidden>
                 <ArrowRight className="w-4 h-4" aria-hidden />
               </span>
             </motion.a>
@@ -555,7 +555,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
             <motion.a
               whileHover={{x: 4}}
               href="#work"
-              className="group inline-flex items-center gap-2 rounded-lg border border-brand-accent px-4 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand-accent/10"
+              className="group inline-flex items-center gap-2 rounded-lg border border-brand-shrimp px-4 py-2.5 text-sm font-semibold text-brand-shrimp bg-transparent transition-colors hover:bg-brand-shrimp/[0.04]"
             >
               View selected work
               <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
@@ -569,7 +569,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-20 md:pb-28 lg:pb-32 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-20 md:pb-28 lg:pb-32 px-4 md:px-10 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10 md:mb-14">
@@ -610,14 +610,14 @@ const About = () => {
                   key={idx}
                   role="group"
                   aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
-                  className="mb-6 border-l-2 border-brand-accent pl-4 last:mb-0"
+                  className="mb-6 border-l-2 border-brand-shrimp pl-4 last:mb-0"
                 >
                   <CountUp
                     value={stat.label}
                     suffix={stat.suffix}
                     className="mb-1 text-[32px] font-semibold leading-none text-brand-ink"
                   />
-                  <p className="text-[13px] text-brand-muted">{stat.sub}</p>
+                  <p className="text-[13px] text-brand-ink/60">{stat.sub}</p>
                 </div>
               ))}
             </div>
@@ -744,13 +744,13 @@ const CTA = () => {
                   initial={{scale: 0.6, opacity: 0}}
                   animate={{scale: 1, opacity: 1}}
                   transition={{delay: 0.1, type: 'spring', stiffness: 220, damping: 18}}
-                  className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-brand-accent/15 text-brand-accent mb-6"
+                  className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-brand-shrimp/15 text-brand-shrimp mb-6"
                 >
                   <CheckCircle2 className="h-8 w-8" strokeWidth={2.25} />
                 </motion.div>
                 <h2 className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-4 text-brand-ink">
                   Thank you, {submittedName}
-                  <span className="text-brand-accent">.</span>
+                  <span className="text-brand-shrimp">.</span>
                 </h2>
                 <p className="text-lg md:text-xl text-brand-ink/85 max-w-xl leading-relaxed">
                   We&apos;ve got your note and a confirmation on the way to{' '}
@@ -773,7 +773,7 @@ const CTA = () => {
                   className="text-4xl md:text-6xl font-display font-bold tracking-tight mb-10 text-brand-ink"
                 >
                   Let&apos;s collaborate
-                  <span className="text-brand-accent">.</span>
+                  <span className="text-brand-shrimp">.</span>
                 </h2>
 
                 <div className="space-y-6 text-base md:text-lg text-brand-ink/90 leading-relaxed">
@@ -842,7 +842,7 @@ const CTA = () => {
                           disabled={formStatus === 'loading'}
                           className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-60 ${
                             selected
-                              ? 'border-brand-accent bg-brand-accent/22 text-brand-ink'
+                              ? 'border-brand-shrimp bg-brand-shrimp/22 text-brand-ink'
                               : 'border-brand-ink/20 bg-brand-ink/[0.06] text-brand-ink/78 hover:border-brand-ink/30 hover:bg-brand-ink/10'
                           }`}
                         >
@@ -902,7 +902,7 @@ const CTA = () => {
                   disabled={formStatus === 'loading'}
                   whileHover={formStatus === 'loading' ? undefined : {y: -1}}
                   whileTap={formStatus === 'loading' ? undefined : {scale: 0.98}}
-                  className="group mt-10 inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45 disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-accent-dark disabled:hover:text-brand-inverse"
+                  className={`group mt-10 ${PRIMARY_CTA} disabled:cursor-not-allowed disabled:opacity-75 disabled:hover:bg-brand-shrimp disabled:hover:text-brand-card`}
                 >
                   <span className="text-base font-semibold">
                     {formStatus === 'loading' ? 'Sending…' : 'Submit'}
@@ -912,10 +912,10 @@ const CTA = () => {
                       aria-hidden
                       animate={{rotate: 360}}
                       transition={{duration: 0.9, repeat: Infinity, ease: 'linear'}}
-                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-inverse/35 border-t-brand-inverse"
+                      className="ml-1 h-4 w-4 rounded-full border-2 border-brand-card/35 border-t-brand-card"
                     />
                   ) : (
-                    <ArrowRight className="ml-1 h-4 w-4 text-brand-inverse/70 transition-colors group-hover:text-brand-inverse" />
+                    <ArrowRight className="ml-1 h-4 w-4 text-brand-card/70 transition-colors group-hover:text-brand-card" />
                   )}
                 </motion.button>
               </motion.form>
@@ -930,23 +930,23 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t-[3px] border-brand-accent bg-brand-dark text-brand-inverse" aria-label="Site footer">
+    <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 pt-20 pb-14">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-inverse">
+            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(4.5rem,13vw,14rem)] text-brand-card">
               panko studio
             </div>
-            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-inverse/88">
-              <a href="#about" className="transition-colors hover:text-brand-accent-light">
+            <div className="grid grid-cols-2 gap-x-12 md:gap-x-16 gap-y-3 text-xl md:text-3xl font-display font-medium text-brand-page/88">
+              <a href="#about" className="transition-colors hover:text-brand-card">
                 About
               </a>
-              <a href="#work" className="transition-colors hover:text-brand-accent-light">
+              <a href="#work" className="transition-colors hover:text-brand-card">
                 Work
               </a>
-              <a href="#pricing" className="transition-colors hover:text-brand-accent-light">
+              <a href="#pricing" className="transition-colors hover:text-brand-card">
                 Pricing
               </a>
-              <a href="#contact" className="transition-colors hover:text-brand-accent-light">
+              <a href="#contact" className="transition-colors hover:text-brand-card">
                 Contact
               </a>
               <a
@@ -954,19 +954,19 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn (opens in new tab)"
-                className="transition-colors hover:text-brand-accent-light"
+                className="transition-colors hover:text-brand-card"
               >
                 LinkedIn
               </a>
             </div>
           </div>
-          <div className="mt-10 flex flex-col gap-4 border-t border-brand-inverse/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-inverse/60">
-              <a href="/privacy" className="transition-colors hover:text-brand-accent-light">Privacy</a>
-              <a href="/terms" className="transition-colors hover:text-brand-accent-light">Terms</a>
-              <a href="/cookies" className="transition-colors hover:text-brand-accent-light">Cookies</a>
+          <div className="mt-10 flex flex-col gap-4 border-t border-brand-page/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-page/55">
+              <a href="/privacy" className="transition-colors hover:text-brand-card">Privacy</a>
+              <a href="/terms" className="transition-colors hover:text-brand-card">Terms</a>
+              <a href="/cookies" className="transition-colors hover:text-brand-card">Cookies</a>
             </nav>
-            <p className="text-sm text-brand-inverse/60">© {new Date().getFullYear()} Panko Studio</p>
+            <p className="text-sm text-brand-page/55">© {new Date().getFullYear()} Panko Studio</p>
           </div>
       </div>
     </footer>
@@ -977,7 +977,7 @@ const Projects = () => {
   const placeholders = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-bg overflow-hidden">
+    <section id="work" aria-labelledby="work-heading" className="relative py-16 md:py-20 px-4 md:px-10 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
@@ -992,9 +992,9 @@ const Projects = () => {
                 key={tile.id}
                 className="group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5"
               >
-                <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-accent/[0.06]">
+                <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04]">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(44,26,8,0.08)]">
+                    <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
                       Case study placeholder
                     </div>
                   </div>
@@ -1002,9 +1002,9 @@ const Projects = () => {
                 <div className="mt-5 flex items-center justify-between px-2">
                   <div>
                     <h3 className="text-xl font-bold font-display text-brand-ink">Project</h3>
-                    <p className="text-sm font-medium text-brand-shiso">Coming soon</p>
+                    <p className="text-sm font-medium text-brand-shrimp">Coming soon</p>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-accent/45 group-hover:bg-brand-accent/15 group-hover:text-brand-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp">
                     <ArrowRight className="arrow-icon h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-[3px]" />
                   </div>
                 </div>
@@ -1056,7 +1056,7 @@ const Pricing = () => {
     <section
       id="pricing"
       aria-labelledby="pricing-heading"
-      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-bg px-4 py-16 md:px-10 md:py-20"
+      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-page px-4 py-16 md:px-10 md:py-20"
     >
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
@@ -1077,24 +1077,24 @@ const Pricing = () => {
                 <motion.div
                   key={idx}
                   whileHover={isSubscribe ? {y: -3} : undefined}
-                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md bg-brand-card p-6 shadow-[0_20px_64px_rgba(58,26,32,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
+                  className={`relative flex h-full min-h-[22rem] flex-col rounded-md bg-brand-card p-6 shadow-[0_20px_64px_rgba(26,26,26,0.14)] backdrop-blur-sm transition-colors md:p-8 ${
                     isSubscribe
-                      ? 'border-2 border-brand-accent'
-                      : 'border border-black/[0.08]'
+                      ? 'border-2 border-brand-shrimp'
+                      : 'border-[0.5px] border-brand-blush'
                   }`}
                 >
                   <div className="relative flex flex-1 flex-col">
                     <div className="mb-2 flex items-start justify-between gap-3">
                       <h3 className="text-2xl font-bold font-display text-brand-ink">{plan.name}</h3>
                       {isSubscribe && (
-                        <span className="shrink-0 rounded-full bg-brand-accent-light px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-accent-dark">
+                        <span className="shrink-0 rounded-full bg-brand-blush px-[10px] py-[3px] text-[11px] font-semibold uppercase tracking-widest text-brand-shrimp">
                           Most popular
                         </span>
                       )}
                     </div>
                     <div className="mb-5 flex items-baseline gap-1">
                       <span className="text-3xl font-bold font-display md:text-4xl">{plan.price}</span>
-                      <span className="font-medium text-brand-muted">{plan.period}</span>
+                      <span className="font-medium text-brand-ink/60">{plan.period}</span>
                     </div>
                     <p className="mb-5 font-semibold leading-relaxed text-brand-ink/90">{plan.desc}</p>
                     {plan.features.length > 0 && (
@@ -1191,7 +1191,7 @@ function MarketingSite() {
   }, []);
 
   return (
-    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-inverse">
+    <div className="min-h-screen selection:bg-brand-shrimp selection:text-brand-card">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -1213,7 +1213,7 @@ function MarketingSite() {
         aria-busy={showLoader}
         aria-hidden={!showLoader}
         aria-label="Loading site"
-        className={`fixed inset-0 z-[100] flex items-center justify-center bg-brand-bg ${
+        className={`fixed inset-0 z-[100] flex items-center justify-center bg-brand-page ${
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >

@@ -8,9 +8,9 @@ Vector and raster wordmark exports. Wordmark text (`panko studio.`) is outlined 
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `panko-studio-on-white.svg` | `#FFFFFF` white card | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `panko-studio-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` pink flesh |
+| `panko-studio-transparent.svg` | none | `#1A1A1A` ink | `#D4537E` shrimp |
+| `panko-studio-on-white.svg` | `#FFFFFF` white | `#1A1A1A` ink | `#D4537E` shrimp |
+| `panko-studio-on-ink.svg` | `#1A1A1A` ink | `#FDF0F3` petal | `#D4537E` shrimp |
 
 Canvas is ~6602 × 2180 user units (~3:1). Generous padding for headers and decks.
 

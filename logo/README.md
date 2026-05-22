@@ -5,7 +5,7 @@ SVG paths from **Outfit Bold** (700), so the files are font-independent
 and render identically on any device or in any tool (Figma, Adobe,
 Keynote, Google Slides, browsers).
 
-Colors use the **pink-forward palette** (raw shrimp, white card, dark plum, pink flesh, deep coral).
+Colors use the **simplified five-color palette** (petal, white, blush, shrimp, ink).
 
 ## Files
 
@@ -13,9 +13,9 @@ Colors use the **pink-forward palette** (raw shrimp, white card, dark plum, pink
 
 | File | Background | Text | Period |
 |------|------------|------|--------|
-| `panko-studio-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `panko-studio-on-white.svg` | `#FFFFFF` white card | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `panko-studio-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` pink flesh |
+| `panko-studio-transparent.svg` | none | `#1A1A1A` ink | `#D4537E` shrimp |
+| `panko-studio-on-white.svg` | `#FFFFFF` white | `#1A1A1A` ink | `#D4537E` shrimp |
+| `panko-studio-on-ink.svg` | `#1A1A1A` ink | `#FDF0F3` petal | `#D4537E` shrimp |
 
 Canvas is 6602 × 2180 user units (~3:1 aspect). The wordmark is
 padded with generous breathing room so it can drop into a slide /
@@ -27,9 +27,9 @@ Square **p** mark with accent dot (matches the live site favicon).
 
 | File | Background | Letter | Dot |
 |------|------------|--------|-----|
-| `favicon-transparent.svg` | none | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `favicon-on-white.svg` | `#FFFFFF` white card | `#2C1A08` warm dark | `#E8899A` pink flesh |
-| `favicon-on-ink.svg` | `#3A1A20` dark plum | `#FAF0F2` raw shrimp | `#E8899A` pink flesh |
+| `favicon-transparent.svg` | none | `#1A1A1A` ink | `#D4537E` shrimp |
+| `favicon-on-white.svg` | `#FFFFFF` white | `#1A1A1A` ink | `#D4537E` shrimp |
+| `favicon-on-ink.svg` | `#1A1A1A` ink | `#FDF0F3` petal | `#D4537E` shrimp |
 
 Canvas is 32 × 32 user units.
 

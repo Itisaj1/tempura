@@ -1,20 +1,13 @@
 /**
- * Panko Studio — pink-forward palette
+ * Panko Studio — simplified five-color palette
  * Source of truth in repo: src/index.css (:root + @theme)
  */
 :root {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
-  --color-bg-page: #faf0f2;
+  --color-bg-page: #fdf0f3;
   --color-bg-card: #ffffff;
-  --color-bg-dark: #3a1a20;
-  --color-accent: #e8899a;
   --color-accent-light: #f2c4ce;
-  --color-accent-dark: #b5384f;
-  --color-amber-card: #e8c47a;
-  --color-text-primary: #2c1a08;
-  --color-text-muted: #6b2d3a;
-  --color-text-inverse: #faf0f2;
-  --color-secondary: #4a7c59;
-  --color-secondary-bg: #d9e8dc;
+  --color-accent: #d4537e;
+  --color-dark: #1a1a1a;
 }

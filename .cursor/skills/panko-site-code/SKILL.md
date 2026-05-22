@@ -46,16 +46,14 @@ Parked / not bundled: `src/Testimonials.tsx` (not imported).
 
 Defined in `src/index.css` `@theme`:
 
-- `brand-bg` `#faf0f2` (raw shrimp)
-- `brand-card` `#ffffff` (white card)
-- `brand-dark` `#3a1a20` (dark plum)
-- `brand-ink` `#2c1a08` (warm dark)
-- `brand-accent` `#e8899a` (pink flesh)
-- `brand-accent-dark` `#b5384f` (deep coral — CTAs only)
-- `brand-amber-card` `#e8c47a` (golden crust — AI features card only)
+- `brand-page` `#fdf0f3` (petal)
+- `brand-card` `#ffffff` (white)
+- `brand-blush` `#f2c4ce` (blush — backgrounds only)
+- `brand-shrimp` `#d4537e` (shrimp — interactive)
+- `brand-ink` `#1a1a1a` (ink — text + footer bg)
 - `font-sans` → Inter, `font-display` → Outfit
 
-Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-accent`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
+Use classes: `bg-brand-page`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-shrimp`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
 
 ## Layout rhythm
 
@@ -66,17 +64,12 @@ Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-acc
 ## CTAs (reuse constants in `App.tsx`, do not duplicate)
 
 ```tsx
-const PRIMARY_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent-dark bg-brand-accent-dark px-6 py-3 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent-dark/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
-
-const OUTLINE_CTA =
-  'inline-flex items-center justify-center gap-2 rounded-lg border border-brand-accent bg-transparent px-6 py-3 font-semibold text-brand-accent-dark transition-colors hover:bg-brand-accent/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
-
-const NAV_CTA_BUTTON =
-  'inline-flex items-center justify-center rounded-lg border border-brand-accent-dark bg-brand-accent-dark px-4 py-2 font-semibold text-brand-inverse transition-colors hover:bg-brand-accent-dark/90';
+const PRIMARY_CTA = '... bg-brand-shrimp text-brand-card ...';
+const OUTLINE_CTA = '... border-brand-shrimp text-brand-shrimp bg-transparent ...';
+const NAV_CTA_BUTTON = '... bg-brand-shrimp text-brand-page ...';
 ```
 
-Collaborate submit uses `PRIMARY_CTA`. Footer is dark plum with raw shrimp text; link hover `text-brand-accent-light`. AI features card alone uses `bg-brand-amber-card`.
+Collaborate submit uses `PRIMARY_CTA`. Footer: `bg-brand-ink text-brand-page`, wordmark `text-brand-card`. AI card: `bg-brand-blush text-brand-shrimp`.
 
 ## Motion conventions
 

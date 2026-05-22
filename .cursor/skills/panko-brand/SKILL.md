@@ -33,33 +33,28 @@ follow the patterns already in `src/App.tsx` and `src/index.css`.
 | Sign-off | The Panko Studio team |
 
 **Wordmark rhythm.** When the wordmark or a headline ends in a period,
-that period is rendered in **pink flesh** (`#E8899A`). This is the
+that period is rendered in **Shrimp** (`#D4537E`). This is the
 signature visual mark — repeat it wherever a headline ends:
 
-> panko studio<span style="color:#E8899A;">.</span>
-> Let's collaborate<span style="color:#E8899A;">.</span>
-> Transparent investment<span style="color:#E8899A;">.</span>
+> panko studio<span style="color:#D4537E;">.</span>
+> Let's collaborate<span style="color:#D4537E;">.</span>
+> Transparent investment<span style="color:#D4537E;">.</span>
 
-## Colors
+## Colors (five only)
 
 | Token | Hex | Use |
 |------|-----|-----|
-| Raw shrimp | `#FAF0F2` | Default canvas. Page background. Inverse text on dark. |
-| White card | `#FFFFFF` | Cards and inset panels. |
-| Dark plum | `#3A1A20` | Footer, wordmark on-dark field. |
-| Warm dark | `#2C1A08` | Body type, headlines, outlined wordmark on light. |
-| Plum muted | `#6B2D3A` | Muted eyebrows and secondary labels. |
-| Pink flesh | `#E8899A` | Accent period, dots, links, underlines. |
-| Brine blush | `#F2C4CE` | Badges, card borders, footer link hover. |
-| Deep coral | `#B5384F` | CTA buttons only — never large fills or body text. |
-| Golden crust | `#E8C47A` | **AI features card only** — do not use elsewhere. |
+| Petal | `#FDF0F3` | Page canvas. Footer body text. Nav CTA label on Shrimp. |
+| White | `#FFFFFF` | Cards. Primary CTA text. Footer wordmark. |
+| Blush | `#F2C4CE` | Backgrounds only — badges, borders, AI card, section tints. |
+| Shrimp | `#D4537E` | Accent period, CTAs, links, interactive states. |
+| Ink | `#1A1A1A` | All text. Footer background. |
 
 **Rules**
-- Pink flesh is restrained — one or two focal points per surface; deep coral CTAs are the main filled exception.
-- Default canvas is raw shrimp. White is for cards.
-- Use dark plum (`#3A1A20`) for the footer.
-- Body copy: warm dark (`#2C1A08`), not pink accent. Muted: plum (`#6B2D3A`). On dark: raw shrimp at 65–90%.
-- Golden crust appears exactly once (AI features service card).
+- Exactly five colors — no browns, ambers, greens, or teals.
+- Shrimp for all interactive accents; Blush for backgrounds only (never Blush text).
+- Body copy: Ink. Muted: Ink at 60% opacity. On footer: Petal at 55% for secondary lines.
+- Do not use pure black (`#000000`).
 
 ## Typography
 

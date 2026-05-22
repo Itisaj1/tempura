@@ -2,40 +2,22 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg-page: #faf0f2;
+  --color-bg-page: #fdf0f3;
   --color-bg-card: #ffffff;
-  --color-bg-dark: #3a1a20;
-  --color-accent: #e8899a;
   --color-accent-light: #f2c4ce;
-  --color-accent-dark: #b5384f;
-  --color-amber-card: #e8c47a;
-  --color-text-primary: #2c1a08;
-  --color-text-muted: #6b2d3a;
-  --color-text-inverse: #faf0f2;
-  --color-secondary: #4a7c59;
-  --color-secondary-bg: #d9e8dc;
+  --color-accent: #d4537e;
+  --color-dark: #1a1a1a;
 }
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
 
-  --color-brand-bg: var(--color-bg-page);
+  --color-brand-page: var(--color-bg-page);
   --color-brand-card: var(--color-bg-card);
-  --color-brand-dark: var(--color-bg-dark);
-  --color-brand-ink: var(--color-text-primary);
-  --color-brand-muted: var(--color-text-muted);
-  --color-brand-inverse: var(--color-text-inverse);
-  --color-brand-cream: var(--color-text-inverse);
-  --color-brand-fg: var(--color-text-primary);
-  --color-brand-surface: var(--color-bg-card);
-  --color-brand-elevated: var(--color-bg-card);
-  --color-brand-accent: var(--color-accent);
-  --color-brand-accent-light: var(--color-accent-light);
-  --color-brand-accent-dark: var(--color-accent-dark);
-  --color-brand-amber-card: var(--color-amber-card);
-  --color-brand-shiso: var(--color-secondary);
-  --color-brand-shiso-bg: var(--color-secondary-bg);
+  --color-brand-blush: var(--color-accent-light);
+  --color-brand-shrimp: var(--color-accent);
+  --color-brand-ink: var(--color-dark);
 }
 
 @layer base {
@@ -66,7 +48,7 @@
     z-index: 200;
     padding: 0.625rem 1rem;
     border-radius: 0.375rem;
-    background-color: var(--color-bg-dark);
+    background-color: var(--color-dark);
     color: var(--color-bg-card);
     font-size: 0.875rem;
     font-weight: 600;
@@ -80,11 +62,11 @@
   }
 
   body {
-    @apply bg-brand-bg text-brand-ink font-sans antialiased;
+    @apply bg-brand-page text-brand-ink font-sans antialiased;
     background-image:
-      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(232, 137, 154, 0.14), transparent 52%),
-      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(242, 196, 206, 0.12), transparent 50%),
-      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(58, 26, 32, 0.06), transparent 48%);
+      radial-gradient(ellipse 120% 85% at 100% -5%, rgba(212, 83, 126, 0.1), transparent 52%),
+      radial-gradient(ellipse 90% 70% at -5% 100%, rgba(242, 196, 206, 0.18), transparent 50%),
+      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(26, 26, 26, 0.04), transparent 48%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -161,7 +143,7 @@
 
   .nav-link {
     position: relative;
-    color: var(--color-text-primary);
+    color: var(--color-dark);
     text-decoration: none;
     transition: color 150ms ease;
   }
@@ -201,7 +183,7 @@
   }
 
   .collaborate-section {
-    background-color: color-mix(in srgb, var(--color-accent) 6%, var(--color-bg-page));
+    background-color: rgba(242, 196, 206, 0.2);
   }
 
   .work-card-placeholder {
@@ -210,8 +192,8 @@
       -45deg,
       transparent,
       transparent 8px,
-      rgba(232, 137, 154, 0.07) 8px,
-      rgba(232, 137, 154, 0.07) 9px
+      rgba(212, 83, 126, 0.07) 8px,
+      rgba(212, 83, 126, 0.07) 9px
     );
   }
 
@@ -220,11 +202,11 @@
   }
 
   .legal-prose .legal-eyebrow {
-    @apply mb-3 text-xs font-bold uppercase tracking-widest text-brand-muted/80;
+    @apply mb-3 text-xs font-bold uppercase tracking-widest text-brand-ink/60;
   }
 
   .legal-prose .legal-updated {
-    @apply mb-10 text-sm text-brand-muted/70;
+    @apply mb-10 text-sm text-brand-ink/55;
   }
 
   .legal-prose h1 {
@@ -252,7 +234,7 @@
   }
 
   .legal-prose a {
-    @apply font-medium text-brand-accent underline-offset-2 hover:underline;
+    @apply font-medium text-brand-shrimp underline-offset-2 hover:underline;
   }
 
   .legal-prose strong {

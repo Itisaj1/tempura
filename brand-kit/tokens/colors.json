@@ -1,80 +1,42 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Panko Studio pink-forward palette (matches src/index.css :root + @theme)",
+  "description": "Panko Studio simplified palette — five colors only (matches src/index.css)",
   "colors": {
-    "bg-page": {
-      "hex": "#FAF0F2",
+    "page": {
+      "hex": "#FDF0F3",
       "token": "--color-bg-page",
-      "usage": "Page canvas — raw shrimp"
+      "usage": "Petal — page background, nav CTA text, footer body text"
     },
-    "bg-card": {
+    "card": {
       "hex": "#FFFFFF",
       "token": "--color-bg-card",
-      "usage": "Cards and elevated surfaces"
+      "usage": "White — card surfaces, primary CTA text"
     },
-    "bg-dark": {
-      "hex": "#3A1A20",
-      "token": "--color-bg-dark",
-      "usage": "Footer, nav CTA contrast — dark plum"
-    },
-    "accent": {
-      "hex": "#E8899A",
-      "token": "--color-accent",
-      "usage": "Primary accent — pink flesh"
-    },
-    "accent-light": {
+    "blush": {
       "hex": "#F2C4CE",
       "token": "--color-accent-light",
-      "usage": "Badges, borders, footer link hover — brine blush"
+      "usage": "Blush — badge backgrounds, card borders, featured AI card, section tints"
     },
-    "accent-dark": {
-      "hex": "#B5384F",
-      "token": "--color-accent-dark",
-      "usage": "CTA buttons only — deep coral"
+    "shrimp": {
+      "hex": "#D4537E",
+      "token": "--color-accent",
+      "usage": "Shrimp — buttons, links, accents, focus rings"
     },
-    "amber-card": {
-      "hex": "#E8C47A",
-      "token": "--color-amber-card",
-      "usage": "AI features service card only — golden crust"
-    },
-    "text-primary": {
-      "hex": "#2C1A08",
-      "token": "--color-text-primary",
-      "usage": "Headlines and body — warm dark"
-    },
-    "text-muted": {
-      "hex": "#6B2D3A",
-      "token": "--color-text-muted",
-      "usage": "Eyebrows, secondary copy — plum muted"
-    },
-    "text-inverse": {
-      "hex": "#FAF0F2",
-      "token": "--color-text-inverse",
-      "usage": "Text on dark backgrounds and CTAs"
-    },
-    "secondary": {
-      "hex": "#4A7C59",
-      "token": "--color-secondary",
-      "usage": "Shiso leaf — max 2 per page"
-    },
-    "secondary-bg": {
-      "hex": "#D9E8DC",
-      "token": "--color-secondary-bg",
-      "usage": "Daikon mist surfaces"
+    "ink": {
+      "hex": "#1A1A1A",
+      "token": "--color-dark",
+      "usage": "Ink — all text, footer background"
     }
   },
   "tailwindV4": {
     "classes": [
-      "bg-brand-bg",
+      "bg-brand-page",
       "bg-brand-card",
-      "bg-brand-dark",
-      "bg-brand-accent",
-      "bg-brand-accent-light",
-      "bg-brand-accent-dark",
-      "bg-brand-amber-card",
+      "bg-brand-blush",
+      "bg-brand-shrimp",
       "text-brand-ink",
-      "text-brand-muted",
-      "text-brand-inverse"
+      "text-brand-shrimp",
+      "border-brand-blush"
     ]
   }
 }
