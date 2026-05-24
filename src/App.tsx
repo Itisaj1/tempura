@@ -1030,7 +1030,7 @@ const Pricing = () => {
   }> = [
     {
       name: 'Subscribe',
-      price: '$7,500',
+      price: '$18,000',
       period: ' / month',
       desc: 'Work with us on an ongoing basis.',
       features: [],
@@ -1041,7 +1041,7 @@ const Pricing = () => {
     },
     {
       name: 'Fixed',
-      price: '$18,000',
+      price: '$7,500',
       period: ' / project',
       desc: 'Design your core product from scratch in 6-8 weeks.',
       features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
