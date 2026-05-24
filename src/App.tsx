@@ -336,50 +336,6 @@ const SectionReveal = ({
   );
 };
 
-const COUNT_UP_DURATION_MS = 1400;
-
-const CountUp = ({
-  value,
-  suffix = '',
-  className = 'text-3xl md:text-4xl font-bold font-display mb-1 text-brand-ink',
-}: {
-  value: number;
-  suffix?: string;
-  className?: string;
-}) => {
-  const [displayValue, setDisplayValue] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!ref.current || hasAnimated) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setHasAnimated(true);
-        const duration = COUNT_UP_DURATION_MS;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const progress = Math.min((now - start) / duration, 1);
-          setDisplayValue(Math.round(value * progress));
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      {threshold: 0.45},
-    );
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [hasAnimated, value]);
-
-  return (
-    <div ref={ref} className={className}>
-      {displayValue}
-      {suffix}
-    </div>
-  );
-};
-
 const Navbar = ({
   dockProgress,
   activeSection,
@@ -501,7 +457,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       className="relative pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-16 px-4 sm:pb-20 sm:pt-24 md:px-10 lg:pb-24 xl:px-12 2xl:px-16 overflow-hidden"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
-        <motion.div style={{opacity, y}} className="max-w-5xl text-left">
+          <motion.div style={{opacity, y}} className="max-w-5xl text-left">
           <motion.h1
             id="hero-heading"
             variants={reduceMotion ? undefined : HERO_HEADLINE_CONTAINER}
@@ -579,8 +535,7 @@ const About = () => {
             <p className="section-label">About</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
-            <div>
+          <motion.div className="max-w-3xl">
               <h2
                 id="about-heading"
                 className="about-heading text-[clamp(2rem,7vw,3.75rem)] font-display font-bold leading-tight tracking-tighter text-balance mb-5 md:text-6xl"
@@ -601,38 +556,15 @@ const About = () => {
                 Let&apos;s chat
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </motion.a>
-            </div>
+          </motion.div>
 
-            <div className="space-y-0 lg:pt-2">
-              {[
-                { label: 12, sub: 'happy teams across the globe', suffix: '' },
-                { label: 7, sub: 'years of combined expertise', suffix: '' },
-                { label: 4, sub: 'week cycles from brief to first build', suffix: '' },
-              ].map((stat, idx) => (
-                <div
-                  key={idx}
-                  role="group"
-                  aria-label={`${stat.label}${stat.suffix} ${stat.sub}`}
-                  className="mb-6 border-l-2 border-brand-shrimp pl-4 last:mb-0"
-                >
-                  <CountUp
-                    value={stat.label}
-                    suffix={stat.suffix}
-                    className="mb-1 text-3xl font-semibold leading-none text-brand-ink sm:text-[32px]"
-                  />
-                  <p className="text-[13px] text-brand-ink/60">{stat.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-16 md:mt-24 lg:mt-28">
+          <motion.div className="mt-16 md:mt-24 lg:mt-28">
             <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
               {HOW_WE_WORK_TILES.map((tile) => (
                 <ServiceFlipTile key={tile.title} {...tile} />
               ))}
             </div>
-          </div>
+          </motion.div>
         </SectionReveal>
       </div>
     </section>
