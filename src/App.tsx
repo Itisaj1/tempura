@@ -3,6 +3,7 @@ import Lenis from 'lenis';
 import {
   AnimatePresence,
   animate,
+  LayoutGroup,
   motion,
   useMotionValue,
   useReducedMotion,
@@ -336,6 +337,8 @@ const SectionReveal = ({
   );
 };
 
+const NAV_DOT_SPRING = {type: 'spring' as const, stiffness: 420, damping: 36, mass: 0.45};
+
 const Navbar = ({
   dockProgress,
   activeSection,
@@ -409,22 +412,30 @@ const Navbar = ({
         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-shrimp" aria-hidden />
       </a>
 
-      <ul className="hidden min-[720px]:flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs font-medium list-none p-0 m-0 ml-auto sm:gap-x-6 sm:text-sm xl:gap-x-6">
-        {navItems.map((item) => (
-          <li key={item.id}>
-            <a
-              href={`#${item.id}`}
-              aria-current={activeSection === item.id ? 'page' : undefined}
-              className={`nav-link inline-flex items-center gap-1.5 px-1 py-0.5 ${activeSection === item.id ? 'active' : ''}`}
-            >
-              {item.label}
-              {activeSection === item.id && (
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-shrimp" aria-hidden />
-              )}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <LayoutGroup id="nav-section-indicator">
+        <ul className="hidden min-[720px]:flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs font-medium list-none p-0 m-0 ml-auto sm:gap-x-6 sm:text-sm xl:gap-x-6">
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                aria-current={activeSection === item.id ? 'page' : undefined}
+                className={`nav-link inline-flex items-center gap-1.5 px-1 py-0.5 ${activeSection === item.id ? 'active' : ''}`}
+              >
+                {item.label}
+                <span className="relative flex h-1.5 w-1.5 shrink-0 items-center justify-center" aria-hidden>
+                  {activeSection === item.id && (
+                    <motion.span
+                      layoutId="nav-section-dot"
+                      className="absolute inset-0 rounded-full bg-brand-shrimp"
+                      transition={reduceMotion ? {duration: 0} : NAV_DOT_SPRING}
+                    />
+                  )}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </LayoutGroup>
 
       <motion.a
         whileHover={{y: -1}}
