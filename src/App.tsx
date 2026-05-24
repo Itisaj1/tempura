@@ -459,9 +459,12 @@ const Navbar = ({
             <a
               href={`#${item.id}`}
               aria-current={activeSection === item.id ? 'page' : undefined}
-              className={`nav-link inline-block px-1 py-0.5 ${activeSection === item.id ? 'active' : ''}`}
+              className={`nav-link inline-flex items-center gap-1.5 px-1 py-0.5 ${activeSection === item.id ? 'active' : ''}`}
             >
               {item.label}
+              {activeSection === item.id && (
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-shrimp" aria-hidden />
+              )}
             </a>
           </li>
         ))}
