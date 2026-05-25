@@ -11,5 +11,6 @@ Single place for **logos**, **fonts**, **site tokens**, **favicon**, and the **b
 | `logos/README.md` | File matrix and re-export instructions |
 | `site/favicon.svg` | Tab icon: ink field, petal “p”, shrimp dot (copy of `public/favicon.svg`) |
 | `tokens/colors.json` | Hex tokens for tooling / Figma |
+| `emails/` | EmailJS HTML templates (auto-reply + studio notification) |
 
 Canonical **voice**, **templates**, and **copy patterns** remain in [`.cursor/skills/panko-brand/`](../.cursor/skills/panko-brand/) (Cursor skill). Site implementation patterns: [`.cursor/skills/panko-site-code/`](../.cursor/skills/panko-site-code/).

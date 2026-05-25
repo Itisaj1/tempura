@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light only" />
+    <meta name="supported-color-schemes" content="light only" />
+    <title>New contact form submission</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
+      body { margin: 0; padding: 0; background-color: #FDF0F3; }
+      a { color: #D4537E; text-decoration: none; }
+      @media (max-width: 620px) {
+        .card { padding: 32px 24px !important; }
+        .h1 { font-size: 28px !important; line-height: 1.15 !important; }
+      }
+    </style>
+  </head>
+  <body style="margin:0; padding:0; background-color:#FDF0F3; font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; color:#1A1A1A;">
+    <span style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; overflow:hidden;">
+      New note from {{fullName}} at {{company}}.
+    </span>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FDF0F3;">
+      <tr>
+        <td align="center" style="padding: 40px 16px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%;">
+
+            <tr>
+              <td style="padding: 0 8px 28px 8px;">
+                <span style="font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.02em; color:#1A1A1A;">
+                  panko studio<span style="color:#D4537E;">.</span>
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="card" style="background-color:#1A1A1A; border-radius:12px; padding:44px 44px; box-shadow:0 24px 70px rgba(26,26,26,0.18);">
+
+                <p style="margin:0 0 16px 0; font-family:'Inter',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(253,240,243,0.55);">
+                  <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background-color:#D4537E; vertical-align:middle; margin-right:10px;"></span>
+                  New enquiry
+                </p>
+
+                <h1 class="h1" style="margin:0 0 22px 0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:34px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF;">
+                  {{fullName}}<span style="color:#D4537E;">.</span>
+                </h1>
+
+                <p style="margin:0 0 28px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(253,240,243,0.75);">
+                  A new note arrived via the contact form on pankostudio.com.
+                </p>
+
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0; background-color:rgba(253,240,243,0.06); border:1px solid rgba(242,196,206,0.25); border-radius:8px;">
+                  <tr>
+                    <td style="padding:20px 22px; font-family:'Inter',Arial,sans-serif; font-size:14px; line-height:1.7; color:rgba(253,240,243,0.85);">
+                      <p style="margin:0 0 10px 0;"><strong style="color:#FDF0F3;">Name</strong><br />{{fullName}}</p>
+                      <p style="margin:0 0 10px 0;"><strong style="color:#FDF0F3;">Company</strong><br />{{company}}</p>
+                      <p style="margin:0 0 10px 0;"><strong style="color:#FDF0F3;">Email</strong><br /><a href="mailto:{{email}}" style="color:#D4537E; text-decoration:none;">{{email}}</a></p>
+                      <p style="margin:0;"><strong style="color:#FDF0F3;">Topics</strong><br />{{topics}}</p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td>
+                      <a href="mailto:{{email}}"
+                         target="_blank"
+                         rel="noopener"
+                         style="display:inline-block; background-color:#D4537E; color:#FFFFFF; font-family:'Inter',Arial,sans-serif; font-size:15px; font-weight:600; padding:14px 26px; border-radius:8px; text-decoration:none; letter-spacing:0.01em;">
+                        Reply to {{fullName}}
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:24px 12px 8px 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(26,26,26,0.55); line-height:1.6;">
+                Internal notification from the Panko Studio contact form.
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:8px 12px 0 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(26,26,26,0.45);">
+                © Panko Studio
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

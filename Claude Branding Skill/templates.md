@@ -7,10 +7,12 @@ from scratch. For the voice rules that govern the *copy* inside, see
 
 ---
 
-## 1. HTML email — cream + white card (visitor-facing)
+## 1. HTML email — petal + white card (visitor-facing)
 
 Use for auto-replies, nurture emails, proposals, follow-ups — anything
 sent **to** a visitor or client. Warm tone.
+
+**Production copy:** [`brand-kit/emails/auto-reply.html`](../../../brand-kit/emails/auto-reply.html)
 
 ```html
 <!DOCTYPE html>
@@ -23,8 +25,8 @@ sent **to** a visitor or client. Warm tone.
     <title>{{ replace with subject }}</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
-      body { margin: 0; padding: 0; background-color: #F7F4EF; }
-      a { color: #0081A7; text-decoration: none; }
+      body { margin: 0; padding: 0; background-color: #FDF0F3; }
+      a { color: #D4537E; text-decoration: none; }
       @media (max-width: 620px) {
         .card { padding: 32px 24px !important; }
         .h1 { font-size: 28px !important; line-height: 1.15 !important; }
@@ -32,41 +34,41 @@ sent **to** a visitor or client. Warm tone.
       }
     </style>
   </head>
-  <body style="margin:0; padding:0; background-color:#F7F4EF; font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; color:#0F172A;">
+  <body style="margin:0; padding:0; background-color:#FDF0F3; font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; color:#1A1A1A;">
     <span style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; overflow:hidden;">
       {{ preheader — one short sentence that surfaces the value }}
     </span>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F7F4EF;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FDF0F3;">
       <tr>
         <td align="center" style="padding: 40px 16px;">
           <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%;">
 
             <tr>
               <td style="padding: 0 8px 28px 8px;">
-                <span style="font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.02em; color:#0F172A;">
-                  panko studio<span style="color:#0081A7;">.</span>
+                <span style="font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:22px; letter-spacing:-0.02em; color:#1A1A1A;">
+                  panko studio<span style="color:#D4537E;">.</span>
                 </span>
               </td>
             </tr>
 
             <tr>
-              <td class="card" style="background-color:#FFFFFF; border-radius:28px; padding: 44px 44px; box-shadow: 0 18px 60px rgba(15,23,42,0.06);">
+              <td class="card" style="background-color:#FFFFFF; border:1px solid #F2C4CE; border-radius:12px; padding: 44px 44px; box-shadow: 0 18px 60px rgba(26,26,26,0.06);">
 
-                <p style="margin:0 0 16px 0; font-family:'Inter',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(15,23,42,0.45);">
-                  <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background-color:#0081A7; vertical-align:middle; margin-right:10px;"></span>
+                <p style="margin:0 0 16px 0; font-family:'Inter',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(26,26,26,0.55);">
+                  <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background-color:#D4537E; vertical-align:middle; margin-right:10px;"></span>
                   {{ eyebrow — 1-3 words, all-caps }}
                 </p>
 
-                <h1 class="h1" style="margin:0 0 18px 0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:36px; line-height:1.1; letter-spacing:-0.02em; color:#0F172A;">
-                  {{ headline }}<span style="color:#0081A7;">.</span>
+                <h1 class="h1" style="margin:0 0 18px 0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:36px; line-height:1.1; letter-spacing:-0.02em; color:#1A1A1A;">
+                  {{ headline }}<span style="color:#D4537E;">.</span>
                 </h1>
 
-                <p style="margin:0 0 14px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(15,23,42,0.75);">
+                <p style="margin:0 0 14px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(26,26,26,0.65);">
                   {{ first paragraph — one idea, two sentences max }}
                 </p>
 
-                <p style="margin:0 0 28px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(15,23,42,0.75);">
+                <p style="margin:0 0 28px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(26,26,26,0.65);">
                   {{ optional second paragraph — only if needed }}
                 </p>
 
@@ -77,17 +79,17 @@ sent **to** a visitor or client. Warm tone.
                          target="_blank"
                          rel="noopener"
                          class="cta"
-                         style="display:inline-block; background-color:#0081A7; color:#FFFFFF; font-family:'Inter',Arial,sans-serif; font-size:15px; font-weight:600; padding:14px 26px; border-radius:999px; text-decoration:none; letter-spacing:0.01em;">
-                        {{ cta_label }} →
+                         style="display:inline-block; background-color:#D4537E; color:#FFFFFF; font-family:'Inter',Arial,sans-serif; font-size:15px; font-weight:600; padding:14px 26px; border-radius:8px; text-decoration:none; letter-spacing:0.01em;">
+                        {{ cta_label }}
                       </a>
                     </td>
                   </tr>
                 </table>
 
-                <p style="margin:32px 0 6px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(15,23,42,0.75);">
+                <p style="margin:32px 0 6px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(26,26,26,0.65);">
                   Talk soon,
                 </p>
-                <p style="margin:0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:17px; color:#0F172A;">
+                <p style="margin:0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:600; font-size:17px; color:#1A1A1A;">
                   The Panko Studio team
                 </p>
 
@@ -95,13 +97,13 @@ sent **to** a visitor or client. Warm tone.
             </tr>
 
             <tr>
-              <td style="padding: 24px 12px 8px 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(15,23,42,0.45); line-height:1.6;">
+              <td style="padding: 24px 12px 8px 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(26,26,26,0.55); line-height:1.6;">
                 {{ context line — e.g. "You're receiving this because you submitted a note on pankostudio.com." }}
               </td>
             </tr>
 
             <tr>
-              <td style="padding: 8px 12px 0 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(15,23,42,0.35);">
+              <td style="padding: 8px 12px 0 12px; font-family:'Inter',Arial,sans-serif; font-size:12px; color:rgba(26,26,26,0.45);">
                 © Panko Studio
               </td>
             </tr>
@@ -123,40 +125,42 @@ sent **to** a visitor or client. Warm tone.
 
 ---
 
-## 2. HTML email — cream + ink card (internal / dramatic)
+## 2. HTML email — petal + ink card (internal / dramatic)
 
 Use for studio-facing notifications, urgency moments, end-of-engagement
 summaries. Higher contrast.
 
-Same skeleton as Template 1 — just swap the `<td class="card">` block:
+**Production copy:** [`brand-kit/emails/studio-notification.html`](../../../brand-kit/emails/studio-notification.html)
+
+Same skeleton as Template 1 — swap the `<td class="card">` block:
 
 ```html
-<td class="card" style="background-color:#0F172A; border-radius:28px; padding: 44px 44px; box-shadow: 0 24px 70px rgba(15,23,42,0.18);">
+<td class="card" style="background-color:#1A1A1A; border-radius:12px; padding: 44px 44px; box-shadow: 0 24px 70px rgba(26,26,26,0.18);">
 
-  <p style="margin:0 0 16px 0; font-family:'Inter',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.55);">
-    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background-color:#0081A7; vertical-align:middle; margin-right:10px;"></span>
+  <p style="margin:0 0 16px 0; font-family:'Inter',Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(253,240,243,0.55);">
+    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background-color:#D4537E; vertical-align:middle; margin-right:10px;"></span>
     {{ eyebrow }}
   </p>
 
   <h1 class="h1" style="margin:0 0 22px 0; font-family:'Outfit','Helvetica Neue',Arial,sans-serif; font-weight:700; font-size:34px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF;">
-    {{ headline }}<span style="color:#0081A7;">.</span>
+    {{ headline }}<span style="color:#D4537E;">.</span>
   </h1>
 
-  <p style="margin:0 0 28px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(255,255,255,0.75);">
+  <p style="margin:0 0 28px 0; font-family:'Inter',Arial,sans-serif; font-size:16px; line-height:1.65; color:rgba(253,240,243,0.75);">
     {{ body }}
   </p>
 
-  <!-- optional recap table on rgba(255,255,255,0.04) background -->
-  <!-- optional accent pill CTA, same markup as Template 1 -->
+  <!-- optional recap table: background rgba(253,240,243,0.06); border 1px solid rgba(242,196,206,0.25) -->
+  <!-- optional CTA: background #D4537E; color #FFFFFF; border-radius 8px -->
 
 </td>
 ```
 
 **Body text colors on ink**
-- Primary: white (`#FFFFFF`)
-- Muted: `rgba(255,255,255,0.75)`
-- Eyebrow: `rgba(255,255,255,0.55)`
-- Quiet metadata: `rgba(255,255,255,0.45)`
+- Primary headline: white (`#FFFFFF`)
+- Body: `rgba(253,240,243,0.75)` (petal at 75%)
+- Eyebrow: `rgba(253,240,243,0.55)`
+- Quiet metadata on petal canvas: `rgba(26,26,26,0.55)`
 
 ---
 
