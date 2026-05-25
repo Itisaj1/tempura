@@ -8,6 +8,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useScroll,
+  useInView,
   useSpring,
   useTransform,
   type MotionValue,
@@ -15,6 +16,8 @@ import {
 } from 'motion/react';
 import {ArrowRight, CheckCircle2, ChevronRight} from 'lucide-react';
 import {
+  createContext,
+  useContext,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -313,7 +316,9 @@ const ServiceFlipTile = ({
   );
 };
 
-/** Fades/slides in the first time the block enters the viewport; never re-runs on scroll-back. */
+const ScrollRevealContext = createContext(false);
+
+/** Fades/slides in when scrolled into view (after loader). Never re-runs on scroll-back. */
 const SectionReveal = ({
   children,
   className,
@@ -324,13 +329,26 @@ const SectionReveal = ({
   delay?: number;
 }) => {
   const reduceMotion = useReducedMotion();
+  const scrollRevealsEnabled = useContext(ScrollRevealContext);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.22,
+    margin: '0px 0px -6% 0px',
+  });
+  const visible = reduceMotion || (scrollRevealsEnabled && isInView);
+
   return (
     <motion.div
+      ref={ref}
       className={className}
-      initial={reduceMotion ? {opacity: 1, y: 0} : {opacity: 0, y: 36}}
-      whileInView={{opacity: 1, y: 0}}
-      viewport={{once: true, amount: 0.12, margin: '0px 0px -12% 0px'}}
-      transition={{duration: reduceMotion ? 0 : 1.05, ease: SECTION_REVEAL_EASE, delay: reduceMotion ? 0 : delay}}
+      initial={false}
+      animate={visible ? {opacity: 1, y: 0} : {opacity: 0, y: 44}}
+      transition={{
+        duration: reduceMotion ? 0 : 0.95,
+        ease: SECTION_REVEAL_EASE,
+        delay: reduceMotion ? 0 : visible ? delay : 0,
+      }}
     >
       {children}
     </motion.div>
@@ -465,7 +483,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       id="home"
       ref={targetRef}
       aria-labelledby="hero-heading"
-      className="relative pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-16 px-4 sm:pb-20 sm:pt-24 md:px-10 lg:pb-24 xl:px-12 2xl:px-16 overflow-hidden"
+      className="relative flex min-h-[100svh] min-h-[100dvh] flex-col justify-end pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-16 px-4 sm:pb-20 sm:pt-24 md:px-10 lg:pb-28 xl:px-12 2xl:px-16 overflow-hidden"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
           <motion.div style={{opacity, y}} className="max-w-5xl text-left">
@@ -546,36 +564,36 @@ const About = () => {
             <p className="section-label">About</p>
           </div>
 
-          <motion.div className="max-w-3xl">
-              <h2
-                id="about-heading"
-                className="about-heading text-[clamp(2rem,7vw,3.75rem)] font-display font-bold leading-tight tracking-tighter text-balance mb-5 md:text-6xl"
-              >
-                <span className="text-brand-ink/62">Product management and design</span>{' '}
-                <span className="text-brand-ink">for</span> AI x B2B teams.
-              </h2>
-              <p className="about-body text-lg md:text-xl text-brand-ink leading-[1.7] mb-7">
-                Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
-                that need clear decisions, honest handoffs, and design that ships.
-              </p>
+          <div className="max-w-3xl">
+            <h2
+              id="about-heading"
+              className="about-heading text-[clamp(2rem,7vw,3.75rem)] font-display font-bold leading-tight tracking-tighter text-balance mb-5 md:text-6xl"
+            >
+              <span className="text-brand-ink/62">Product management and design</span>{' '}
+              <span className="text-brand-ink">for</span> AI x B2B teams.
+            </h2>
+            <p className="about-body text-lg md:text-xl text-brand-ink leading-[1.7] mb-7">
+              Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams
+              that need clear decisions, honest handoffs, and design that ships.
+            </p>
 
-              <motion.a
-                whileHover={{y: -1}}
-                href="#contact"
-                className={`about-cta group mt-0 ${PRIMARY_CTA}`}
-              >
-                Let&apos;s chat
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </motion.a>
-          </motion.div>
+            <motion.a
+              whileHover={{y: -1}}
+              href="#contact"
+              className={`about-cta group mt-0 ${PRIMARY_CTA}`}
+            >
+              Let&apos;s chat
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </motion.a>
+          </div>
+        </SectionReveal>
 
-          <motion.div className="mt-16 md:mt-24 lg:mt-28">
-            <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
-              {HOW_WE_WORK_TILES.map((tile) => (
-                <ServiceFlipTile key={tile.title} {...tile} />
-              ))}
-            </div>
-          </motion.div>
+        <SectionReveal className="mt-16 md:mt-24 lg:mt-28" delay={0.1}>
+          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5 xl:gap-6">
+            {HOW_WE_WORK_TILES.map((tile) => (
+              <ServiceFlipTile key={tile.title} {...tile} />
+            ))}
+          </div>
         </SectionReveal>
       </div>
     </section>
@@ -1088,6 +1106,8 @@ function MarketingSite() {
   });
   const [activeSection, setActiveSection] = useState('home');
   const [showLoader, setShowLoader] = useState(true);
+  const scrollRevealsEnabled = !showLoader;
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     const sectionIds = ['home', 'about', 'work', 'pricing', 'contact'];
@@ -1120,6 +1140,7 @@ function MarketingSite() {
         anchors: true,
         autoRaf: true,
       });
+      lenisRef.current = lenis;
       unsubscribeLenis = lenis.on('scroll', onScroll);
     }
 
@@ -1127,6 +1148,7 @@ function MarketingSite() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       unsubscribeLenis?.();
+      lenisRef.current = null;
       lenis?.destroy();
     };
   }, []);
@@ -1136,19 +1158,27 @@ function MarketingSite() {
     return () => window.clearTimeout(timeout);
   }, []);
 
+  useEffect(() => {
+    if (showLoader) return;
+    window.scrollTo(0, 0);
+    lenisRef.current?.scrollTo(0, {immediate: true});
+  }, [showLoader]);
+
   return (
     <div className="min-h-screen overflow-x-clip selection:bg-brand-shrimp selection:text-brand-card">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
       <Navbar dockProgress={dockProgress} activeSection={activeSection} />
-      <main id="main-content" tabIndex={-1} inert={showLoader ? true : undefined}>
-        <Hero heroRef={heroRef} />
-        <About />
-        <Projects />
-        <Pricing />
-        <CTA />
-      </main>
+      <ScrollRevealContext.Provider value={scrollRevealsEnabled}>
+        <main id="main-content" tabIndex={-1} inert={showLoader ? true : undefined}>
+          <Hero heroRef={heroRef} />
+          <About />
+          <Projects />
+          <Pricing />
+          <CTA />
+        </main>
+      </ScrollRevealContext.Provider>
       <Footer />
       <motion.div
         initial={{opacity: 1}}
