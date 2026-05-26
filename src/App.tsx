@@ -43,29 +43,54 @@ const useWindowWidth = () => {
 const LOADER_REVEAL_DURATION = 1.15;
 const LOADER_REVEAL_DELAY_MS = 750;
 
+const LOADER_DOT_EM = 0.105;
+
 const LoadingLogo = () => {
   const reduceMotion = useReducedMotion();
   const textRef = useRef<HTMLSpanElement | null>(null);
+  const logoMetricsRef = useRef({textWidth: 0, dotDiameter: 12});
   const [textWidth, setTextWidth] = useState(0);
-  const [dotDiameter, setDotDiameter] = useState(12);
 
   const progress = useMotionValue(reduceMotion ? 1 : 0);
   const clipPath = useTransform(progress, (p) => `inset(0 ${(1 - p) * 100}% 0 0)`);
-  const dotX = useTransform(progress, (p) => textWidth * p - dotDiameter / 2);
+  const dotX = useTransform(progress, (p) => {
+    const {textWidth: width, dotDiameter} = logoMetricsRef.current;
+    return width * p - dotDiameter / 2;
+  });
   const logoScale = useTransform(progress, [0, 0.2, 1], [0.94, 0.98, 1]);
   const washOpacity = useTransform(progress, [0, 0.45, 1], [0.42, 0.2, 0]);
   const washScale = useTransform(progress, [0, 1], [1.12, 1]);
 
   const measureLogo = () => {
-    if (!textRef.current) return;
-    setTextWidth(textRef.current.offsetWidth);
-    setDotDiameter(parseFloat(getComputedStyle(textRef.current).fontSize) * 0.1);
+    const textEl = textRef.current;
+    const fontEl = textEl?.parentElement?.parentElement;
+    if (!textEl || !fontEl) return;
+
+    const fontSize = parseFloat(getComputedStyle(fontEl).fontSize);
+    const width = textEl.offsetWidth;
+    const dotDiameter = fontSize * LOADER_DOT_EM;
+
+    logoMetricsRef.current = {textWidth: width, dotDiameter};
+    setTextWidth(width);
   };
 
   useLayoutEffect(() => {
     measureLogo();
+
+    const textEl = textRef.current;
+    const fontEl = textEl?.parentElement?.parentElement;
+    const resizeObserver =
+      fontEl && typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(() => measureLogo())
+        : null;
+
+    resizeObserver?.observe(fontEl);
     window.addEventListener('resize', measureLogo);
-    return () => window.removeEventListener('resize', measureLogo);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', measureLogo);
+    };
   }, []);
 
   useEffect(() => {
@@ -90,14 +115,14 @@ const LoadingLogo = () => {
         style={{scale: logoScale}}
         className="relative z-10 flex justify-center"
       >
-        <div className="relative inline-flex max-w-full items-center justify-center text-[clamp(3.25rem,15vw,9rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
+        <div className="relative inline-flex max-w-full items-center justify-center text-[clamp(2.75rem,11vw,6.75rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
           <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
             <span ref={textRef}>panko studio</span>
           </motion.span>
           <motion.span
             aria-hidden
-            style={{x: dotX, y: '-50%', width: dotDiameter, height: dotDiameter}}
-            className="absolute top-1/2 left-0 rounded-full bg-brand-shrimp"
+            style={{x: dotX, width: `${LOADER_DOT_EM}em`, height: `${LOADER_DOT_EM}em`}}
+            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp"
           />
         </div>
       </motion.div>
@@ -1211,7 +1236,7 @@ function MarketingSite() {
         aria-busy={showLoader}
         aria-hidden={!showLoader}
         aria-label="Loading site"
-        className={`loader-shell fixed inset-0 z-[100] flex min-h-[100svh] min-h-[100dvh] w-full ${
+        className={`loader-shell fixed inset-0 z-[100] flex min-h-[100svh] min-h-[100dvh] w-full items-center justify-center ${
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
