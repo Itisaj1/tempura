@@ -88,9 +88,9 @@ const LoadingLogo = () => {
       />
       <motion.div
         style={{scale: logoScale}}
-        className="relative z-10 w-full max-w-[1840px]"
+        className="relative z-10 flex justify-center"
       >
-        <div className="relative inline-flex max-w-full items-center text-[clamp(3.25rem,15vw,9rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
+        <div className="relative inline-flex max-w-full items-center justify-center text-[clamp(3.25rem,15vw,9rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
           <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
             <span ref={textRef}>panko studio</span>
           </motion.span>
