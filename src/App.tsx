@@ -40,26 +40,36 @@ const useWindowWidth = () => {
   return width;
 };
 
-const LOADER_REVEAL_DURATION = 0.95;
-const LOADER_REVEAL_DELAY_MS = 1000;
-const LOADER_DOT_DIAMETER = 10;
+const LOADER_REVEAL_DURATION = 1.15;
+const LOADER_REVEAL_DELAY_MS = 750;
 
 const LoadingLogo = () => {
+  const reduceMotion = useReducedMotion();
   const textRef = useRef<HTMLSpanElement | null>(null);
   const [textWidth, setTextWidth] = useState(0);
+  const [dotDiameter, setDotDiameter] = useState(12);
 
-  const progress = useMotionValue(0);
+  const progress = useMotionValue(reduceMotion ? 1 : 0);
   const clipPath = useTransform(progress, (p) => `inset(0 ${(1 - p) * 100}% 0 0)`);
-  const dotX = useTransform(progress, (p) => textWidth * p - LOADER_DOT_DIAMETER / 2);
+  const dotX = useTransform(progress, (p) => textWidth * p - dotDiameter / 2);
+  const logoScale = useTransform(progress, [0, 0.2, 1], [0.94, 0.98, 1]);
+  const washOpacity = useTransform(progress, [0, 0.45, 1], [0.42, 0.2, 0]);
+  const washScale = useTransform(progress, [0, 1], [1.12, 1]);
+
+  const measureLogo = () => {
+    if (!textRef.current) return;
+    setTextWidth(textRef.current.offsetWidth);
+    setDotDiameter(parseFloat(getComputedStyle(textRef.current).fontSize) * 0.1);
+  };
 
   useLayoutEffect(() => {
-    if (textRef.current) {
-      setTextWidth(textRef.current.offsetWidth);
-    }
+    measureLogo();
+    window.addEventListener('resize', measureLogo);
+    return () => window.removeEventListener('resize', measureLogo);
   }, []);
 
   useEffect(() => {
-    if (textWidth <= 0) return;
+    if (reduceMotion || textWidth <= 0) return;
     const start = window.setTimeout(() => {
       animate(progress, 1, {
         duration: LOADER_REVEAL_DURATION,
@@ -67,18 +77,30 @@ const LoadingLogo = () => {
       });
     }, LOADER_REVEAL_DELAY_MS);
     return () => window.clearTimeout(start);
-  }, [textWidth, progress]);
+  }, [textWidth, progress, reduceMotion]);
 
   return (
-    <div className="relative inline-flex items-center text-3xl md:text-4xl font-display font-bold tracking-tight text-brand-ink">
-      <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
-        <span ref={textRef}>panko studio</span>
-      </motion.span>
-      <motion.span
+    <div className="relative flex h-full min-h-[100svh] min-h-[100dvh] w-full items-center justify-center px-4 md:px-10">
+      <motion.div
         aria-hidden
-        style={{x: dotX, y: '-50%'}}
-        className="absolute top-1/2 left-0 h-2.5 w-2.5 rounded-full bg-brand-shrimp"
+        className="pointer-events-none absolute inset-0 origin-center bg-[radial-gradient(ellipse_90%_70%_at_50%_50%,rgba(242,196,206,0.55),transparent_68%)]"
+        style={{opacity: washOpacity, scale: washScale}}
       />
+      <motion.div
+        style={{scale: logoScale}}
+        className="relative z-10 w-full max-w-[1840px]"
+      >
+        <div className="relative inline-flex max-w-full items-center text-[clamp(3.25rem,15vw,9rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
+          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
+            <span ref={textRef}>panko studio</span>
+          </motion.span>
+          <motion.span
+            aria-hidden
+            style={{x: dotX, y: '-50%', width: dotDiameter, height: dotDiameter}}
+            className="absolute top-1/2 left-0 rounded-full bg-brand-shrimp"
+          />
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -1154,7 +1176,7 @@ function MarketingSite() {
   }, []);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), 2600);
+    const timeout = window.setTimeout(() => setShowLoader(false), 2900);
     return () => window.clearTimeout(timeout);
   }, []);
 
@@ -1189,7 +1211,7 @@ function MarketingSite() {
         aria-busy={showLoader}
         aria-hidden={!showLoader}
         aria-label="Loading site"
-        className={`fixed inset-0 z-[100] flex items-center justify-center bg-brand-page ${
+        className={`loader-shell fixed inset-0 z-[100] flex min-h-[100svh] min-h-[100dvh] w-full ${
           showLoader ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
