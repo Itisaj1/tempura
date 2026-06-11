@@ -1189,8 +1189,12 @@ const syncFooterLetterTransform = (body: FooterLetterBody) => {
   body.el.style.transform = `translate3d(${body.x - body.w / 2}px, ${body.y - body.h / 2}px, 0) rotate(${body.angle}rad)`;
 };
 
+const FOOTER_PHYSICS_MIN_WIDTH = 720;
+
 const FooterPlaySection = () => {
   const reduceMotion = useReducedMotion();
+  const vw = useWindowWidth();
+  const physicsEnabled = vw >= FOOTER_PHYSICS_MIN_WIDTH && !reduceMotion;
   const [physicsActive, setPhysicsActive] = useState(false);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const arenaRef = useRef<HTMLDivElement | null>(null);
@@ -1200,9 +1204,13 @@ const FooterPlaySection = () => {
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const activatePhysics = useCallback(() => {
-    if (reduceMotion || physicsActive) return;
+    if (!physicsEnabled || physicsActive) return;
     setPhysicsActive(true);
-  }, [physicsActive, reduceMotion]);
+  }, [physicsActive, physicsEnabled]);
+
+  useEffect(() => {
+    if (physicsActive && !physicsEnabled) setPhysicsActive(false);
+  }, [physicsActive, physicsEnabled]);
 
   useLayoutEffect(() => {
     if (!physicsActive || !sectionRef.current || !arenaRef.current || !wordmarkRef.current) return;
@@ -1397,21 +1405,25 @@ const FooterPlaySection = () => {
           <div
             ref={wordmarkRef}
             className={`relative max-w-full ${FOOTER_WORDMARK_CLASS} ${
-              physicsActive ? '' : 'cursor-pointer select-none'
+              physicsEnabled && !physicsActive ? 'cursor-pointer select-none' : ''
             }`}
-            role={physicsActive ? undefined : 'button'}
-            tabIndex={physicsActive ? -1 : 0}
-            aria-label={physicsActive ? undefined : 'Panko Studio wordmark — click to drop the letters'}
-            onClick={physicsActive ? undefined : activatePhysics}
+            role={physicsEnabled && !physicsActive ? 'button' : undefined}
+            tabIndex={physicsEnabled && !physicsActive ? 0 : undefined}
+            aria-label={
+              physicsEnabled && !physicsActive
+                ? 'Panko Studio wordmark — click to drop the letters'
+                : undefined
+            }
+            onClick={physicsEnabled && !physicsActive ? activatePhysics : undefined}
             onKeyDown={
-              physicsActive
-                ? undefined
-                : (event) => {
+              physicsEnabled && !physicsActive
+                ? (event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
                       activatePhysics();
                     }
                   }
+                : undefined
             }
           >
             {FOOTER_WORDMARK.split('').map((char, index) => (
