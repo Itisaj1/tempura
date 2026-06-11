@@ -1096,7 +1096,27 @@ const Footer = () => {
 };
 
 const Projects = () => {
-  const placeholders = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
+  const projects: Array<{
+    id: number;
+    title: string;
+    subtitle: string;
+    href?: string;
+    external?: boolean;
+    placeholder?: boolean;
+    previewLabel?: string;
+  }> = [
+    {
+      id: 1,
+      title: 'FUEL Coworking',
+      subtitle: 'Website',
+      href: 'https://fuel-website-theta.vercel.app/',
+      external: true,
+      previewLabel: 'FUEL',
+    },
+    {id: 2, title: 'Project', subtitle: 'Coming soon', placeholder: true},
+    {id: 3, title: 'Project', subtitle: 'Coming soon', placeholder: true},
+    {id: 4, title: 'Project', subtitle: 'Coming soon', placeholder: true},
+  ];
 
   return (
     <section id="work" aria-labelledby="work-heading" className="relative py-14 px-4 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
@@ -1109,29 +1129,58 @@ const Projects = () => {
           </div>
 
           <div className="work-grid grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-            {placeholders.map((tile) => (
-              <div
-                key={tile.id}
-                className="group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5"
-              >
-                <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04]">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
-                      Case study placeholder
+            {projects.map((project) => {
+              const card = (
+                <>
+                  <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04]">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {project.placeholder ? (
+                        <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
+                          Case study placeholder
+                        </div>
+                      ) : (
+                        <span className="font-display text-5xl font-bold tracking-tight text-brand-ink/88 sm:text-6xl">
+                          {project.previewLabel ?? project.title}
+                        </span>
+                      )}
                     </div>
                   </div>
-                </div>
-                <div className="mt-5 flex items-center justify-between px-2">
-                  <div>
-                    <h3 className="text-xl font-bold font-display text-brand-ink">Project</h3>
-                    <p className="text-sm font-medium text-brand-shrimp">Coming soon</p>
+                  <div className="mt-5 flex items-center justify-between px-2">
+                    <div>
+                      <h3 className="text-xl font-bold font-display text-brand-ink">{project.title}</h3>
+                      <p className="text-sm font-medium text-brand-shrimp">{project.subtitle}</p>
+                    </div>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp">
+                      <DitherArrowIcon className="h-5 w-5" />
+                    </div>
                   </div>
-                  <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp">
-                    <DitherArrowIcon className="h-5 w-5" />
-                  </div>
+                </>
+              );
+
+              if (project.href) {
+                return (
+                  <a
+                    key={project.id}
+                    href={project.href}
+                    target={project.external ? '_blank' : undefined}
+                    rel={project.external ? 'noopener noreferrer' : undefined}
+                    aria-label={`${project.title} (opens in new tab)`}
+                    className="group work-card block cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5"
+                  >
+                    {card}
+                  </a>
+                );
+              }
+
+              return (
+                <div
+                  key={project.id}
+                  className="group work-card cursor-pointer transition-[transform,background-color] duration-150 ease-out hover:-translate-y-0.5"
+                >
+                  {card}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </SectionReveal>
       </div>
