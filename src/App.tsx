@@ -47,7 +47,7 @@ const LOADER_DOT_EM = 0.105;
 
 const LUCIDE_ICON_SIZE = 24;
 const DITHER_PATH_STEP = 3.5;
-const DITHER_DOT_RADIUS = 2.16;
+const DITHER_DOT_RADIUS = 1.85;
 
 type DitherDot = readonly [number, number];
 
