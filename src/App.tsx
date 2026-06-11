@@ -46,8 +46,8 @@ const LOADER_REVEAL_DELAY_MS = 750;
 const LOADER_DOT_EM = 0.105;
 
 const LUCIDE_ICON_SIZE = 24;
-const DITHER_GRID_STEP = 4;
-const DITHER_DOT_RADIUS = DITHER_GRID_STEP * 0.54;
+const DITHER_PATH_STEP = 3.5;
+const DITHER_DOT_RADIUS = 2.16;
 
 type DitherDot = readonly [number, number];
 
@@ -61,7 +61,7 @@ const sampleSegment = (
   y0: number,
   x1: number,
   y1: number,
-  step = 0.45,
+  step: number,
 ): DitherDot[] => {
   const length = Math.hypot(x1 - x0, y1 - y0);
   if (length === 0) return [[x0, y0]];
@@ -86,38 +86,30 @@ const parsePathSegments = (variant: 'arrow' | 'chevron'): Array<readonly [number
   return [[9, 18, 15, 12], [15, 12, 9, 6]];
 };
 
-const rasterizeLucideStroke = (variant: 'arrow' | 'chevron'): ReadonlyArray<DitherDot> => {
-  const ink = new Set<string>();
-
-  for (const [x0, y0, x1, y1] of parsePathSegments(variant)) {
-    for (const [x, y] of sampleSegment(x0, y0, x1, y1)) {
-      for (let oy = -1; oy <= 1; oy += 1) {
-        for (let ox = -1; ox <= 1; ox += 1) {
-          if (ox * ox + oy * oy > 1.2) continue;
-          ink.add(`${Math.round(x + ox)},${Math.round(y + oy)}`);
-        }
-      }
-    }
+const dedupeNearbyDots = (dots: DitherDot[], minDistance: number): DitherDot[] => {
+  const merged: DitherDot[] = [];
+  for (const dot of dots) {
+    const isDuplicate = merged.some(
+      ([x, y]) => Math.hypot(x - dot[0], y - dot[1]) < minDistance,
+    );
+    if (!isDuplicate) merged.push(dot);
   }
+  return merged;
+};
 
-  const buckets = new Map<string, number>();
-  for (const key of ink) {
-    const [px, py] = key.split(',').map(Number);
-    const cx = Math.floor(px / DITHER_GRID_STEP) * DITHER_GRID_STEP + DITHER_GRID_STEP / 2;
-    const cy = Math.floor(py / DITHER_GRID_STEP) * DITHER_GRID_STEP + DITHER_GRID_STEP / 2;
-    const bucket = `${cx},${cy}`;
-    buckets.set(bucket, (buckets.get(bucket) ?? 0) + 1);
-  }
+const sampleStrokeDots = (variant: 'arrow' | 'chevron'): ReadonlyArray<DitherDot> => {
+  const centerline = parsePathSegments(variant).flatMap(([x0, y0, x1, y1]) =>
+    sampleSegment(x0, y0, x1, y1, DITHER_PATH_STEP),
+  );
 
-  return [...buckets.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .map(([key]) => key.split(',').map(Number) as DitherDot)
-    .sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return dedupeNearbyDots(centerline, DITHER_PATH_STEP * 0.5).sort(
+    (a, b) => a[0] - b[0] || a[1] - b[1],
+  );
 };
 
 const LUCIDE_DITHER_DOTS: Record<'arrow' | 'chevron', ReadonlyArray<DitherDot>> = {
-  arrow: rasterizeLucideStroke('arrow'),
-  chevron: rasterizeLucideStroke('chevron'),
+  arrow: sampleStrokeDots('arrow'),
+  chevron: sampleStrokeDots('chevron'),
 };
 
 type DitherArrowIconProps = {
