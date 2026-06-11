@@ -45,6 +45,91 @@ const LOADER_REVEAL_DELAY_MS = 750;
 
 const LOADER_DOT_EM = 0.105;
 
+const DITHER_GRID_SIZE = 16;
+
+const buildDitherDots = (rows: string[]): ReadonlyArray<readonly [number, number]> => {
+  const dots: [number, number][] = [];
+  rows.forEach((row, y) => {
+    [...row].forEach((cell, x) => {
+      if (cell === 'x') dots.push([x + 0.5, y + 0.5]);
+    });
+  });
+  return dots;
+};
+
+const ARROW_RIGHT_DITHER_DOTS = buildDitherDots([
+  '................',
+  '................',
+  '.........xx.....',
+  '........xxxx....',
+  '.......xxxxxx...',
+  '......xxxxxxxx..',
+  '....xxxxxxxxxx..',
+  '....xxxxxxxxxx..',
+  '......xxxxxxxx..',
+  '.......xxxxxx...',
+  '........xxxx....',
+  '.........xx.....',
+  '................',
+  '................',
+  '................',
+  '................',
+]);
+
+const CHEVRON_RIGHT_DITHER_DOTS = buildDitherDots([
+  '................',
+  '................',
+  '................',
+  '.......x........',
+  '......x.x.......',
+  '.....x...x......',
+  '....x.....x.....',
+  '...x.......x....',
+  '....x.....x.....',
+  '.....x...x......',
+  '......x.x.......',
+  '.......x........',
+  '................',
+  '................',
+  '................',
+  '................',
+]);
+
+type DitherArrowIconProps = {
+  className?: string;
+  variant?: 'arrow' | 'chevron';
+};
+
+const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrowIconProps) => {
+  const reduceMotion = useReducedMotion();
+  const LucideIcon = variant === 'arrow' ? ArrowRight : ChevronRight;
+  const dots = variant === 'arrow' ? ARROW_RIGHT_DITHER_DOTS : CHEVRON_RIGHT_DITHER_DOTS;
+  const staggerMs = reduceMotion ? 0 : 14;
+
+  return (
+    <span className={`relative inline-block shrink-0 ${className}`} aria-hidden>
+      <LucideIcon className="h-full w-full transition-opacity duration-200 ease-out group-hover:opacity-0" />
+      <svg
+        viewBox={`0 0 ${DITHER_GRID_SIZE} ${DITHER_GRID_SIZE}`}
+        className="pointer-events-none absolute inset-0 h-full w-full text-current"
+        aria-hidden
+      >
+        {dots.map(([cx, cy], index) => (
+          <circle
+            key={`${cx}-${cy}`}
+            cx={cx}
+            cy={cy}
+            r={0.52}
+            fill="currentColor"
+            className="opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100"
+            style={{transitionDelay: reduceMotion ? undefined : `${index * staggerMs}ms`}}
+          />
+        ))}
+      </svg>
+    </span>
+  );
+};
+
 const LoadingLogo = () => {
   const reduceMotion = useReducedMotion();
   const textRef = useRef<HTMLSpanElement | null>(null);
@@ -582,8 +667,8 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className={`group ${PRIMARY_CTA}`}
             >
               <span className="text-base font-semibold">Let&apos;s chat</span>
-              <span className="ml-1 text-brand-card/70 group-hover:text-brand-card transition-colors" aria-hidden>
-                <ArrowRight className="w-4 h-4" aria-hidden />
+              <span className="ml-1 text-brand-card/70 transition-colors group-hover:text-brand-card" aria-hidden>
+                <DitherArrowIcon />
               </span>
             </motion.a>
 
@@ -593,7 +678,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
               className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-brand-shrimp px-4 py-2.5 text-sm font-semibold text-brand-shrimp bg-transparent transition-colors hover:bg-brand-shrimp/[0.04]"
             >
               View selected work
-              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              <DitherArrowIcon variant="chevron" />
             </motion.a>
           </div>
         </motion.div>
@@ -630,7 +715,7 @@ const About = () => {
               className={`about-cta group mt-0 ${PRIMARY_CTA}`}
             >
               Let&apos;s chat
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              <DitherArrowIcon />
             </motion.a>
           </div>
         </SectionReveal>
@@ -926,7 +1011,7 @@ const CTA = () => {
                       className="ml-1 h-4 w-4 rounded-full border-2 border-brand-card/35 border-t-brand-card"
                     />
                   ) : (
-                    <ArrowRight className="ml-1 h-4 w-4 text-brand-card/70 transition-colors group-hover:text-brand-card" />
+                    <DitherArrowIcon className="ml-1 h-4 w-4 text-brand-card/70 transition-colors group-hover:text-brand-card" />
                   )}
                 </motion.button>
               </motion.form>
@@ -1016,7 +1101,7 @@ const Projects = () => {
                     <p className="text-sm font-medium text-brand-shrimp">Coming soon</p>
                   </div>
                   <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp">
-                    <ArrowRight className="arrow-icon h-5 w-5 transition-transform duration-150 ease-out group-hover:translate-x-[3px]" />
+                    <DitherArrowIcon className="h-5 w-5" />
                   </div>
                 </div>
               </div>
