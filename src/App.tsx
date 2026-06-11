@@ -14,7 +14,7 @@ import {
   type MotionValue,
   type Variants,
 } from 'motion/react';
-import {ArrowRight, CheckCircle2, ChevronRight} from 'lucide-react';
+import {CheckCircle2} from 'lucide-react';
 import {
   createContext,
   useContext,
@@ -22,6 +22,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type FormEvent,
   type InputHTMLAttributes,
   type ReactNode,
@@ -45,55 +46,80 @@ const LOADER_REVEAL_DELAY_MS = 750;
 
 const LOADER_DOT_EM = 0.105;
 
-const DITHER_GRID_SIZE = 16;
+const LUCIDE_ICON_SIZE = 24;
+const DITHER_GRID_STEP = 2;
+const DITHER_DOT_RADIUS = DITHER_GRID_STEP * 0.46;
 
-const buildDitherDots = (rows: string[]): ReadonlyArray<readonly [number, number]> => {
-  const dots: [number, number][] = [];
-  rows.forEach((row, y) => {
-    [...row].forEach((cell, x) => {
-      if (cell === 'x') dots.push([x + 0.5, y + 0.5]);
-    });
-  });
+type DitherDot = readonly [number, number];
+
+const LUCIDE_STROKE_PATHS = {
+  arrow: ['M5 12h14', 'm12 5 7 7-7 7'],
+  chevron: ['m9 18 6-6-6-6'],
+} as const;
+
+const sampleSegment = (
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  step = 0.45,
+): DitherDot[] => {
+  const length = Math.hypot(x1 - x0, y1 - y0);
+  if (length === 0) return [[x0, y0]];
+
+  const count = Math.max(1, Math.ceil(length / step));
+  const dots: DitherDot[] = [];
+  for (let i = 0; i <= count; i += 1) {
+    const t = i / count;
+    dots.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]);
+  }
   return dots;
 };
 
-const ARROW_RIGHT_DITHER_DOTS = buildDitherDots([
-  '................',
-  '................',
-  '.........xx.....',
-  '........xxxx....',
-  '.......xxxxxx...',
-  '......xxxxxxxx..',
-  '....xxxxxxxxxx..',
-  '....xxxxxxxxxx..',
-  '......xxxxxxxx..',
-  '.......xxxxxx...',
-  '........xxxx....',
-  '.........xx.....',
-  '................',
-  '................',
-  '................',
-  '................',
-]);
+const parsePathSegments = (variant: 'arrow' | 'chevron'): Array<readonly [number, number, number, number]> => {
+  if (variant === 'arrow') {
+    return [
+      [5, 12, 19, 12],
+      [12, 5, 19, 12],
+      [19, 12, 12, 19],
+    ];
+  }
+  return [[9, 18, 15, 12], [15, 12, 9, 6]];
+};
 
-const CHEVRON_RIGHT_DITHER_DOTS = buildDitherDots([
-  '................',
-  '................',
-  '................',
-  '.......x........',
-  '......x.x.......',
-  '.....x...x......',
-  '....x.....x.....',
-  '...x.......x....',
-  '....x.....x.....',
-  '.....x...x......',
-  '......x.x.......',
-  '.......x........',
-  '................',
-  '................',
-  '................',
-  '................',
-]);
+const rasterizeLucideStroke = (variant: 'arrow' | 'chevron'): ReadonlyArray<DitherDot> => {
+  const ink = new Set<string>();
+
+  for (const [x0, y0, x1, y1] of parsePathSegments(variant)) {
+    for (const [x, y] of sampleSegment(x0, y0, x1, y1)) {
+      for (let oy = -1; oy <= 1; oy += 1) {
+        for (let ox = -1; ox <= 1; ox += 1) {
+          if (ox * ox + oy * oy > 1.2) continue;
+          ink.add(`${Math.round(x + ox)},${Math.round(y + oy)}`);
+        }
+      }
+    }
+  }
+
+  const buckets = new Map<string, number>();
+  for (const key of ink) {
+    const [px, py] = key.split(',').map(Number);
+    const cx = Math.floor(px / DITHER_GRID_STEP) * DITHER_GRID_STEP + DITHER_GRID_STEP / 2;
+    const cy = Math.floor(py / DITHER_GRID_STEP) * DITHER_GRID_STEP + DITHER_GRID_STEP / 2;
+    const bucket = `${cx},${cy}`;
+    buckets.set(bucket, (buckets.get(bucket) ?? 0) + 1);
+  }
+
+  return [...buckets.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([key]) => key.split(',').map(Number) as DitherDot)
+    .sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+};
+
+const LUCIDE_DITHER_DOTS: Record<'arrow' | 'chevron', ReadonlyArray<DitherDot>> = {
+  arrow: rasterizeLucideStroke('arrow'),
+  chevron: rasterizeLucideStroke('chevron'),
+};
 
 type DitherArrowIconProps = {
   className?: string;
@@ -102,29 +128,46 @@ type DitherArrowIconProps = {
 
 const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrowIconProps) => {
   const reduceMotion = useReducedMotion();
-  const LucideIcon = variant === 'arrow' ? ArrowRight : ChevronRight;
-  const dots = variant === 'arrow' ? ARROW_RIGHT_DITHER_DOTS : CHEVRON_RIGHT_DITHER_DOTS;
-  const staggerMs = reduceMotion ? 0 : 14;
+  const dots = LUCIDE_DITHER_DOTS[variant];
+  const staggerMs = reduceMotion ? 0 : 11;
+  const strokeFadeMs = reduceMotion ? 120 : 220;
 
   return (
     <span className={`relative inline-block shrink-0 ${className}`} aria-hidden>
-      <LucideIcon className="h-full w-full transition-opacity duration-200 ease-out group-hover:opacity-0" />
       <svg
-        viewBox={`0 0 ${DITHER_GRID_SIZE} ${DITHER_GRID_SIZE}`}
-        className="pointer-events-none absolute inset-0 h-full w-full text-current"
+        viewBox={`0 0 ${LUCIDE_ICON_SIZE} ${LUCIDE_ICON_SIZE}`}
+        fill="none"
+        className="h-full w-full text-current"
+        style={{'--dither-r': DITHER_DOT_RADIUS} as CSSProperties}
         aria-hidden
       >
-        {dots.map(([cx, cy], index) => (
-          <circle
-            key={`${cx}-${cy}`}
-            cx={cx}
-            cy={cy}
-            r={0.52}
-            fill="currentColor"
-            className="opacity-0 transition-opacity duration-150 ease-out group-hover:opacity-100"
-            style={{transitionDelay: reduceMotion ? undefined : `${index * staggerMs}ms`}}
-          />
-        ))}
+        <g
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="dither-stroke transition-opacity ease-out group-hover:opacity-0"
+          style={{transitionDuration: `${strokeFadeMs}ms`}}
+        >
+          {LUCIDE_STROKE_PATHS[variant].map((d) => (
+            <path key={d} d={d} />
+          ))}
+        </g>
+        <g fill="currentColor">
+          {dots.map(([cx, cy], index) => (
+            <circle
+              key={`${cx}-${cy}`}
+              cx={cx}
+              cy={cy}
+              r={0.2}
+              className="dither-dot"
+              style={{
+                transitionDuration: `${strokeFadeMs}ms`,
+                transitionDelay: reduceMotion ? undefined : `${index * staggerMs}ms`,
+              }}
+            />
+          ))}
+        </g>
       </svg>
     </span>
   );
