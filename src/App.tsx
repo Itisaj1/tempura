@@ -17,6 +17,7 @@ import {
 import {CheckCircle2} from 'lucide-react';
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -1050,14 +1051,315 @@ const CTA = () => {
   );
 };
 
+const FOOTER_WORDMARK = 'panko studio';
+
+type FooterLetterBody = {
+  el: HTMLSpanElement;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  w: number;
+  h: number;
+  angle: number;
+  angularVelocity: number;
+  dragging: boolean;
+};
+
+const FOOTER_PHYSICS = {
+  gravity: 0.52,
+  damping: 0.992,
+  restitution: 0.34,
+  friction: 0.82,
+  fallZoneMin: 200,
+  fallZoneMax: 340,
+} as const;
+
+const resolveFooterLetterCollision = (a: FooterLetterBody, b: FooterLetterBody) => {
+  if (a.dragging && b.dragging) return;
+
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const overlapX = (a.w + b.w) / 2 - Math.abs(dx);
+  const overlapY = (a.h + b.h) / 2 - Math.abs(dy);
+  if (overlapX <= 0 || overlapY <= 0) return;
+
+  if (overlapX < overlapY) {
+    const sign = dx > 0 ? 1 : -1;
+    const push = overlapX / 2;
+    if (!a.dragging) {
+      a.x -= sign * push;
+      a.vx -= sign * 0.35;
+    }
+    if (!b.dragging) {
+      b.x += sign * push;
+      b.vx += sign * 0.35;
+    }
+    return;
+  }
+
+  const sign = dy > 0 ? 1 : -1;
+  const push = overlapY / 2;
+  if (!a.dragging) {
+    a.y -= sign * push;
+    a.vy -= sign * 0.35;
+  }
+  if (!b.dragging) {
+    b.y += sign * push;
+    b.vy += sign * 0.35;
+  }
+};
+
+const stepFooterLetterPhysics = (
+  bodies: FooterLetterBody[],
+  worldWidth: number,
+  groundY: number,
+) => {
+  for (const body of bodies) {
+    if (body.dragging) continue;
+
+    body.vy += FOOTER_PHYSICS.gravity;
+    body.vx *= FOOTER_PHYSICS.damping;
+    body.vy *= FOOTER_PHYSICS.damping;
+    body.x += body.vx;
+    body.y += body.vy;
+    body.angle += body.angularVelocity;
+    body.angularVelocity *= 0.985;
+
+    const halfW = body.w / 2;
+    const halfH = body.h / 2;
+
+    if (body.y + halfH > groundY) {
+      body.y = groundY - halfH;
+      body.vy *= -FOOTER_PHYSICS.restitution;
+      body.vx *= FOOTER_PHYSICS.friction;
+      body.angularVelocity += body.vx * 0.004;
+      if (Math.abs(body.vy) < 0.45) body.vy = 0;
+    }
+
+    if (body.x - halfW < 0) {
+      body.x = halfW;
+      body.vx *= -FOOTER_PHYSICS.restitution;
+    } else if (body.x + halfW > worldWidth) {
+      body.x = worldWidth - halfW;
+      body.vx *= -FOOTER_PHYSICS.restitution;
+    }
+  }
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    for (let i = 0; i < bodies.length; i += 1) {
+      for (let j = i + 1; j < bodies.length; j += 1) {
+        resolveFooterLetterCollision(bodies[i], bodies[j]);
+      }
+    }
+  }
+};
+
+const syncFooterLetterTransform = (body: FooterLetterBody) => {
+  body.el.style.transform = `translate3d(${body.x - body.w / 2}px, ${body.y - body.h / 2}px, 0) rotate(${body.angle}rad)`;
+};
+
+const FooterPhysicsWordmark = () => {
+  const reduceMotion = useReducedMotion();
+  const [physicsActive, setPhysicsActive] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const bodiesRef = useRef<FooterLetterBody[]>([]);
+  const frameRef = useRef<number | null>(null);
+  const dragRef = useRef<{
+    body: FooterLetterBody;
+    offsetX: number;
+    offsetY: number;
+    lastX: number;
+    lastY: number;
+    lastTime: number;
+  } | null>(null);
+
+  const activatePhysics = useCallback(() => {
+    if (reduceMotion || physicsActive) return;
+    setPhysicsActive(true);
+  }, [physicsActive, reduceMotion]);
+
+  useLayoutEffect(() => {
+    if (!physicsActive || !containerRef.current) return;
+
+    const container = containerRef.current;
+    const letterEls = letterRefs.current.filter(
+      (el, index) => el && FOOTER_WORDMARK[index] !== ' ',
+    ) as HTMLSpanElement[];
+
+    if (letterEls.length === 0) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const worldWidth = containerRect.width;
+    const fallZone = Math.max(
+      FOOTER_PHYSICS.fallZoneMin,
+      Math.min(FOOTER_PHYSICS.fallZoneMax, window.innerHeight * 0.3),
+    );
+    const groundY = fallZone - 6;
+
+    container.style.minHeight = `${fallZone}px`;
+
+    const spaceEl = letterRefs.current[FOOTER_WORDMARK.indexOf(' ')];
+    if (spaceEl) spaceEl.style.visibility = 'hidden';
+
+    const bodies: FooterLetterBody[] = letterEls.map((el) => {
+      const rect = el.getBoundingClientRect();
+      const w = Math.max(rect.width, 6);
+      const h = Math.max(rect.height, 8);
+      const x = rect.left - containerRect.left + w / 2;
+      const y = rect.top - containerRect.top + h / 2;
+
+      el.style.position = 'absolute';
+      el.style.left = '0';
+      el.style.top = '0';
+      el.style.width = `${w}px`;
+      el.style.height = `${h}px`;
+      el.style.display = 'inline-flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+      el.style.willChange = 'transform';
+      el.style.cursor = 'grab';
+      el.style.touchAction = 'none';
+      el.style.userSelect = 'none';
+
+      const body: FooterLetterBody = {
+        el,
+        x,
+        y,
+        w,
+        h,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: Math.random() * 0.4,
+        angle: (Math.random() - 0.5) * 0.08,
+        angularVelocity: (Math.random() - 0.5) * 0.03,
+        dragging: false,
+      };
+
+      syncFooterLetterTransform(body);
+      return body;
+    });
+
+    bodiesRef.current = bodies;
+
+    const onPointerDown = (event: PointerEvent, body: FooterLetterBody) => {
+      event.preventDefault();
+      event.stopPropagation();
+      body.dragging = true;
+      body.el.style.cursor = 'grabbing';
+      const rect = container.getBoundingClientRect();
+      dragRef.current = {
+        body,
+        offsetX: event.clientX - rect.left - body.x,
+        offsetY: event.clientY - rect.top - body.y,
+        lastX: event.clientX,
+        lastY: event.clientY,
+        lastTime: performance.now(),
+      };
+      body.el.setPointerCapture(event.pointerId);
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      const drag = dragRef.current;
+      if (!drag || !drag.body.dragging) return;
+
+      const rect = container.getBoundingClientRect();
+      drag.body.x = event.clientX - rect.left - drag.offsetX;
+      drag.body.y = event.clientY - rect.top - drag.offsetY;
+
+      const now = performance.now();
+      const dt = Math.max(now - drag.lastTime, 8);
+      drag.body.vx = ((event.clientX - drag.lastX) / dt) * 16;
+      drag.body.vy = ((event.clientY - drag.lastY) / dt) * 16;
+      drag.lastX = event.clientX;
+      drag.lastY = event.clientY;
+      drag.lastTime = now;
+    };
+
+    const onPointerUp = (event: PointerEvent) => {
+      const drag = dragRef.current;
+      if (!drag) return;
+      drag.body.dragging = false;
+      drag.body.el.style.cursor = 'grab';
+      drag.body.el.releasePointerCapture(event.pointerId);
+      dragRef.current = null;
+    };
+
+    const cleanups = bodies.map((body) => {
+      const down = (event: PointerEvent) => onPointerDown(event, body);
+      const move = (event: PointerEvent) => onPointerMove(event);
+      const up = (event: PointerEvent) => onPointerUp(event);
+      body.el.addEventListener('pointerdown', down);
+      body.el.addEventListener('pointermove', move);
+      body.el.addEventListener('pointerup', up);
+      body.el.addEventListener('pointercancel', up);
+      return () => {
+        body.el.removeEventListener('pointerdown', down);
+        body.el.removeEventListener('pointermove', move);
+        body.el.removeEventListener('pointerup', up);
+        body.el.removeEventListener('pointercancel', up);
+      };
+    });
+
+    const tick = () => {
+      stepFooterLetterPhysics(bodies, worldWidth, groundY);
+      bodies.forEach(syncFooterLetterTransform);
+      frameRef.current = requestAnimationFrame(tick);
+    };
+
+    frameRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      cleanups.forEach((cleanup) => cleanup());
+      dragRef.current = null;
+      bodiesRef.current = [];
+    };
+  }, [physicsActive]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={`relative max-w-full font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card ${
+        physicsActive ? 'touch-none' : 'cursor-pointer select-none'
+      }`}
+      role={physicsActive ? undefined : 'button'}
+      tabIndex={physicsActive ? -1 : 0}
+      aria-label={physicsActive ? undefined : 'Panko Studio wordmark — click to drop the letters'}
+      onClick={physicsActive ? undefined : activatePhysics}
+      onKeyDown={
+        physicsActive
+          ? undefined
+          : (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                activatePhysics();
+              }
+            }
+      }
+    >
+      {FOOTER_WORDMARK.split('').map((char, index) => (
+        <span
+          key={`${char}-${index}`}
+          ref={(el) => {
+            letterRefs.current[index] = el;
+          }}
+          className="inline-block"
+          aria-hidden={char === ' ' ? true : undefined}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </div>
+  );
+};
+
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
+    <footer className="relative overflow-x-clip border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
-            <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card">
-              panko studio
-            </div>
+            <FooterPhysicsWordmark />
             <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-page/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
               <a href="#about" className="transition-colors hover:text-brand-card">
                 About
