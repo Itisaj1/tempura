@@ -1053,6 +1053,9 @@ const CTA = () => {
 
 const FOOTER_WORDMARK = 'panko studio';
 
+const FOOTER_WORDMARK_CLASS =
+  'font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card';
+
 type FooterLetterBody = {
   el: HTMLSpanElement;
   x: number;
@@ -1061,19 +1064,35 @@ type FooterLetterBody = {
   vy: number;
   w: number;
   h: number;
+  mass: number;
   angle: number;
   angularVelocity: number;
   dragging: boolean;
 };
 
+type FooterPhysicsBounds = {
+  width: number;
+  height: number;
+  groundY: number;
+  ceilingY: number;
+};
+
 const FOOTER_PHYSICS = {
-  gravity: 0.52,
-  damping: 0.992,
-  restitution: 0.34,
-  friction: 0.82,
-  fallZoneMin: 200,
-  fallZoneMax: 340,
+  gravity: 1.05,
+  damping: 0.986,
+  restitution: 0.26,
+  friction: 0.72,
+  collisionPush: 0.62,
+  minBodySize: 3,
 } as const;
+
+const measureTightLetterRect = (el: HTMLElement, fallbackRect: DOMRect) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const tight = range.getBoundingClientRect();
+  if (tight.width > 0 && tight.height > 0) return tight;
+  return fallbackRect;
+};
 
 const resolveFooterLetterCollision = (a: FooterLetterBody, b: FooterLetterBody) => {
   if (a.dragging && b.dragging) return;
@@ -1084,39 +1103,67 @@ const resolveFooterLetterCollision = (a: FooterLetterBody, b: FooterLetterBody) 
   const overlapY = (a.h + b.h) / 2 - Math.abs(dy);
   if (overlapX <= 0 || overlapY <= 0) return;
 
+  const aInv = a.dragging ? 0 : 1 / a.mass;
+  const bInv = b.dragging ? 0 : 1 / b.mass;
+  const totalInv = aInv + bInv;
+  if (totalInv === 0) return;
+
   if (overlapX < overlapY) {
     const sign = dx > 0 ? 1 : -1;
-    const push = overlapX / 2;
+    const push = overlapX;
     if (!a.dragging) {
-      a.x -= sign * push;
-      a.vx -= sign * 0.35;
+      a.x -= sign * push * (aInv / totalInv);
+      a.vx -= sign * FOOTER_PHYSICS.collisionPush * (aInv / totalInv);
     }
     if (!b.dragging) {
-      b.x += sign * push;
-      b.vx += sign * 0.35;
+      b.x += sign * push * (bInv / totalInv);
+      b.vx += sign * FOOTER_PHYSICS.collisionPush * (bInv / totalInv);
     }
     return;
   }
 
   const sign = dy > 0 ? 1 : -1;
-  const push = overlapY / 2;
+  const push = overlapY;
   if (!a.dragging) {
-    a.y -= sign * push;
-    a.vy -= sign * 0.35;
+    a.y -= sign * push * (aInv / totalInv);
+    a.vy -= sign * FOOTER_PHYSICS.collisionPush * (aInv / totalInv);
   }
   if (!b.dragging) {
-    b.y += sign * push;
-    b.vy += sign * 0.35;
+    b.y += sign * push * (bInv / totalInv);
+    b.vy += sign * FOOTER_PHYSICS.collisionPush * (bInv / totalInv);
   }
 };
 
-const stepFooterLetterPhysics = (
-  bodies: FooterLetterBody[],
-  worldWidth: number,
-  groundY: number,
-) => {
+const clampFooterLetterToBounds = (body: FooterLetterBody, bounds: FooterPhysicsBounds) => {
+  const halfW = body.w / 2;
+  const halfH = body.h / 2;
+
+  if (body.x - halfW < 0) {
+    body.x = halfW;
+    body.vx *= -FOOTER_PHYSICS.restitution;
+  } else if (body.x + halfW > bounds.width) {
+    body.x = bounds.width - halfW;
+    body.vx *= -FOOTER_PHYSICS.restitution;
+  }
+
+  if (body.y - halfH < bounds.ceilingY) {
+    body.y = bounds.ceilingY + halfH;
+    body.vy *= -FOOTER_PHYSICS.restitution;
+  } else if (body.y + halfH > bounds.groundY) {
+    body.y = bounds.groundY - halfH;
+    body.vy *= -FOOTER_PHYSICS.restitution;
+    body.vx *= FOOTER_PHYSICS.friction;
+    body.angularVelocity += body.vx * 0.006;
+    if (Math.abs(body.vy) < 0.55) body.vy = 0;
+  }
+};
+
+const stepFooterLetterPhysics = (bodies: FooterLetterBody[], bounds: FooterPhysicsBounds) => {
   for (const body of bodies) {
-    if (body.dragging) continue;
+    if (body.dragging) {
+      clampFooterLetterToBounds(body, bounds);
+      continue;
+    }
 
     body.vy += FOOTER_PHYSICS.gravity;
     body.vx *= FOOTER_PHYSICS.damping;
@@ -1124,29 +1171,12 @@ const stepFooterLetterPhysics = (
     body.x += body.vx;
     body.y += body.vy;
     body.angle += body.angularVelocity;
-    body.angularVelocity *= 0.985;
+    body.angularVelocity *= 0.982;
 
-    const halfW = body.w / 2;
-    const halfH = body.h / 2;
-
-    if (body.y + halfH > groundY) {
-      body.y = groundY - halfH;
-      body.vy *= -FOOTER_PHYSICS.restitution;
-      body.vx *= FOOTER_PHYSICS.friction;
-      body.angularVelocity += body.vx * 0.004;
-      if (Math.abs(body.vy) < 0.45) body.vy = 0;
-    }
-
-    if (body.x - halfW < 0) {
-      body.x = halfW;
-      body.vx *= -FOOTER_PHYSICS.restitution;
-    } else if (body.x + halfW > worldWidth) {
-      body.x = worldWidth - halfW;
-      body.vx *= -FOOTER_PHYSICS.restitution;
-    }
+    clampFooterLetterToBounds(body, bounds);
   }
 
-  for (let pass = 0; pass < 3; pass += 1) {
+  for (let pass = 0; pass < 4; pass += 1) {
     for (let i = 0; i < bodies.length; i += 1) {
       for (let j = i + 1; j < bodies.length; j += 1) {
         resolveFooterLetterCollision(bodies[i], bodies[j]);
@@ -1159,21 +1189,15 @@ const syncFooterLetterTransform = (body: FooterLetterBody) => {
   body.el.style.transform = `translate3d(${body.x - body.w / 2}px, ${body.y - body.h / 2}px, 0) rotate(${body.angle}rad)`;
 };
 
-const FooterPhysicsWordmark = () => {
+const FooterPlaySection = () => {
   const reduceMotion = useReducedMotion();
   const [physicsActive, setPhysicsActive] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const arenaRef = useRef<HTMLDivElement | null>(null);
+  const flexRowRef = useRef<HTMLDivElement | null>(null);
+  const wordmarkRef = useRef<HTMLDivElement | null>(null);
+  const wordmarkSlotRef = useRef<HTMLDivElement | null>(null);
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const bodiesRef = useRef<FooterLetterBody[]>([]);
-  const frameRef = useRef<number | null>(null);
-  const dragRef = useRef<{
-    body: FooterLetterBody;
-    offsetX: number;
-    offsetY: number;
-    lastX: number;
-    lastY: number;
-    lastTime: number;
-  } | null>(null);
 
   const activatePhysics = useCallback(() => {
     if (reduceMotion || physicsActive) return;
@@ -1181,34 +1205,53 @@ const FooterPhysicsWordmark = () => {
   }, [physicsActive, reduceMotion]);
 
   useLayoutEffect(() => {
-    if (!physicsActive || !containerRef.current) return;
+    if (!physicsActive || !sectionRef.current || !arenaRef.current || !wordmarkRef.current) return;
 
-    const container = containerRef.current;
+    const section = sectionRef.current;
+    const arena = arenaRef.current;
+    const wordmark = wordmarkRef.current;
+    const wordmarkSlot = wordmarkSlotRef.current;
+    const flexRow = flexRowRef.current;
+
     const letterEls = letterRefs.current.filter(
       (el, index) => el && FOOTER_WORDMARK[index] !== ' ',
     ) as HTMLSpanElement[];
 
     if (letterEls.length === 0) return;
 
-    const containerRect = container.getBoundingClientRect();
-    const worldWidth = containerRect.width;
-    const fallZone = Math.max(
-      FOOTER_PHYSICS.fallZoneMin,
-      Math.min(FOOTER_PHYSICS.fallZoneMax, window.innerHeight * 0.3),
-    );
-    const groundY = fallZone - 6;
+    if (flexRow) {
+      flexRow.style.minHeight = `${flexRow.offsetHeight}px`;
+    }
+    if (wordmarkSlot) {
+      wordmarkSlot.style.minHeight = `${wordmark.offsetHeight}px`;
+    }
 
-    container.style.minHeight = `${fallZone}px`;
+    const sectionRect = section.getBoundingClientRect();
+    const arenaWidth = sectionRect.width;
+    const arenaHeight = sectionRect.height;
+    const bounds: FooterPhysicsBounds = {
+      width: arenaWidth,
+      height: arenaHeight,
+      groundY: arenaHeight - 2,
+      ceilingY: 2,
+    };
+
+    arena.style.height = `${arenaHeight}px`;
 
     const spaceEl = letterRefs.current[FOOTER_WORDMARK.indexOf(' ')];
     if (spaceEl) spaceEl.style.visibility = 'hidden';
 
-    const bodies: FooterLetterBody[] = letterEls.map((el) => {
-      const rect = el.getBoundingClientRect();
-      const w = Math.max(rect.width, 6);
-      const h = Math.max(rect.height, 8);
-      const x = rect.left - containerRect.left + w / 2;
-      const y = rect.top - containerRect.top + h / 2;
+    const bodies: FooterLetterBody[] = [];
+
+    letterEls.forEach((el) => {
+      const fallbackRect = el.getBoundingClientRect();
+      const tightRect = measureTightLetterRect(el, fallbackRect);
+      const w = Math.max(tightRect.width, FOOTER_PHYSICS.minBodySize);
+      const h = Math.max(tightRect.height, FOOTER_PHYSICS.minBodySize);
+      const x = tightRect.left - sectionRect.left + w / 2;
+      const y = tightRect.top - sectionRect.top + h / 2;
+
+      arena.appendChild(el);
 
       el.style.position = 'absolute';
       el.style.left = '0';
@@ -1218,10 +1261,13 @@ const FooterPhysicsWordmark = () => {
       el.style.display = 'inline-flex';
       el.style.alignItems = 'center';
       el.style.justifyContent = 'center';
+      el.style.lineHeight = '1';
       el.style.willChange = 'transform';
       el.style.cursor = 'grab';
       el.style.touchAction = 'none';
       el.style.userSelect = 'none';
+      el.style.pointerEvents = 'auto';
+      el.style.zIndex = '30';
 
       const body: FooterLetterBody = {
         el,
@@ -1229,26 +1275,38 @@ const FooterPhysicsWordmark = () => {
         y,
         w,
         h,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: Math.random() * 0.4,
+        mass: Math.min(2.2, Math.max(0.95, (w * h) / 420)),
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: Math.random() * 0.35,
         angle: (Math.random() - 0.5) * 0.08,
-        angularVelocity: (Math.random() - 0.5) * 0.03,
+        angularVelocity: (Math.random() - 0.5) * 0.04,
         dragging: false,
       };
 
       syncFooterLetterTransform(body);
-      return body;
+      bodies.push(body);
     });
 
-    bodiesRef.current = bodies;
+    wordmark.style.visibility = 'hidden';
+    wordmark.style.pointerEvents = 'none';
+
+    let frameRef = 0;
+    let activeDrag: {
+      body: FooterLetterBody;
+      offsetX: number;
+      offsetY: number;
+      lastX: number;
+      lastY: number;
+      lastTime: number;
+    } | null = null;
 
     const onPointerDown = (event: PointerEvent, body: FooterLetterBody) => {
       event.preventDefault();
       event.stopPropagation();
       body.dragging = true;
       body.el.style.cursor = 'grabbing';
-      const rect = container.getBoundingClientRect();
-      dragRef.current = {
+      const rect = section.getBoundingClientRect();
+      activeDrag = {
         body,
         offsetX: event.clientX - rect.left - body.x,
         offsetY: event.clientY - rect.top - body.y,
@@ -1260,29 +1318,28 @@ const FooterPhysicsWordmark = () => {
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      const drag = dragRef.current;
-      if (!drag || !drag.body.dragging) return;
+      if (!activeDrag || !activeDrag.body.dragging) return;
 
-      const rect = container.getBoundingClientRect();
-      drag.body.x = event.clientX - rect.left - drag.offsetX;
-      drag.body.y = event.clientY - rect.top - drag.offsetY;
+      const rect = section.getBoundingClientRect();
+      activeDrag.body.x = event.clientX - rect.left - activeDrag.offsetX;
+      activeDrag.body.y = event.clientY - rect.top - activeDrag.offsetY;
+      clampFooterLetterToBounds(activeDrag.body, bounds);
 
       const now = performance.now();
-      const dt = Math.max(now - drag.lastTime, 8);
-      drag.body.vx = ((event.clientX - drag.lastX) / dt) * 16;
-      drag.body.vy = ((event.clientY - drag.lastY) / dt) * 16;
-      drag.lastX = event.clientX;
-      drag.lastY = event.clientY;
-      drag.lastTime = now;
+      const dt = Math.max(now - activeDrag.lastTime, 8);
+      activeDrag.body.vx = ((event.clientX - activeDrag.lastX) / dt) * 16;
+      activeDrag.body.vy = ((event.clientY - activeDrag.lastY) / dt) * 16;
+      activeDrag.lastX = event.clientX;
+      activeDrag.lastY = event.clientY;
+      activeDrag.lastTime = now;
     };
 
     const onPointerUp = (event: PointerEvent) => {
-      const drag = dragRef.current;
-      if (!drag) return;
-      drag.body.dragging = false;
-      drag.body.el.style.cursor = 'grab';
-      drag.body.el.releasePointerCapture(event.pointerId);
-      dragRef.current = null;
+      if (!activeDrag) return;
+      activeDrag.body.dragging = false;
+      activeDrag.body.el.style.cursor = 'grab';
+      activeDrag.body.el.releasePointerCapture(event.pointerId);
+      activeDrag = null;
     };
 
     const cleanups = bodies.map((body) => {
@@ -1302,54 +1359,100 @@ const FooterPhysicsWordmark = () => {
     });
 
     const tick = () => {
-      stepFooterLetterPhysics(bodies, worldWidth, groundY);
+      stepFooterLetterPhysics(bodies, bounds);
       bodies.forEach(syncFooterLetterTransform);
-      frameRef.current = requestAnimationFrame(tick);
+      frameRef = requestAnimationFrame(tick);
     };
 
-    frameRef.current = requestAnimationFrame(tick);
+    frameRef = requestAnimationFrame(tick);
 
     return () => {
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      cancelAnimationFrame(frameRef);
       cleanups.forEach((cleanup) => cleanup());
-      dragRef.current = null;
-      bodiesRef.current = [];
+      activeDrag = null;
+      letterEls.forEach((el) => {
+        el.removeAttribute('style');
+        wordmark.appendChild(el);
+      });
+      wordmark.style.visibility = '';
+      wordmark.style.pointerEvents = '';
+      if (flexRow) flexRow.style.minHeight = '';
+      if (wordmarkSlot) wordmarkSlot.style.minHeight = '';
     };
   }, [physicsActive]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative max-w-full font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card ${
-        physicsActive ? 'touch-none' : 'cursor-pointer select-none'
-      }`}
-      role={physicsActive ? undefined : 'button'}
-      tabIndex={physicsActive ? -1 : 0}
-      aria-label={physicsActive ? undefined : 'Panko Studio wordmark — click to drop the letters'}
-      onClick={physicsActive ? undefined : activatePhysics}
-      onKeyDown={
-        physicsActive
-          ? undefined
-          : (event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                activatePhysics();
-              }
+    <div ref={sectionRef} className="relative pt-12 sm:pt-16 md:pt-20">
+      <div
+        ref={arenaRef}
+        className={`absolute inset-x-0 top-0 z-20 ${physicsActive ? 'pointer-events-none' : 'hidden'}`}
+        aria-hidden={!physicsActive}
+      />
+
+      <div
+        ref={flexRowRef}
+        className="relative z-10 flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12"
+      >
+        <div ref={wordmarkSlotRef} className="relative min-w-0 md:flex-1">
+          <div
+            ref={wordmarkRef}
+            className={`relative max-w-full ${FOOTER_WORDMARK_CLASS} ${
+              physicsActive ? '' : 'cursor-pointer select-none'
+            }`}
+            role={physicsActive ? undefined : 'button'}
+            tabIndex={physicsActive ? -1 : 0}
+            aria-label={physicsActive ? undefined : 'Panko Studio wordmark — click to drop the letters'}
+            onClick={physicsActive ? undefined : activatePhysics}
+            onKeyDown={
+              physicsActive
+                ? undefined
+                : (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      activatePhysics();
+                    }
+                  }
             }
-      }
-    >
-      {FOOTER_WORDMARK.split('').map((char, index) => (
-        <span
-          key={`${char}-${index}`}
-          ref={(el) => {
-            letterRefs.current[index] = el;
-          }}
-          className="inline-block"
-          aria-hidden={char === ' ' ? true : undefined}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
+          >
+            {FOOTER_WORDMARK.split('').map((char, index) => (
+              <span
+                key={`${char}-${index}`}
+                ref={(el) => {
+                  letterRefs.current[index] = el;
+                }}
+                className="inline-block"
+                aria-hidden={char === ' ' ? true : undefined}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative z-40 shrink-0 grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-page/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
+          <a href="#about" className="transition-colors hover:text-brand-card">
+            About
+          </a>
+          <a href="#work" className="transition-colors hover:text-brand-card">
+            Work
+          </a>
+          <a href="#pricing" className="transition-colors hover:text-brand-card">
+            Pricing
+          </a>
+          <a href="#contact" className="transition-colors hover:text-brand-card">
+            Contact
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ahania/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn (opens in new tab)"
+            className="transition-colors hover:text-brand-card"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
@@ -1357,41 +1460,16 @@ const FooterPhysicsWordmark = () => {
 const Footer = () => {
   return (
     <footer className="relative overflow-x-clip border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
-      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
-          <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
-            <FooterPhysicsWordmark />
-            <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-page/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
-              <a href="#about" className="transition-colors hover:text-brand-card">
-                About
-              </a>
-              <a href="#work" className="transition-colors hover:text-brand-card">
-                Work
-              </a>
-              <a href="#pricing" className="transition-colors hover:text-brand-card">
-                Pricing
-              </a>
-              <a href="#contact" className="transition-colors hover:text-brand-card">
-                Contact
-              </a>
-              <a
-                href="https://www.linkedin.com/in/ahania/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn (opens in new tab)"
-                className="transition-colors hover:text-brand-card"
-              >
-                LinkedIn
-              </a>
-            </div>
-          </div>
-          <div className="mt-10 flex flex-col gap-4 border-t border-brand-page/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-page/55">
-              <a href="/privacy" className="transition-colors hover:text-brand-card">Privacy</a>
-              <a href="/terms" className="transition-colors hover:text-brand-card">Terms</a>
-              <a href="/cookies" className="transition-colors hover:text-brand-card">Cookies</a>
-            </nav>
-            <p className="text-sm text-brand-page/55">© {new Date().getFullYear()} Panko Studio</p>
-          </div>
+      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16">
+        <FooterPlaySection />
+        <div className="mt-10 flex flex-col gap-4 border-t border-brand-page/18 pt-8 pb-10 sm:pb-12 md:pb-14 sm:flex-row sm:items-center sm:justify-between">
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-page/55">
+            <a href="/privacy" className="transition-colors hover:text-brand-card">Privacy</a>
+            <a href="/terms" className="transition-colors hover:text-brand-card">Terms</a>
+            <a href="/cookies" className="transition-colors hover:text-brand-card">Cookies</a>
+          </nav>
+          <p className="text-sm text-brand-page/55">© {new Date().getFullYear()} Panko Studio</p>
+        </div>
       </div>
     </footer>
   );
