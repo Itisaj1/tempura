@@ -22,7 +22,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  type CSSProperties,
   type FormEvent,
   type InputHTMLAttributes,
   type ReactNode,
@@ -129,7 +128,6 @@ type DitherArrowIconProps = {
 const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrowIconProps) => {
   const reduceMotion = useReducedMotion();
   const dots = LUCIDE_DITHER_DOTS[variant];
-  const staggerMs = reduceMotion ? 0 : 11;
   const strokeFadeMs = reduceMotion ? 120 : 220;
 
   return (
@@ -137,8 +135,7 @@ const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrow
       <svg
         viewBox={`0 0 ${LUCIDE_ICON_SIZE} ${LUCIDE_ICON_SIZE}`}
         fill="none"
-        className="h-full w-full text-current"
-        style={{'--dither-r': DITHER_DOT_RADIUS} as CSSProperties}
+        className="pointer-events-none h-full w-full text-current"
         aria-hidden
       >
         <g
@@ -146,26 +143,20 @@ const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrow
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="dither-stroke transition-opacity ease-out group-hover:opacity-0"
+          className="opacity-100 transition-opacity ease-out group-hover:opacity-0"
           style={{transitionDuration: `${strokeFadeMs}ms`}}
         >
           {LUCIDE_STROKE_PATHS[variant].map((d) => (
             <path key={d} d={d} />
           ))}
         </g>
-        <g fill="currentColor">
-          {dots.map(([cx, cy], index) => (
-            <circle
-              key={`${cx}-${cy}`}
-              cx={cx}
-              cy={cy}
-              r={0.2}
-              className="dither-dot"
-              style={{
-                transitionDuration: `${strokeFadeMs}ms`,
-                transitionDelay: reduceMotion ? undefined : `${index * staggerMs}ms`,
-              }}
-            />
+        <g
+          fill="currentColor"
+          className="opacity-0 transition-opacity ease-out group-hover:opacity-100"
+          style={{transitionDuration: `${strokeFadeMs}ms`}}
+        >
+          {dots.map(([cx, cy]) => (
+            <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={DITHER_DOT_RADIUS} />
           ))}
         </g>
       </svg>

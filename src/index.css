@@ -250,16 +250,4 @@
   .legal-prose strong {
     @apply font-semibold text-brand-ink;
   }
-
-  .dither-dot {
-    opacity: 0;
-    r: 0.2;
-    transition-property: r, opacity;
-    transition-timing-function: ease-out;
-  }
-
-  .group:hover .dither-dot {
-    opacity: 1;
-    r: var(--dither-r, 0.92);
-  }
 }
