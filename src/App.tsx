@@ -46,8 +46,8 @@ const LOADER_REVEAL_DELAY_MS = 750;
 const LOADER_DOT_EM = 0.105;
 
 const LUCIDE_ICON_SIZE = 24;
-const DITHER_GRID_STEP = 2;
-const DITHER_DOT_RADIUS = DITHER_GRID_STEP * 0.46;
+const DITHER_GRID_STEP = 3;
+const DITHER_DOT_RADIUS = DITHER_GRID_STEP * 0.52;
 
 type DitherDot = readonly [number, number];
 
