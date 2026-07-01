@@ -1212,8 +1212,8 @@ const Pricing = () => {
     },
     {
       name: 'Fixed',
-      price: '$7,500',
-      period: ' / project',
+      price: 'Enquire',
+      period: '',
       desc: 'Design your core product from scratch in 6-8 weeks.',
       features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
       extra:
