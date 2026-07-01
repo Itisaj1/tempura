@@ -1123,26 +1123,26 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-10 px-4 sm:py-12 md:px-10 md:py-14 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
+    <section id="work" aria-labelledby="work-heading" className="relative py-14 px-4 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
-          <div className="mb-6 md:mb-8">
+          <div className="mb-10">
             <h2 id="work-heading" className="text-3xl font-display font-bold tracking-tight text-brand-ink sm:text-4xl md:text-5xl">
               Selected work.
             </h2>
           </div>
 
-          <div className="work-grid mx-auto grid max-w-4xl grid-cols-2 items-start gap-3 sm:gap-4">
+          <div className="work-grid grid grid-cols-1 items-start gap-4 md:grid-cols-2">
             {projects.map((project) => {
               const card = (
                 <>
                   <div
-                    className={`work-card-image relative aspect-[3/2] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04] ${
+                    className={`work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04] ${
                       project.placeholder ? 'work-card-placeholder' : 'bg-brand-card'
                     }`}
                   >
                     {project.tag ? (
-                      <span className="absolute top-2 right-2 z-10 rounded-sm border border-brand-ink/10 bg-brand-card/95 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-brand-ink shadow-sm shadow-[rgba(26,26,26,0.08)]">
+                      <span className="absolute top-3 right-3 z-10 rounded-sm border border-brand-ink/10 bg-brand-card/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-ink shadow-sm shadow-[rgba(26,26,26,0.08)]">
                         {project.tag}
                       </span>
                     ) : null}
@@ -1157,20 +1157,20 @@ const Projects = () => {
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         {project.placeholder ? (
-                          <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-3 py-2 text-xs font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
+                          <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
                             Case study placeholder
                           </div>
                         ) : null}
                       </div>
                     )}
                   </div>
-                  <div className="mt-3 flex items-center justify-between px-1 sm:px-2">
-                    <div className="min-w-0 pr-2">
-                      <h3 className="truncate text-base font-bold font-display text-brand-ink sm:text-lg">{project.title}</h3>
-                      <p className="text-xs font-medium text-brand-shrimp sm:text-sm">{project.subtitle}</p>
+                  <div className="mt-5 flex items-center justify-between px-2">
+                    <div>
+                      <h3 className="text-xl font-bold font-display text-brand-ink">{project.title}</h3>
+                      <p className="text-sm font-medium text-brand-shrimp">{project.subtitle}</p>
                     </div>
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp sm:h-10 sm:w-10">
-                      <DitherArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <div className="flex h-11 w-11 items-center justify-center rounded-md border border-brand-ink/10 bg-brand-card text-brand-ink/75 transition-colors group-hover:border-brand-shrimp/45 group-hover:bg-brand-shrimp/15 group-hover:text-brand-shrimp">
+                      <DitherArrowIcon className="h-5 w-5" />
                     </div>
                   </div>
                 </>
