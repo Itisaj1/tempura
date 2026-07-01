@@ -1109,7 +1109,7 @@ const Projects = () => {
       id: 1,
       title: 'FUEL Coworking',
       subtitle: 'Website',
-      href: 'https://fuel-website-theta.vercel.app/',
+      href: 'https://www.fuelcoworking.com/',
       external: true,
       previewLabel: 'FUEL',
     },
