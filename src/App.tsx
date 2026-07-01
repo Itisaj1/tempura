@@ -1103,7 +1103,9 @@ const Projects = () => {
     href?: string;
     external?: boolean;
     placeholder?: boolean;
-    previewLabel?: string;
+    previewImage?: string;
+    previewImageAlt?: string;
+    tag?: string;
   }> = [
     {
       id: 1,
@@ -1111,7 +1113,9 @@ const Projects = () => {
       subtitle: 'Website',
       href: 'https://www.fuelcoworking.com/',
       external: true,
-      previewLabel: 'FUEL',
+      previewImage: '/work/fuel-coworking-preview.jpg',
+      previewImageAlt: 'FUEL Coworking website homepage preview',
+      tag: 'Web design',
     },
     {id: 2, title: 'Project', subtitle: 'Coming soon', placeholder: true},
     {id: 3, title: 'Project', subtitle: 'Coming soon', placeholder: true},
@@ -1132,18 +1136,33 @@ const Projects = () => {
             {projects.map((project) => {
               const card = (
                 <>
-                  <div className="work-card-placeholder work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04]">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {project.placeholder ? (
-                        <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
-                          Case study placeholder
-                        </div>
-                      ) : (
-                        <span className="font-display text-5xl font-bold tracking-tight text-brand-ink/88 sm:text-6xl">
-                          {project.previewLabel ?? project.title}
-                        </span>
-                      )}
-                    </div>
+                  <div
+                    className={`work-card-image relative aspect-[4/3] w-full overflow-hidden rounded-md rounded-br-xl border border-brand-ink/10 transition-colors duration-150 ease-out group-hover:bg-brand-shrimp/[0.04] ${
+                      project.placeholder ? 'work-card-placeholder' : 'bg-brand-card'
+                    }`}
+                  >
+                    {project.tag ? (
+                      <span className="absolute top-3 right-3 z-10 rounded-sm border border-brand-ink/10 bg-brand-card/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-brand-ink shadow-sm shadow-[rgba(26,26,26,0.08)]">
+                        {project.tag}
+                      </span>
+                    ) : null}
+                    {project.previewImage ? (
+                      <img
+                        src={project.previewImage}
+                        alt={project.previewImageAlt ?? `${project.title} preview`}
+                        className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        {project.placeholder ? (
+                          <div className="rounded-sm border border-brand-ink/10 bg-brand-card/92 px-5 py-3 text-sm font-medium text-brand-ink/82 shadow-sm shadow-[rgba(26,26,26,0.08)]">
+                            Case study placeholder
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
                   </div>
                   <div className="mt-5 flex items-center justify-between px-2">
                     <div>
