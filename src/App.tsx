@@ -718,10 +718,6 @@ const About = () => {
     <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-16 px-4 sm:pb-20 md:px-10 md:pb-28 lg:pb-32 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
-          <div className="mb-10 md:mb-14">
-            <p className="section-label">About</p>
-          </div>
-
           <div className="max-w-3xl">
             <h2
               id="about-heading"
@@ -1220,7 +1216,7 @@ const Pricing = () => {
   }> = [
     {
       name: 'Subscribe',
-      price: '$18,000',
+      price: '$8,000',
       period: ' / month',
       desc: 'Work with us on an ongoing basis.',
       features: [],
@@ -1251,7 +1247,6 @@ const Pricing = () => {
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
           <div className="mb-10 md:mb-12">
-            <p className="section-label">Pricing</p>
             <h2
               id="pricing-heading"
               className="text-3xl font-display font-bold tracking-tight text-brand-ink sm:text-4xl md:text-5xl"
