@@ -1216,12 +1216,12 @@ const Pricing = () => {
   }> = [
     {
       name: 'Subscribe',
-      price: '$8,000',
+      price: '$18,000',
       period: ' / month',
-      desc: 'Work with us on an ongoing basis.',
+      desc: 'You need senior product design talent embedded in your team, on demand.',
       features: [],
       extra:
-        'Share your requirements on a Notion card, & senior designers will deliver high-quality designs, one by one. This could be a product design, graphics for marketing, email banners, or wireframes — anything goes so long as you can explain it in a card.',
+        'Submit requests through a shared board and our senior designers pick them up one by one — UI design, design systems, flows, or dev-ready hand-off. We embed in your rituals: standups, critiques, and reviews, so design keeps pace with your roadmap instead of sitting in a queue.',
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
@@ -1229,10 +1229,15 @@ const Pricing = () => {
       name: 'Fixed',
       price: 'Enquire',
       period: '',
-      desc: 'Design your core product from scratch in 6-8 weeks.',
-      features: ['Design System', 'Landing Page', 'Web/Mobile Product Designs', 'Slide Deck'],
+      desc: 'Design your core product from the ground up in 6–8 weeks.',
+      features: [
+        'Wireframes & UX flows',
+        'Design system',
+        'High-fidelity UI',
+        'Dev-ready prototypes',
+      ],
       extra:
-        "A designer's final product is only as good as the inputs provided. We'll provide templates for quality moodboards, requirements documents, UX flow diagrams & wireframes with workshops included.",
+        'We start with research — competitor teardowns and user flows — before moving into high-fidelity design. Everything ships as an annotated, component-based system your engineers can build straight from.',
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
