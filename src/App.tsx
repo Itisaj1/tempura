@@ -1209,6 +1209,7 @@ const Pricing = () => {
     price: string;
     period: string;
     desc: string;
+    intro?: string;
     features: string[];
     extra?: string;
     buttonLabel: string;
@@ -1216,12 +1217,20 @@ const Pricing = () => {
   }> = [
     {
       name: 'Subscribe',
-      price: '$18,000',
+      price: '$9,000',
       period: ' / month',
       desc: 'You need senior product design talent embedded in your team, on demand.',
-      features: [],
+      intro:
+        'Submit requests through a shared board and our senior designers pick them up one by one, ready for dev hand-off.',
+      features: [
+        'UI & product design',
+        'Design systems',
+        'UX flows & wireframes',
+        'Dev-ready hand-off',
+        'Async, embedded in your rituals',
+      ],
       extra:
-        'Submit requests through a shared board and our senior designers pick them up one by one — UI design, design systems, flows, or dev-ready hand-off. We embed in your rituals: standups, critiques, and reviews, so design keeps pace with your roadmap instead of sitting in a queue.',
+        'We plug into your standups, critiques, and reviews, so design keeps pace with your roadmap instead of sitting in a queue.',
       buttonLabel: 'Enquire',
       buttonHref: '#contact',
     },
@@ -1287,6 +1296,9 @@ const Pricing = () => {
                       <span className="font-medium text-brand-ink/60">{plan.period}</span>
                     </div>
                     <p className="mb-5 font-semibold leading-relaxed text-brand-ink/90">{plan.desc}</p>
+                    {plan.intro ? (
+                      <p className="mb-5 leading-relaxed text-brand-ink/85">{plan.intro}</p>
+                    ) : null}
                     {plan.features.length > 0 && (
                       <ul className="mb-5 space-y-2.5">
                         {plan.features.map((f, i) => (
