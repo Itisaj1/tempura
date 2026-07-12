@@ -13,12 +13,12 @@ direct, slightly understated. We do not sound like a hype agency.
 ### 1. Confident statement, accent period
 
 Short, declarative, ends in a period (the period is rendered in
-`#0081A7`). Use this for headlines, section openers, and email subjects.
+**Shrimp**, `#D4537E`). Use this for headlines, section openers, and email subjects.
 
 > Design for startups and scale-ups.
 > Let's collaborate.
 > Transparent investment.
-> Built for conversion.
+> Selected work.
 > Shipped, not staged.
 
 ### 2. "[Capability] for [audience]"
@@ -33,23 +33,23 @@ The lead-line pattern. Pair a strong product noun with a target audience.
 
 When you need to say what we actually do. Drop the fluff.
 
-> Senior product talent that drives design projects from wireframe to full release alongside your engineers.
+> Senior product talent from wireframe to release — alongside your engineers, for AI-native and B2B teams that need clear decisions, honest handoffs, and design that ships.
 > We don't outsource the thinking. The senior on the call is the senior doing the work.
-> Pricing is per project or monthly retainer. No setup fees.
+> Pricing is per project or monthly subscription. No setup fees.
 
 ## The Panko period (signature mark)
 
 Every closing-statement headline ends with a period rendered in
-`#0081A7`. It's the brand's most repeated visual gesture.
+**Shrimp** (`#D4537E`). It's the brand's most repeated visual gesture.
 
 In HTML/CSS:
 
 ```html
-<h2>Let's collaborate<span style="color:#0081A7;">.</span></h2>
+<h2>Let's collaborate<span style="color:#D4537E;">.</span></h2>
 ```
 
 In design tools (Figma, slides): select the period glyph specifically
-and color it `#0081A7`. The rest of the headline stays brand-ink.
+and color it `#D4537E`. The rest of the headline stays Ink (`#1A1A1A`).
 
 Where to use it:
 
@@ -74,9 +74,9 @@ Where **not** to use it:
 - "Ship", "build", "deliver", "release"
 - "Wireframe to release"
 - "Alongside your engineers"
-- "Calm velocity" (sparingly — only when it earns its place)
+- "Embedded", "on demand", "dev-ready hand-off"
 - "Discovery call" (for the booking CTA)
-- "Project" / "retainer" / "subscription"
+- "Project" / "Fixed" / "Subscribe" / "Enquire"
 - "Inquiry" (in our internal language for inbound leads)
 
 ### Avoid
@@ -87,10 +87,11 @@ Where **not** to use it:
 - **Engagement-bait**: "What do you think?", "Hot take:", "Unpopular opinion:"
 - **AI vapor**: "AI-powered" / "AI-first" used as decoration (we work *with* AI teams; we don't sell AI as a feature)
 - **Marketing CTAs**: "Don't miss out", "Limited spots", "Act now"
+- **Legacy palette names**: "cream", "accent blue" — use Petal, Shrimp, Ink, Blush, White
 
 ### Punctuation rules
 
-- **Periods**: yes, including on short headlines (and color them accent)
+- **Periods**: yes, including on short headlines (and color them Shrimp)
 - **Exclamation marks**: no, ever. They read as a hype tone we don't want
 - **Em-dashes**: no. We use periods for emphasis. If you need a pause, end the sentence and start a new one
 - **Ellipses**: rare. Only in genuinely trailed-off speech, never as a "more to come..." gesture
@@ -178,7 +179,7 @@ to do two jobs.
 > design expertise.
 
 **Good**
-> Design your core product from scratch in 6–8 weeks.
+> You need senior product design talent embedded in your team, on demand.
 
 ### Internal Slack-style update (yes, even these have a voice)
 
@@ -196,12 +197,13 @@ When asked to review a piece of Panko copy:
 
 1. Mark every exclamation mark, em-dash, and emoji with a strike.
 2. Search for the banned vocabulary list above. Suggest replacements.
-3. Check every headline ends with the accent period.
+3. Check every headline ends with the Shrimp accent period.
 4. Check there's no warm-up paragraph before the substance.
 5. Check at least one specific number, name, or concrete detail per
    ~150 words.
 6. Check sign-off matches: "Talk soon, / The Panko Studio team" for
    one-to-one pieces.
+7. Check colors use the five-token palette (Petal, White, Blush, Shrimp, Ink) — no legacy cream or blue.
 
 Return feedback in three buckets:
 

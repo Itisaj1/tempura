@@ -197,11 +197,11 @@ Same skeleton as Template 1 — swap the `<td class="card">` block:
 ## 4. Slide deck — title slide
 
 ```
-Eyebrow (all-caps, accent blue, 11pt, letter-spaced)
+Eyebrow (all-caps, Shrimp, 11pt, letter-spaced)
 EYEBROW · DATE
 
 Headline (Outfit, 60-80pt, ink, left-aligned)
-{{ one short statement }}.   ← period in accent blue
+{{ one short statement }}.   ← period in Shrimp (#D4537E)
 
 Sub-line (Inter, 22pt, ink at 70%, left-aligned)
 {{ optional one-line context }}
@@ -213,17 +213,17 @@ panko studio.   {{ deck title }}   {{ page }}/{{ total }}
 ## 5. Slide deck — section / content slide
 
 ```
-Eyebrow (all-caps, accent, 10pt)
+Eyebrow (all-caps, Shrimp, 10pt)
 SECTION NUMBER · SECTION NAME
 
 Headline (Outfit, 44-56pt, ink, left-aligned)
-{{ one idea per slide }}.   ← accent period
+{{ one idea per slide }}.   ← Shrimp accent period
 
 Body region (Inter, 18-24pt, ink at 80%, left-aligned, 1.5 line-height)
 {{ supporting text — two paragraphs max, or 3 bullets max }}
 
 Pull-quote / data slides:
-- Number: Outfit, 120-160pt, ink (or accent if it's the focal metric)
+- Number: Outfit, 120-160pt, ink (or Shrimp if it's the focal metric)
 - Label: Inter, 18pt, ink at 50%, sentence case
 - Example:   3.2×
              activation rate vs. previous flow
@@ -231,43 +231,44 @@ Pull-quote / data slides:
 
 **Slide deck rules**
 - 16:9
-- Background: cream `#F7F4EF`
+- Background: Petal `#FDF0F3`
 - One idea per slide
 - Left-aligned, no center alignment except on a deliberate "moment" slide
-- "Next steps" / "summary" slides flip to ink card (ink background, cream
-  text), same eyebrow → headline → body rhythm
+- "Next steps" / "summary" slides flip to ink card (Ink `#1A1A1A` background,
+  Petal text), same eyebrow → headline → body rhythm
 
 ---
 
 ## 6. One-pager / proposal
 
 ```
-HEADER (cream canvas, full bleed across top, ~120px tall)
+HEADER (Petal canvas, full bleed across top, ~120px tall)
   Top-left:  panko studio.    (Outfit, 16pt)
   Top-right: {{ document title }}  ·  {{ date }}     (Inter, 11pt, ink/40%)
 
 HERO BLOCK
-  Eyebrow (accent, 11pt, all-caps):  {{ PROPOSAL / SCOPE / ENGAGEMENT }}
-  Headline (Outfit, 40pt, ink):      {{ one sentence }}<accent>.</accent>
+  Eyebrow (Shrimp, 11pt, all-caps):  {{ PROPOSAL / SCOPE / ENGAGEMENT }}
+  Headline (Outfit, 40pt, ink):      {{ one sentence }}<Shrimp>.</Shrimp>
   Sub-line (Inter, 18pt, ink/75%):   {{ one sentence }}
 
 SECTION BLOCKS (repeat as needed)
-  Section eyebrow (accent dot + label, 11pt, all-caps)
+  Section eyebrow (Shrimp dot + label, 11pt, all-caps)
   Section heading (Outfit, 24pt, ink)
   Body (Inter, 15pt, ink/85%, 1.65 line-height, max 2 paragraphs)
 
-SCOPE / PRICING CARDS (cream-on-cream)
+SCOPE / PRICING CARDS (White on Petal)
   Wrap each pricing tier in a card:
     Background: #FFFFFF
-    Border-radius: 24px
+    Border: 1px solid #F2C4CE (optional)
+    Border-radius: 12px
     Padding: 28px
-    Shadow: 0 14px 40px rgba(15,23,42,0.05)
+    Shadow: 0 14px 40px rgba(26,26,26,0.06)
     Content: Plan name (Outfit, 20pt)
              Price (Outfit, 32pt)
-             3-5 bullet items (Inter, 14pt, ink/80%, with accent dot)
+             3-5 bullet items (Inter, 14pt, ink/80%, with Shrimp dot)
 
 CTA STRIP (bottom of page)
-  Single accent pill:  Book a discovery call →
+  Single Shrimp CTA:  Book a discovery call →  or  Enquire →
   Or a quiet plain-text fallback:  Reach us at hello@pankostudio.com
 ```
 
@@ -280,7 +281,7 @@ EYEBROW
 CLIENT — INDUSTRY  ·  ENGAGEMENT TYPE  ·  DURATION
 
 HEADLINE
-{{ One-sentence outcome }}<accent>.</accent>
+{{ One-sentence outcome }}<Shrimp>.</Shrimp>
 
 OPENING (2 paragraphs max)
   Paragraph 1: One sentence client framing. One sentence on the problem
@@ -339,7 +340,7 @@ Pre-approved, voice-aligned CTA labels:
 - `See the case study →`
 - `Reply to {{Name}} →`
 - `Read the rest →`
-- `Pick a time →`
+- `Enquire →`
 
 Avoid: "Click here", "Learn more", "Get started", "Sign up now", "Don't
 miss out".
