@@ -159,20 +159,34 @@ const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrow
 const LoadingLogo = () => {
   const reduceMotion = useReducedMotion();
   const textRef = useRef<HTMLSpanElement | null>(null);
-  const logoMetricsRef = useRef({textWidth: 0, dotDiameter: 12});
-  const [textWidth, setTextWidth] = useState(0);
+  const animatingRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
 
   const progress = useMotionValue(reduceMotion ? 1 : 0);
-  const clipPath = useTransform(progress, (p) => `inset(0 ${(1 - p) * 100}% 0 0)`);
-  const dotX = useTransform(progress, (p) => {
-    const {textWidth: width, dotDiameter} = logoMetricsRef.current;
-    return width * p - dotDiameter / 2;
+  const revealWidth = useMotionValue(0);
+  const revealDot = useMotionValue(0);
+
+  const clipPath = useTransform([progress, revealWidth], ([p, width]) => {
+    const w = typeof width === 'number' ? width : 0;
+    const clamped = Math.min(Math.max(p, 0), 1);
+    return `inset(0 ${(1 - clamped) * w}px 0 0)`;
   });
+
+  const dotX = useTransform([progress, revealWidth, revealDot], ([p, width, dot]) => {
+    const w = typeof width === 'number' ? width : 0;
+    const d = typeof dot === 'number' ? dot : 0;
+    const clamped = Math.min(Math.max(p, 0), 1);
+    // Keep the dot's trailing edge on the reveal line so it leads the curtain.
+    return clamped * w - d;
+  });
+
   const logoScale = useTransform(progress, [0, 0.2, 1], [0.94, 0.98, 1]);
   const washOpacity = useTransform(progress, [0, 0.45, 1], [0.42, 0.2, 0]);
   const washScale = useTransform(progress, [0, 1], [1.12, 1]);
 
   const measureLogo = () => {
+    if (animatingRef.current) return;
+
     const textEl = textRef.current;
     const fontEl = textEl?.parentElement?.parentElement;
     if (!textEl || !fontEl) return;
@@ -181,8 +195,11 @@ const LoadingLogo = () => {
     const width = textEl.offsetWidth;
     const dotDiameter = fontSize * LOADER_DOT_EM;
 
-    logoMetricsRef.current = {textWidth: width, dotDiameter};
-    setTextWidth(width);
+    if (width <= 0) return;
+
+    revealWidth.set(width);
+    revealDot.set(dotDiameter);
+    setIsReady(true);
   };
 
   useLayoutEffect(() => {
@@ -205,15 +222,18 @@ const LoadingLogo = () => {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion || textWidth <= 0) return;
+    if (reduceMotion || !isReady) return;
+
     const start = window.setTimeout(() => {
+      animatingRef.current = true;
       animate(progress, 1, {
         duration: LOADER_REVEAL_DURATION,
         ease: [0.22, 1, 0.36, 1],
       });
     }, LOADER_REVEAL_DELAY_MS);
+
     return () => window.clearTimeout(start);
-  }, [textWidth, progress, reduceMotion]);
+  }, [isReady, progress, reduceMotion]);
 
   return (
     <div className="relative flex h-full min-h-[100svh] min-h-[100dvh] w-full items-center justify-center px-4 md:px-10">
@@ -227,13 +247,17 @@ const LoadingLogo = () => {
         className="relative z-10 flex justify-center"
       >
         <div className="relative inline-flex max-w-full items-center justify-center text-[clamp(2.75rem,11vw,6.75rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
-          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
+          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap will-change-[clip-path]">
             <span ref={textRef}>panko studio</span>
           </motion.span>
           <motion.span
             aria-hidden
-            style={{x: dotX, width: `${LOADER_DOT_EM}em`, height: `${LOADER_DOT_EM}em`}}
-            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp"
+            style={{
+              x: dotX,
+              width: revealDot,
+              height: revealDot,
+            }}
+            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp will-change-transform"
           />
         </div>
       </motion.div>
