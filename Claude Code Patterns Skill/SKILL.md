@@ -5,11 +5,11 @@ description: >-
   + TypeScript, Tailwind CSS v4 via @tailwindcss/vite, motion (Framer
   Motion v12) scroll and spring patterns, section layout (px-4 md:px-10,
   max-w-[1840px]), CTA_BUTTON_BASE and button hover inversion, Navbar
-  dock/island morph, LoadingLogo clipPath + dot sync, CountUp
-  IntersectionObserver, EmailJS dual send, and env vars under VITE_*.
-  Use when editing src/App.tsx, src/index.css, vite.config.ts, or when
-  the user says panko site, marketing site, header island, loader,
-  contact form, EmailJS, or asks for UI changes matching the live site.
+  dock/island morph, SectionReveal scroll animations, EmailJS
+  dual send, and env vars under VITE_*. Use when editing src/App.tsx,
+  src/index.css, vite.config.ts, or when the user says panko site,
+  marketing site, header island, contact form, EmailJS, or asks for UI
+  changes matching the live site.
 ---
 
 # Panko Studio — Site Code Patterns
@@ -33,7 +33,7 @@ emails, decks, and brand voice, use the **`panko-brand`** skill
 
 | File | Role |
 |------|------|
-| `src/App.tsx` | All sections + Navbar, Hero, About, Projects, Pricing, CTA, Footer, loader overlay |
+| `src/App.tsx` | All sections + Navbar, Hero, About, Projects, Pricing, CTA, Footer |
 | `src/index.css` | `@import "tailwindcss"`, `@theme` colors/fonts, body gradients, utilities |
 | `src/main.tsx` | `createRoot`, `StrictMode` |
 | `src/vite-env.d.ts` | `ImportMetaEnv` for `VITE_*` |
@@ -46,12 +46,14 @@ Parked / not bundled: `src/Testimonials.tsx` (not imported).
 
 Defined in `src/index.css` `@theme`:
 
-- `brand-bg` `#f7f4ef`
-- `brand-accent` `#0081a7`
-- `brand-ink` `#0f172a`
+- `brand-page` `#fdf0f3` (petal)
+- `brand-card` `#ffffff` (white)
+- `brand-blush` `#f2c4ce` (blush — backgrounds only)
+- `brand-shrimp` `#d4537e` (shrimp — interactive)
+- `brand-ink` `#1a1a1a` (ink — text + footer bg)
 - `font-sans` → Inter, `font-display` → Outfit
 
-Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-accent`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
+Use classes: `bg-brand-page`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-shrimp`, `font-display`, `font-sans`. Extend the theme by editing `@theme`, not a separate config file.
 
 ## Layout rhythm
 
@@ -59,22 +61,22 @@ Use classes: `bg-brand-bg`, `text-brand-ink`, `text-brand-ink/65`, `bg-brand-acc
 - **Content max width**: `max-w-[1840px] mx-auto` for full-width sections; Hero text block `max-w-5xl`; contact inner `max-w-3xl`.
 - **Section IDs** (must stay in sync with nav + scroll spy): `home`, `about`, `work`, `pricing`, `contact`. Navbar `navItems` and `App` `sectionIds` must match.
 
-## Primary CTA (reuse, do not duplicate)
+## CTAs (reuse constants in `App.tsx`, do not duplicate)
 
 ```tsx
-const CTA_BUTTON_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/20 bg-white px-6 py-3 font-semibold text-brand-ink transition-colors hover:bg-brand-ink hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/45';
+const PRIMARY_CTA = '... bg-brand-shrimp text-brand-card ...';
+const OUTLINE_CTA = '... border-brand-shrimp text-brand-shrimp bg-transparent ...';
+const NAV_CTA_BUTTON = '... bg-brand-shrimp text-brand-page ...';
 ```
 
-Use: `className={\`group ${CTA_BUTTON_BASE}\`}` on `motion.a` / links. Dark contact submit is a **variant** (white pill → accent hover) — keep that contrast for ink backgrounds only.
+Collaborate submit uses `PRIMARY_CTA`. Footer: `bg-brand-ink text-brand-page`, wordmark `text-brand-card`. AI card: `bg-brand-blush text-brand-shrimp`.
 
 ## Motion conventions
 
 - **Scroll-linked**: `useScroll({ target, offset: ['start start', 'end start'] })` + `useTransform` for values bound to scroll.
 - **Smooth follow**: `useSpring(rawMotionValue, { stiffness, damping, mass })` on dock progress — current Navbar uses `{ stiffness: 80, damping: 26, mass: 0.55 }`.
 - **Micro-interactions**: `whileHover={{ y: -1 }}`, `whileTap={{ scale: 0.98 }}` on CTAs; slightly larger `y` on hero primary if needed.
-- **Enter viewport**: `motion.*` with `initial` / `whileInView` / `viewport={{ once: true }}` for section reveals.
-- **Loader**: single `useMotionValue` drives **both** `clipPath` on text and `x` on the dot — do not split into two animations or they desync.
+- **Enter viewport**: `SectionReveal` uses `useInView` + `motion.div` fade/slide; hero uses `whileInView` for headline stagger.
 
 ## Navbar island
 
@@ -99,7 +101,7 @@ Use: `className={\`group ${CTA_BUTTON_BASE}\`}` on `motion.a` / links. Dark cont
 
 ## Deeper reference
 
-For copy-paste snippets (Navbar transforms, loader skeleton, CountUp, radial hero blobs), see [component-patterns.md](component-patterns.md).
+For copy-paste snippets (Navbar transforms, SectionReveal, radial hero blobs), see [component-patterns.md](component-patterns.md).
 
 ## Related skill
 

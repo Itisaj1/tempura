@@ -5,11 +5,11 @@ description: >-
   + TypeScript, Tailwind CSS v4 via @tailwindcss/vite, motion (Framer
   Motion v12) scroll and spring patterns, section layout (px-4 md:px-10,
   max-w-[1840px]), CTA_BUTTON_BASE and button hover inversion, Navbar
-  dock/island morph, LoadingLogo clipPath + dot sync, CountUp
-  IntersectionObserver, EmailJS dual send, and env vars under VITE_*.
-  Use when editing src/App.tsx, src/index.css, vite.config.ts, or when
-  the user says panko site, marketing site, header island, loader,
-  contact form, EmailJS, or asks for UI changes matching the live site.
+  dock/island morph, SectionReveal scroll animations, EmailJS
+  dual send, and env vars under VITE_*. Use when editing src/App.tsx,
+  src/index.css, vite.config.ts, or when the user says panko site,
+  marketing site, header island, contact form, EmailJS, or asks for UI
+  changes matching the live site.
 ---
 
 # Panko Studio — Site Code Patterns
@@ -33,7 +33,7 @@ emails, decks, and brand voice, use the **`panko-brand`** skill
 
 | File | Role |
 |------|------|
-| `src/App.tsx` | All sections + Navbar, Hero, About, Projects, Pricing, CTA, Footer, loader overlay |
+| `src/App.tsx` | All sections + Navbar, Hero, About, Projects, Pricing, CTA, Footer |
 | `src/index.css` | `@import "tailwindcss"`, `@theme` colors/fonts, body gradients, utilities |
 | `src/main.tsx` | `createRoot`, `StrictMode` |
 | `src/vite-env.d.ts` | `ImportMetaEnv` for `VITE_*` |
@@ -76,8 +76,7 @@ Collaborate submit uses `PRIMARY_CTA`. Footer: `bg-brand-ink text-brand-page`, w
 - **Scroll-linked**: `useScroll({ target, offset: ['start start', 'end start'] })` + `useTransform` for values bound to scroll.
 - **Smooth follow**: `useSpring(rawMotionValue, { stiffness, damping, mass })` on dock progress — current Navbar uses `{ stiffness: 80, damping: 26, mass: 0.55 }`.
 - **Micro-interactions**: `whileHover={{ y: -1 }}`, `whileTap={{ scale: 0.98 }}` on CTAs; slightly larger `y` on hero primary if needed.
-- **Enter viewport**: `motion.*` with `initial` / `whileInView` / `viewport={{ once: true }}` for section reveals.
-- **Loader**: single `useMotionValue` drives **both** `clipPath` on text and `x` on the dot — do not split into two animations or they desync.
+- **Enter viewport**: `SectionReveal` uses `useInView` + `motion.div` fade/slide; hero uses `whileInView` for headline stagger.
 
 ## Navbar island
 
@@ -102,7 +101,7 @@ Collaborate submit uses `PRIMARY_CTA`. Footer: `bg-brand-ink text-brand-page`, w
 
 ## Deeper reference
 
-For copy-paste snippets (Navbar transforms, loader skeleton, CountUp, radial hero blobs), see [component-patterns.md](component-patterns.md).
+For copy-paste snippets (Navbar transforms, SectionReveal, radial hero blobs), see [component-patterns.md](component-patterns.md).
 
 ## Related skill
 

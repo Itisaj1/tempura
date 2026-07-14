@@ -2,7 +2,6 @@ import emailjs from '@emailjs/browser';
 import Lenis from 'lenis';
 import {
   AnimatePresence,
-  animate,
   LayoutGroup,
   motion,
   useMotionValue,
@@ -16,10 +15,7 @@ import {
 } from 'motion/react';
 import {CheckCircle2} from 'lucide-react';
 import {
-  createContext,
-  useContext,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   type FormEvent,
@@ -39,13 +35,6 @@ const useWindowWidth = () => {
   }, []);
   return width;
 };
-
-const LOADER_REVEAL_DURATION = 1.15;
-const LOADER_REVEAL_DELAY_MS = 750;
-const LOADER_DOT_FADE_DURATION = 0.35;
-
-const LOADER_DOT_EM = 0.105;
-const LOADER_DOT_TAIL_GAP_EM = 0.08;
 
 const LUCIDE_ICON_SIZE = 24;
 const DITHER_PATH_STEP = 3.5;
@@ -155,133 +144,6 @@ const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrow
         </g>
       </svg>
     </span>
-  );
-};
-
-const LoadingLogo = () => {
-  const reduceMotion = useReducedMotion();
-  const textRef = useRef<HTMLSpanElement | null>(null);
-  const metricsRef = useRef({textWidth: 0, dotSize: 0, travel: 0});
-  const animatingRef = useRef(false);
-  const [isReady, setIsReady] = useState(false);
-
-  const progress = useMotionValue(reduceMotion ? 1 : 0);
-  const dotOpacity = useMotionValue(reduceMotion ? 1 : 0);
-
-  const clipPath = useTransform(progress, (p) => {
-    const {textWidth} = metricsRef.current;
-    const t = Math.min(Math.max(p, 0), 1);
-    return `inset(0 ${(1 - t) * textWidth}px 0 0)`;
-  });
-
-  const dotX = useTransform(progress, (p) => {
-    const {dotSize, travel} = metricsRef.current;
-    const t = Math.min(Math.max(p, 0), 1);
-    return t * travel - dotSize / 2;
-  });
-
-  const logoScale = useTransform(progress, [0, 0.2, 1], [0.94, 0.98, 1]);
-  const washOpacity = useTransform(progress, [0, 0.45, 1], [0.42, 0.2, 0]);
-  const washScale = useTransform(progress, [0, 1], [1.12, 1]);
-
-  const measureLogo = () => {
-    if (animatingRef.current) return false;
-    const textEl = textRef.current;
-    const fontEl = textEl?.parentElement?.parentElement;
-    if (!textEl || !fontEl) return false;
-
-    const fontSize = parseFloat(getComputedStyle(fontEl).fontSize);
-    const textWidth = textEl.offsetWidth;
-    const dotSize = fontSize * LOADER_DOT_EM;
-    const tailGap = fontSize * LOADER_DOT_TAIL_GAP_EM;
-
-    if (textWidth <= 0 || dotSize <= 0) return false;
-
-    metricsRef.current = {
-      textWidth,
-      dotSize,
-      travel: textWidth + tailGap + dotSize / 2,
-    };
-    setIsReady(true);
-    return true;
-  };
-
-  useLayoutEffect(() => {
-    measureLogo();
-
-    const textEl = textRef.current;
-    const fontEl = textEl?.parentElement?.parentElement;
-    const resizeObserver =
-      fontEl && typeof ResizeObserver !== 'undefined'
-        ? new ResizeObserver(() => measureLogo())
-        : null;
-
-    resizeObserver?.observe(fontEl);
-    window.addEventListener('resize', measureLogo);
-
-    return () => {
-      resizeObserver?.disconnect();
-      window.removeEventListener('resize', measureLogo);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (reduceMotion || !isReady) return;
-
-    let cancelled = false;
-
-    const start = window.setTimeout(() => {
-      if (cancelled || !measureLogo()) return;
-      animatingRef.current = true;
-
-      const dotFade = animate(dotOpacity, 1, {
-        duration: LOADER_DOT_FADE_DURATION,
-        ease: 'easeOut',
-      });
-
-      dotFade.finished.then(() => {
-        if (cancelled) return;
-        animate(progress, 1, {
-          duration: LOADER_REVEAL_DURATION,
-          ease: [0.22, 1, 0.36, 1],
-        });
-      });
-    }, LOADER_REVEAL_DELAY_MS);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(start);
-    };
-  }, [isReady, progress, dotOpacity, reduceMotion]);
-
-  return (
-    <div className="relative flex h-full min-h-[100svh] min-h-[100dvh] w-full items-center justify-center px-4 md:px-10">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 origin-center bg-[radial-gradient(ellipse_90%_70%_at_50%_50%,rgba(242,196,206,0.55),transparent_68%)]"
-        style={{opacity: washOpacity, scale: washScale}}
-      />
-      <motion.div
-        style={{scale: logoScale}}
-        className="relative z-10 flex justify-center"
-      >
-        <div className="relative inline-flex max-w-full items-center justify-center overflow-visible text-[clamp(2.75rem,11vw,6.75rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
-          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
-            <span ref={textRef}>panko studio</span>
-          </motion.span>
-          <motion.span
-            aria-hidden
-            style={{
-              x: dotX,
-              opacity: dotOpacity,
-              width: `${LOADER_DOT_EM}em`,
-              height: `${LOADER_DOT_EM}em`,
-            }}
-            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp"
-          />
-        </div>
-      </motion.div>
-    </div>
   );
 };
 
@@ -518,9 +380,7 @@ const ServiceFlipTile = ({
   );
 };
 
-const ScrollRevealContext = createContext(false);
-
-/** Fades/slides in when scrolled into view (after loader). Never re-runs on scroll-back. */
+/** Fades/slides in when scrolled into view. Never re-runs on scroll-back. */
 const SectionReveal = ({
   children,
   className,
@@ -531,14 +391,13 @@ const SectionReveal = ({
   delay?: number;
 }) => {
   const reduceMotion = useReducedMotion();
-  const scrollRevealsEnabled = useContext(ScrollRevealContext);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
     once: true,
     amount: 0.22,
     margin: '0px 0px -6% 0px',
   });
-  const visible = reduceMotion || (scrollRevealsEnabled && isInView);
+  const visible = reduceMotion || isInView;
 
   return (
     <motion.div
@@ -1387,8 +1246,6 @@ function MarketingSite() {
     offset: ['start start', 'end start'],
   });
   const [activeSection, setActiveSection] = useState('home');
-  const [showLoader, setShowLoader] = useState(true);
-  const scrollRevealsEnabled = !showLoader;
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -1435,48 +1292,20 @@ function MarketingSite() {
     };
   }, []);
 
-  useEffect(() => {
-    const timeout = window.setTimeout(() => setShowLoader(false), 2900);
-    return () => window.clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (showLoader) return;
-    window.scrollTo(0, 0);
-    lenisRef.current?.scrollTo(0, {immediate: true});
-  }, [showLoader]);
-
   return (
     <div className="min-h-screen overflow-x-clip selection:bg-brand-shrimp selection:text-brand-card">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
       <Navbar dockProgress={dockProgress} activeSection={activeSection} />
-      <ScrollRevealContext.Provider value={scrollRevealsEnabled}>
-        <main id="main-content" tabIndex={-1} inert={showLoader ? true : undefined}>
-          <Hero heroRef={heroRef} />
-          <About />
-          <Projects />
-          <Pricing />
-          <CTA />
-        </main>
-      </ScrollRevealContext.Provider>
+      <main id="main-content" tabIndex={-1}>
+        <Hero heroRef={heroRef} />
+        <About />
+        <Projects />
+        <Pricing />
+        <CTA />
+      </main>
       <Footer />
-      <motion.div
-        initial={{opacity: 1}}
-        animate={{opacity: showLoader ? 1 : 0}}
-        transition={{duration: 0.45, ease: 'easeOut'}}
-        role="status"
-        aria-live="polite"
-        aria-busy={showLoader}
-        aria-hidden={!showLoader}
-        aria-label="Loading site"
-        className={`loader-shell fixed inset-0 z-[100] flex min-h-[100svh] min-h-[100dvh] w-full items-center justify-center ${
-          showLoader ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
-      >
-        <LoadingLogo />
-      </motion.div>
     </div>
   );
 }
