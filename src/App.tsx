@@ -544,7 +544,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       id="home"
       ref={targetRef}
       aria-labelledby="hero-heading"
-      className="relative flex min-h-[100svh] min-h-[100dvh] flex-col justify-end pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-16 px-4 sm:pb-20 sm:pt-24 md:px-10 lg:pb-28 xl:px-12 2xl:px-16 overflow-hidden"
+      className="relative flex min-h-[100svh] min-h-[100dvh] flex-col justify-end pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-24 px-4 sm:pb-28 sm:pt-24 md:px-10 lg:pb-36 xl:px-12 2xl:px-16 overflow-hidden"
     >
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
           <motion.div style={{opacity, y}} className="max-w-5xl text-left">
@@ -618,7 +618,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
 const About = () => {
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative pt-0 pb-16 px-4 sm:pb-20 md:px-10 md:pb-28 lg:pb-32 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative pt-8 pb-24 px-4 sm:pt-10 sm:pb-28 md:px-10 md:pt-12 md:pb-36 lg:pb-40 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="max-w-3xl">
@@ -744,7 +744,7 @@ const CTA = () => {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="collaborate-section relative flex min-h-0 items-center overflow-hidden px-4 py-16 text-brand-ink sm:py-20 md:min-h-[85vh] md:px-10 md:py-24 xl:px-12 2xl:px-16"
+      className="collaborate-section relative flex min-h-0 items-center overflow-hidden px-4 py-24 text-brand-ink sm:py-28 md:min-h-[85vh] md:px-10 md:py-32 xl:px-12 2xl:px-16"
     >
       <div className="relative z-10 mx-auto w-full max-w-3xl">
         <div className="px-1 py-4 md:px-0 md:py-6">
@@ -952,7 +952,7 @@ const CTA = () => {
 const Footer = () => {
   return (
     <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
-      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-20 md:pb-14">
+      <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-16 pb-12 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16">
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card">
               panko studio
@@ -1022,7 +1022,7 @@ const Projects = () => {
   ];
 
   return (
-    <section id="work" aria-labelledby="work-heading" className="relative py-14 px-4 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
+    <section id="work" aria-labelledby="work-heading" className="relative py-20 px-4 sm:py-24 md:px-10 md:py-28 xl:px-12 2xl:px-16 bg-brand-page overflow-hidden">
       <div className="relative z-10 max-w-[1840px] mx-auto">
         <SectionReveal>
           <div className="mb-10">
@@ -1159,7 +1159,7 @@ const Pricing = () => {
     <section
       id="pricing"
       aria-labelledby="pricing-heading"
-      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-page px-4 py-14 sm:py-16 md:px-10 md:py-20 xl:px-12 2xl:px-16"
+      className="relative overflow-hidden border-t border-brand-ink/12 bg-brand-page px-4 py-20 sm:py-24 md:px-10 md:py-28 xl:px-12 2xl:px-16"
     >
       <div className="relative z-10 mx-auto max-w-[1840px]">
         <SectionReveal>
