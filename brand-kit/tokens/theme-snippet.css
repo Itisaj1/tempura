@@ -5,9 +5,10 @@
 :root {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
-  --color-bg-page: #fdf0f3;
+  --color-bg-page: #ffffff;
   --color-bg-card: #ffffff;
   --color-accent-light: #f2c4ce;
   --color-accent: #d4537e;
   --color-dark: #1a1a1a;
+  --color-footer-text: #fdf0f3;
 }

@@ -3,9 +3,9 @@
   "description": "Panko Studio simplified palette — five colors only (matches src/index.css)",
   "colors": {
     "page": {
-      "hex": "#FDF0F3",
+      "hex": "#FFFFFF",
       "token": "--color-bg-page",
-      "usage": "Petal — page background, nav CTA text, footer body text"
+      "usage": "White — page background and section canvas"
     },
     "card": {
       "hex": "#FFFFFF",
@@ -15,7 +15,7 @@
     "blush": {
       "hex": "#F2C4CE",
       "token": "--color-accent-light",
-      "usage": "Blush — badge backgrounds, card borders, featured AI card, section tints"
+      "usage": "Blush — focused accent backgrounds only (e.g. featured service tile, badges)"
     },
     "shrimp": {
       "hex": "#D4537E",

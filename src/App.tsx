@@ -344,17 +344,17 @@ const ServiceFlipTile = ({
   const frontStyles: Record<ServiceTileVariant, string> = {
     accent: 'bg-brand-blush border border-brand-blush text-brand-shrimp',
     light:
-      'bg-brand-card border-[0.5px] border-brand-blush text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp hover:bg-brand-shrimp/[0.04]',
+      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp/40 hover:bg-brand-shrimp/[0.03]',
     ink:
-      'bg-brand-card border-[0.5px] border-brand-blush text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp hover:bg-brand-shrimp/[0.04]',
+      'bg-brand-card border border-brand-ink/10 text-brand-ink transition-colors duration-150 ease-out hover:border-brand-shrimp/40 hover:bg-brand-shrimp/[0.03]',
   };
   const interactiveCard =
     variant !== 'accent'
       ? 'cursor-pointer transition-transform duration-150 ease-out hover:-translate-y-0.5'
       : '';
   const backStyles: Record<ServiceTileVariant, string> = {
-    accent: 'bg-brand-ink text-brand-page border border-brand-page/20',
-    light: 'bg-brand-ink text-brand-page border border-brand-page/20',
+    accent: 'bg-brand-ink text-brand-footer border border-brand-footer/20',
+    light: 'bg-brand-ink text-brand-footer border border-brand-footer/20',
     ink: 'bg-brand-card text-brand-ink border border-brand-ink/10',
   };
   const dotTone = variant === 'ink' ? 'cream' : 'ink';
@@ -951,13 +951,13 @@ const CTA = () => {
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-page" aria-label="Site footer">
+    <footer className="relative overflow-hidden border-t-[3px] border-brand-shrimp bg-brand-ink text-brand-footer" aria-label="Site footer">
       <div className="relative z-10 max-w-[1840px] mx-auto px-4 md:px-10 xl:px-12 2xl:px-16 pt-16 pb-12 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16">
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <div className="font-display font-bold tracking-tighter leading-[0.85] text-[clamp(2.75rem,12vw,14rem)] text-brand-card">
               panko studio
             </div>
-            <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-page/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
+            <div className="grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 text-base font-display font-medium text-brand-footer/88 sm:max-w-none sm:text-lg md:gap-x-16 md:text-2xl lg:text-3xl">
               <a href="#about" className="transition-colors hover:text-brand-card">
                 About
               </a>
@@ -981,13 +981,13 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div className="mt-10 flex flex-col gap-4 border-t border-brand-page/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-page/55">
+          <div className="mt-10 flex flex-col gap-4 border-t border-brand-footer/18 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-brand-footer/55">
               <a href="/privacy" className="transition-colors hover:text-brand-card">Privacy</a>
               <a href="/terms" className="transition-colors hover:text-brand-card">Terms</a>
               <a href="/cookies" className="transition-colors hover:text-brand-card">Cookies</a>
             </nav>
-            <p className="text-sm text-brand-page/55">© {new Date().getFullYear()} Panko Studio</p>
+            <p className="text-sm text-brand-footer/55">© {new Date().getFullYear()} Panko Studio</p>
           </div>
       </div>
     </footer>
@@ -1182,7 +1182,7 @@ const Pricing = () => {
                   className={`relative flex h-full min-h-0 flex-col rounded-md bg-brand-card p-5 shadow-[0_20px_64px_rgba(26,26,26,0.14)] backdrop-blur-sm transition-colors sm:min-h-[20rem] sm:p-6 md:min-h-[22rem] md:p-8 ${
                     isSubscribe
                       ? 'border-2 border-brand-shrimp'
-                      : 'border-[0.5px] border-brand-blush'
+                      : 'border border-brand-ink/10'
                   }`}
                 >
                   <div className="relative flex flex-1 flex-col">
