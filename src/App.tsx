@@ -42,8 +42,10 @@ const useWindowWidth = () => {
 
 const LOADER_REVEAL_DURATION = 1.15;
 const LOADER_REVEAL_DELAY_MS = 750;
+const LOADER_DOT_FADE_DURATION = 0.35;
 
 const LOADER_DOT_EM = 0.105;
+const LOADER_DOT_TAIL_GAP_EM = 0.08;
 
 const LUCIDE_ICON_SIZE = 24;
 const DITHER_PATH_STEP = 3.5;
@@ -159,25 +161,23 @@ const DitherArrowIcon = ({className = 'h-4 w-4', variant = 'arrow'}: DitherArrow
 const LoadingLogo = () => {
   const reduceMotion = useReducedMotion();
   const textRef = useRef<HTMLSpanElement | null>(null);
+  const metricsRef = useRef({textWidth: 0, dotSize: 0, travel: 0});
   const animatingRef = useRef(false);
   const [isReady, setIsReady] = useState(false);
 
   const progress = useMotionValue(reduceMotion ? 1 : 0);
-  const revealWidth = useMotionValue(0);
-  const revealDot = useMotionValue(0);
+  const dotOpacity = useMotionValue(reduceMotion ? 1 : 0);
 
-  const clipPath = useTransform([progress, revealWidth], ([p, width]) => {
-    const w = typeof width === 'number' ? width : 0;
-    const clamped = Math.min(Math.max(p, 0), 1);
-    return `inset(0 ${(1 - clamped) * w}px 0 0)`;
+  const clipPath = useTransform(progress, (p) => {
+    const {textWidth} = metricsRef.current;
+    const t = Math.min(Math.max(p, 0), 1);
+    return `inset(0 ${(1 - t) * textWidth}px 0 0)`;
   });
 
-  const dotX = useTransform([progress, revealWidth, revealDot], ([p, width, dot]) => {
-    const w = typeof width === 'number' ? width : 0;
-    const d = typeof dot === 'number' ? dot : 0;
-    const clamped = Math.min(Math.max(p, 0), 1);
-    // Keep the dot's trailing edge on the reveal line so it leads the curtain.
-    return clamped * w - d;
+  const dotX = useTransform(progress, (p) => {
+    const {dotSize, travel} = metricsRef.current;
+    const t = Math.min(Math.max(p, 0), 1);
+    return t * travel - dotSize / 2;
   });
 
   const logoScale = useTransform(progress, [0, 0.2, 1], [0.94, 0.98, 1]);
@@ -185,21 +185,25 @@ const LoadingLogo = () => {
   const washScale = useTransform(progress, [0, 1], [1.12, 1]);
 
   const measureLogo = () => {
-    if (animatingRef.current) return;
-
+    if (animatingRef.current) return false;
     const textEl = textRef.current;
     const fontEl = textEl?.parentElement?.parentElement;
-    if (!textEl || !fontEl) return;
+    if (!textEl || !fontEl) return false;
 
     const fontSize = parseFloat(getComputedStyle(fontEl).fontSize);
-    const width = textEl.offsetWidth;
-    const dotDiameter = fontSize * LOADER_DOT_EM;
+    const textWidth = textEl.offsetWidth;
+    const dotSize = fontSize * LOADER_DOT_EM;
+    const tailGap = fontSize * LOADER_DOT_TAIL_GAP_EM;
 
-    if (width <= 0) return;
+    if (textWidth <= 0 || dotSize <= 0) return false;
 
-    revealWidth.set(width);
-    revealDot.set(dotDiameter);
+    metricsRef.current = {
+      textWidth,
+      dotSize,
+      travel: textWidth + tailGap + dotSize / 2,
+    };
     setIsReady(true);
+    return true;
   };
 
   useLayoutEffect(() => {
@@ -224,16 +228,31 @@ const LoadingLogo = () => {
   useEffect(() => {
     if (reduceMotion || !isReady) return;
 
+    let cancelled = false;
+
     const start = window.setTimeout(() => {
+      if (cancelled || !measureLogo()) return;
       animatingRef.current = true;
-      animate(progress, 1, {
-        duration: LOADER_REVEAL_DURATION,
-        ease: [0.22, 1, 0.36, 1],
+
+      const dotFade = animate(dotOpacity, 1, {
+        duration: LOADER_DOT_FADE_DURATION,
+        ease: 'easeOut',
+      });
+
+      dotFade.finished.then(() => {
+        if (cancelled) return;
+        animate(progress, 1, {
+          duration: LOADER_REVEAL_DURATION,
+          ease: [0.22, 1, 0.36, 1],
+        });
       });
     }, LOADER_REVEAL_DELAY_MS);
 
-    return () => window.clearTimeout(start);
-  }, [isReady, progress, reduceMotion]);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(start);
+    };
+  }, [isReady, progress, dotOpacity, reduceMotion]);
 
   return (
     <div className="relative flex h-full min-h-[100svh] min-h-[100dvh] w-full items-center justify-center px-4 md:px-10">
@@ -246,18 +265,19 @@ const LoadingLogo = () => {
         style={{scale: logoScale}}
         className="relative z-10 flex justify-center"
       >
-        <div className="relative inline-flex max-w-full items-center justify-center text-[clamp(2.75rem,11vw,6.75rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
-          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap will-change-[clip-path]">
+        <div className="relative inline-flex max-w-full items-center justify-center overflow-visible text-[clamp(2.75rem,11vw,6.75rem)] font-display font-bold leading-[0.9] tracking-tighter text-brand-ink">
+          <motion.span style={{clipPath}} className="inline-block whitespace-nowrap">
             <span ref={textRef}>panko studio</span>
           </motion.span>
           <motion.span
             aria-hidden
             style={{
               x: dotX,
-              width: revealDot,
-              height: revealDot,
+              opacity: dotOpacity,
+              width: `${LOADER_DOT_EM}em`,
+              height: `${LOADER_DOT_EM}em`,
             }}
-            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp will-change-transform"
+            className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-brand-shrimp"
           />
         </div>
       </motion.div>
