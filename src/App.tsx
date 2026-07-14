@@ -538,6 +538,7 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
 
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.6], [0, 80]);
+  const washOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
   return (
     <section
@@ -546,6 +547,14 @@ const Hero = ({heroRef}: {heroRef: RefObject<HTMLElement | null>}) => {
       aria-labelledby="hero-heading"
       className="relative flex min-h-[100svh] min-h-[100dvh] flex-col justify-end pt-[calc(5.5rem+env(safe-area-inset-top,0px))] pb-24 px-4 sm:pb-28 sm:pt-24 md:px-10 lg:pb-36 xl:px-12 2xl:px-16 overflow-hidden"
     >
+      <motion.div
+        aria-hidden
+        style={{opacity: washOpacity}}
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="absolute -right-[12%] top-[6%] h-[min(78vw,34rem)] w-[min(78vw,34rem)] rounded-full bg-[radial-gradient(circle,rgba(242,196,206,0.5)_0%,rgba(242,196,206,0.12)_42%,transparent_72%)]" />
+        <div className="absolute -left-[8%] bottom-[14%] h-[min(52vw,22rem)] w-[min(52vw,22rem)] rounded-full bg-[radial-gradient(circle,rgba(212,83,126,0.14)_0%,transparent_68%)]" />
+      </motion.div>
       <div className="relative z-10 mx-auto w-full max-w-[1840px]">
           <motion.div style={{opacity, y}} className="max-w-5xl text-left">
           <motion.h1
